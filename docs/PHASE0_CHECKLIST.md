@@ -39,6 +39,39 @@ gibi isimler de var — "purge" kökü bu kategoride kalabalık.
 **Önerim: adı değiştir.** Şimdi maliyeti sıfır (tek tablo, kod yok). Lansmandan sonra ikon, domain,
 appcast URL'i, lisans anahtarları, kullanıcı tabanı ve SEO'ya yayılmış olur.
 
+### Ad süzgeci — her aday bundan geçer
+
+**1. Apple marka kuralları.** Adın içinde "Mac" (veya herhangi bir Apple markası) geçiyorsa
+[Apple'ın üçüncü parti kuralları](https://www.apple.com/legal/intellectual-property/guidelinesfor3rdparties.html)
+sekiz koşulun **tamamını** şart koşar:
+
+| # | Koşul | Bizim için not |
+|---|---|---|
+| (a) | Ürün bir bilgisayar, bilgisayar sistemi veya **işletim sistemi yazılımı** olmayacak | Sistem bakım aracıyız, işletim sistemi değiliz — sınıra yakın ama geçer |
+| (b) | Ürün Mac uyumlu olacak | ✅ |
+| (c) | "Mac" **jenerik olmayan başka bir kelimeyle** birlikte kullanılacak | ⚠️ **En sık takılan madde.** Son ek (`-ify`, `-er`) kelime sayılmaz |
+| (d) | "Mac" adın geri kalanından daha baskın görünmeyecek (boyut, renk, yazı tipi) | Logo tasarımını bağlar |
+| (e) | Apple ile yanlış bir ilişki çağrıştırmayacak | |
+| (f) | Apple'ın herhangi bir markasıyla karıştırılacak kadar benzer olmayacak | |
+| (g) | "Mac" markasının tek sahibinin Apple olduğunu kabul edecek ve Apple'ın tescilini engellemeyeceksin | ⚠️ **Stratejik bedel: adı kendi markamız olarak tescil edemeyiz.** Marka kiralanmış olur |
+| (h) | Apple programlarına üyeysen ek kısıtlar olabilir | |
+
+**Sonuç: "Mac" içeren bir ad seçersek markayı asla sahiplenemeyiz (madde g).** Bu yüzden
+platformdan bağımsız bir ad tercih ediyoruz. Mac çağrışımı **referans olarak serbesttir** ve
+bedavadır: "<Ad> for Mac" / "<Ad> — Mac için" — Apple bunu açıkça izin veriyor, yeter ki Apple
+markası ürün adının parçası olmasın ve adımızdan daha az baskın görünsün.
+
+**2. Kategori çakışması.** App Store + Mac App Store + Google aramasında benzer ad yok.
+**3. Marka araştırması.** TÜRKPATENT, USPTO, EUIPO — Nice sınıf 9 ve 42.
+**4. Varlıklar.** `.com` (tercihen `.app` de), GitHub org, X/Mastodon kullanıcı adı.
+
+### Değerlendirilen ve reddedilen adlar
+
+| Ad | Durum | Gerekçe |
+|---|---|---|
+| **Macify** | ❌ reddedildi | Apple kuralı madde **(c)**: `-ify` son ektir, kelime değil — izin verilen birleşim biçimi değil. Madde **(g)** nedeniyle tescil edilemez, marka kiralanmış olur. Ayrıca §12 iOS sürümünü anlamsızlaştırır (ve orada App Store incelemesi var). Benzer ad mevcut: Macaify |
+| **Purgeify** | ⚠️ riskli | App Store'da "Purgify" — tek harf fark, aynı kategori, §12.2'deki iOS planımızla aynı iş. `-ify` ayrıca kalabalık |
+
 ### Yapılacaklar
 
 - [ ] Karar: "Purgeify" ile devam mı, yeni ad mı?
