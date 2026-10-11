@@ -32,9 +32,30 @@ Görsel kimlik tamamen özgün olmalı. CleanMyMac'in logosu, ikonları, ekran d
 | Ayarlar (UserDefaults suite) | `com.purgeify.app` |
 | App Group (ileride iOS/companion için) | `group.com.purgeify` |
 
-> **Phase 0 görevi:** "Purgeify" adının TÜRKPATENT ve USPTO marka müsaitliği ile `purgeify.com` domain müsaitliği
-> doğrulanmadan ikon, appcast URL'i, imza kimliği ve mağaza metinleri kesinleştirilmeyecek. Ad değişirse
-> yukarıdaki tablo tek değişiklik noktasıdır.
+> **⚠️ Ad durumu — AÇIK KARAR (A8, §16.1).** "Purgeify" **çalışma adıdır**, kesinleşmemiştir.
+> 2026-10-12 taramasında App Store'da **"Purgify"** adlı bir uygulama bulundu (iPhone, fotoğraf temizleme,
+> Utilities kategorisi). Tek harf fark + aynı ürün kategorisi + §12.2'de bizim iOS için planladığımız işin
+> aynısı: benzerlik riski için en kötü kombinasyon. Ad kesinleşene kadar ikon, domain, appcast URL'i, imza
+> kimliği, lisans metinleri ve mağaza içerikleri **üretilmeyecek**. Kod bu karardan etkilenmez; §1.1 tablosu
+> tek değişiklik noktasıdır ve kod içinde ad string'i hard-code edilmez (Info.plist + String Catalog üzerinden gelir).
+
+### 1.2 Geliştirme ortamı taban çizgisi (2026-10-12 tespiti)
+
+| Konu | Durum |
+|---|---|
+| Xcode | 26.5 (build 17F42) ✓ |
+| Swift | 6.3.2 ✓ |
+| Geliştirme Mac'i | macOS 27.0.1 ✓ |
+| Mevcut SDK | macOS 26.5 (deployment target macOS 14 geriye dağıtımla desteklenir) ✓ |
+| Homebrew | kurulu ✓ |
+| SwiftLint | **kurulu değil** → `brew install swiftlint` |
+| Kod imzalama kimliği | Yalnızca *Apple Development*. **Developer ID Application sertifikası yok** |
+| Apple Developer Program | Doğrulanmadı. Mevcut kimlikler `k1453o@icloud.com` hesabına bağlı |
+
+**Sonuç:** Phase 1–10 geliştirmesi için engel yok (yerel çalıştırma Apple Development ile mümkün).
+Phase 0'ın imza/notarizasyon maddeleri (**R8 dahil**) Developer ID sertifikası alınana kadar bekler.
+Geliştirme ortamı macOS 27 olduğu için macOS 14 uyumluluğu yalnızca derleyici hedefiyle garanti edilemez —
+§16.2/R11 uyarınca gerçek macOS 14 doğrulaması gerekir.
 
 ---
 
@@ -54,7 +75,10 @@ Görsel kimlik tamamen özgün olmalı. CleanMyMac'in logosu, ikonları, ekran d
 | Kötü amaçlı yazılım | **YARA** (BSD-3-Clause) + kendi hash blocklist'imiz. ClamAV **kullanılmaz** (§6.4) |
 | Güncelleme | Sparkle 2 (EdDSA imzalı appcast) |
 | Dağıtım | App Store dışı; Developer ID imzası + notarizasyon. Sandbox kapalı, Hardened Runtime açık |
-| Lisanslama | Çevrimdışı doğrulanabilir Ed25519 imzalı lisans dosyası (§11) |
+| Ödeme | **Paddle** (Merchant of Record) — vergi yükümlülüğü sağlayıcıda (§11.1) |
+| Lisanslama | Çevrimdışı doğrulanabilir Ed25519 imzalı lisans dosyası (§11.2) |
+| CI | **GitHub Actions** (macOS runner); imzalı derleme yalnızca `v*` etiketinde (§13.1) |
+| İmza DB barındırma | **Cloudflare R2 + CDN** (§13.3) |
 | Test | Swift Testing (`@Test`), kritik akışlar için XCUITest |
 | Loglama | `os.Logger` (subsystem: bundle ID, kategori: modül adı) |
 | Telemetri | Üçüncü parti analytics SDK'sı **yok**. Opt-in, kendi barındırdığımız minimal çökme raporu (§13.4) |
@@ -378,10 +402,20 @@ mimariyi etkiler ve Phase 0'da kararlaştırılır, Phase 10'da uygulanır. `Lic
 itibaren var olur ve başlangıçta her şeyi "Pro" döndürecek sahte bir uygulamayla çalışır — böylece Pro
 kapıları baştan doğru yerlere konur.
 
-### 11.1 Ödeme sağlayıcısı
-**Öneri: Merchant of Record (MoR) modeli** — Paddle veya Lemon Squeezy. Gerekçe: KDV/satış vergisi
-yükümlülüğünü sağlayıcı üstlenir, Türkiye'den global dijital satışta bu en büyük operasyonel yükü kaldırır.
-Stripe daha düşük komisyon ama vergi beyanı bize kalır. **Karar §15'te açık.**
+### 11.1 Ödeme sağlayıcısı — **Paddle** (karar verildi)
+**Merchant of Record (MoR) modeli.** Gerekçe: KDV/satış vergisi yükümlülüğünü sağlayıcı üstlenir;
+Türkiye'den global dijital satışta bu en büyük operasyonel yükü kaldırır. Paddle masaüstü yazılım
+satışında olgun, lisans anahtarı üretimi ve iade/fatura akışları hazır geliyor.
+
+Stripe daha düşük komisyonlu ama satış vergisi beyanı bize kalır — tek kişilik bir ekip için kabul
+edilemez bir yük. Lemon Squeezy de MoR'dur ancak Stripe tarafından satın alındı ve Stripe Billing'e
+taşınıyor; bağımsız MoR olarak sürekliliği belirsiz. **Hesap açmadan önce bu durumu güncel olarak
+doğrula** (Phase 0 kontrol listesi).
+
+Entegrasyon ilkesi: Paddle yalnızca **satış ve lisans anahtarı üretimi** için kullanılır. Uygulama
+içinde Paddle SDK'sı bulunmaz, uygulama çalışma zamanında Paddle'a bağlanmaz — satın alma tarayıcıda
+gerçekleşir, kullanıcı e-posta ile aldığı anahtarı uygulamaya girer. Böylece sağlayıcı değişirse
+uygulama kodu etkilenmez ve §10.7 (veri dışarı çıkmaz) korunur.
 
 ### 11.2 Lisans doğrulama (çevrimdışı çalışmalı)
 - Satın alma sonrası kullanıcıya **Ed25519 ile imzalanmış lisans dosyası / anahtarı** verilir. İçerik:
@@ -408,9 +442,13 @@ sakatlanmış bir demo değil.
 
 - **Deneme:** 14 gün, tüm Pro özellikleri açık, kredi kartı istenmez. Deneme bitince bulunan sonuçlar
   görünmeye devam eder; yalnızca Pro eylemleri kapanır (kullanıcı verisi rehin alınmaz — §10.6).
-- **Fiyat modeli kararı §15'te açık:** tek seferlik + büyük sürüm yükseltmesi (ömür boyu güncelleme değil)
-  vs. yıllık abonelik. Tercihim: **1 yıl güncelleme içeren tek seferlik lisans**, sonrasında indirimli
-  yenileme — abonelik yorgunluğuna girmemek için.
+- **Fiyat modeli (karar verildi): 1 yıl güncelleme içeren tek seferlik lisans.** Yıl sonunda uygulama
+  çalışmaya devam eder ve o ana kadarki tüm Pro özellikleri açık kalır; yalnızca yeni sürüm güncellemeleri
+  durur. Devam etmek isteyen kullanıcı indirimli yenileme alır. Abonelik modeli seçilmedi — §10.6
+  (karanlık desen yok) ve abonelik yorgunluğu nedeniyle.
+- **Fiyat (geçici, lansmandan önce gözden geçirilecek):** 1 Mac için **49 USD**, 3 Mac için **79 USD**;
+  yenileme %50 indirimli; lansmanda ilk dönem için %30 indirim. Para birimi USD (Paddle yerel para
+  dönüşümünü kendisi yapar). Bu sayılar Phase 10'da pazar kontrolüyle doğrulanacak.
 - Deneme durumu saklama: Keychain + destek klasöründe imzalı kayıt. Kolayca sıfırlanabilmesi kabul edilebilir
   bir maliyettir; dürüst kullanıcıyı cezalandıran agresif önlemler alınmaz.
 
@@ -461,8 +499,12 @@ Mac sürümünün küçültülmüş bir kopyası olarak sunulmaz; ayrı ve dür�
 - Git deposu zorunlu. Dal modeli: `main` (kararlı) + özellik dalları.
 - SemVer: `MAJOR.MINOR.PATCH`; `CFBundleShortVersionString` = SemVer, `CFBundleVersion` = artan derleme sayısı.
 - `CHANGELOG.md` elle tutulur ve Sparkle sürüm notlarının kaynağıdır.
-- CI (GitHub Actions veya yerel runner): her push'ta `xcodebuild build` + `swift test` + SwiftLint.
-  İmzalı derleme ve notarizasyon yalnızca sürüm etiketlerinde (`v*`) çalışır.
+- **CI: GitHub Actions** (karar verildi). `macos-latest` runner'ında her push ve PR'da: SwiftLint →
+  `swift build` (paketler) → `swift test` → `xcodebuild build` (uygulama hedefi). Gerekçe: ek altyapı
+  bakımı yok, macOS runner hazır geliyor. İmzalı derleme + notarizasyon yalnızca `v*` etiketinde çalışan
+  ayrı bir iş akışıdır ve sertifika secret'ları gerektirir; bu iş akışı Developer ID alınana kadar devre
+  dışı kalır.
+- Derleme süresi veya runner dakikası sorun olursa self-hosted Mac runner'a geçilir (§16.2/R12).
 - Sırlar: Developer ID sertifikası (p12), App Store Connect API key, Sparkle özel anahtarı CI secret olarak
   tutulur; depoya asla girmez.
 
@@ -480,8 +522,12 @@ Mac sürümünün küçültülmüş bir kopyası olarak sunulmaz; ayrı ve dür�
 - Yedekleme politikası: özel anahtar en az iki ayrı şifreli konumda saklanır (parola yöneticisi + çevrimdışı
   şifreli yedek). Bu, projenin tek telafisi olmayan sırrıdır.
 - `appcast.xml` HTTPS üzerinden barındırılır; sürüm notları TR/EN olarak sunulur.
+- **Barındırma: Cloudflare R2 + Cloudflare CDN** (karar verildi) — hem `appcast.xml` ve DMG'ler hem de
+  imza veritabanı için. Gerekçe: egress ücreti yok (imza veritabanı sık indirilecek), statik barındırma
+  için sunucu bakımı gerekmez, kendi alan adımız altında sunulabilir.
 - İmza veritabanı (YARA kuralları + hash listesi) güncellemesi Sparkle'dan **ayrı** bir kanaldır ve
-  kendi imzasıyla doğrulanır.
+  kendi Ed25519 imzasıyla doğrulanır. Sürümlenir (`manifest.json` + içerik hash'i), böylece kısmi
+  indirme ve geri alma mümkün olur.
 
 ### 13.4 Çökme raporu ve telemetri
 - Üçüncü parti analytics veya çökme SDK'sı kullanılmaz (§10.7).
@@ -545,15 +591,14 @@ Her aşamanın sonunda proje derlenir, testler geçer, ben ekranları kontrol ed
 Karara bağlanan her madde buradan çıkarılıp §17 Karar Günlüğü'ne yazılır.
 
 ### 16.1 Açık kararlar
-| # | Konu | Seçenekler | Önerim | Ne zaman gerekli |
-|---|---|---|---|---|
-| A1 | Ödeme sağlayıcısı | Paddle / Lemon Squeezy (MoR) vs. Stripe | MoR — vergi yükü kalkıyor | Phase 0 |
-| A2 | Fiyat modeli | Tek seferlik + 1 yıl güncelleme vs. yıllık abonelik | Tek seferlik + indirimli yenileme | Phase 0 |
-| A3 | Fiyat noktası ve para birimi | — | — | Phase 0 |
-| A4 | CI altyapısı | GitHub Actions vs. yerel Mac runner | GitHub Actions (self-hosted mac gerekebilir) | Phase 0 |
-| A5 | İmza veritabanı barındırma | Kendi sunucu vs. object storage + CDN | Object storage + CDN (basit, ucuz) | Phase 8 |
-| A6 | iOS companion senkronizasyonu | CloudKit vs. yerel ağ + App Group | Phase 12'de karar | Phase 12 |
-| A7 | Ücretsiz/Pro ayrımının son hali | §11.3 taslağı | §11.3 ile başla, kullanıcı geri bildirimiyle ayarla | Phase 10 |
+| # | Konu | Durum | Ne zaman gerekli |
+|---|---|---|---|
+| **A8** | **Uygulama adı** — "Purgify" çakışması (§1.1) | **AÇIK — en öncelikli.** Seçenekler ve öneri: `docs/PHASE0_CHECKLIST.md` | Phase 0, Phase 1'den önce |
+| A6 | iOS companion senkronizasyonu | Açık — bilinçli olarak erteledi | Phase 12 |
+| A7 | Ücretsiz/Pro ayrımının son hali | §11.3 taslağıyla başlanacak, geri bildirimle ayarlanacak | Phase 10 |
+| A3' | Fiyat noktasının doğrulanması | §11.3'te geçici değer var (49/79 USD), pazar kontrolü bekliyor | Phase 10 |
+
+Karara bağlananlar: A1 (Paddle), A2 (tek seferlik + 1 yıl), A4 (GitHub Actions), A5 (Cloudflare R2) — §17.
 
 ### 16.2 Riskler
 | # | Risk | Etki | Azaltma |
@@ -568,6 +613,10 @@ Karara bağlanan her madde buradan çıkarılıp §17 Karar Günlüğü'ne yazı
 | R8 | Notarizasyon reddi (sandbox kapalı + helper) | Dağıtım gecikir | Phase 0'da boş bir iskeletle uçtan uca notarizasyon denemesi |
 | R9 | Ağır taramaların beklenenden çok yavaş olması | Kullanıcı memnuniyetsizliği | §8 ağır tarayıcı sözleşmesi (ilerleme, iptal, kısmi sonuç) |
 | R10 | Lisans korumasının kırılması | Gelir kaybı | Kabul edilen risk; dürüst kullanıcıyı cezalandıran önlem alınmaz (§11.2) |
+| R11 | Geliştirme Mac'i macOS 27, hedef macOS 14 | macOS 14'te çalışmayan kod fark edilmez | Gerçek macOS 14 VM/Mac'te aşama sonu doğrulaması; CI'da `-destination` ile eski SDK derlemesi; `if #available` disiplini |
+| R12 | GitHub Actions macOS runner dakikası/hızı | CI maliyeti veya yavaşlık | Önce GitHub-hosted; sorun olursa self-hosted Mac runner (§13.1) |
+| R13 | Paddle hesap onayının gecikmesi/reddi | Satış başlamaz | Phase 0'da erken başvuru; yedek plan Stripe + vergi danışmanı |
+| R14 | **"Purgify" ile ad benzerliği** | App Store adı reddi, SEO kanibalizasyonu, marka itirazı, rebrand maliyeti | A8 kararı Phase 1'den önce verilir; ad hiçbir yere hard-code edilmez; §1.1 tek değişiklik noktası |
 
 ---
 
@@ -588,3 +637,9 @@ Karara bağlanan her madde buradan çıkarılıp §17 Karar Günlüğü'ne yazı
 | 2026-10-12 | Lisans doğrulaması tamamen **çevrimdışı** (Ed25519 imzalı lisans) | İnternet yokken uygulamanın kilitlenmesi kabul edilemez; lisans sunucusu tek hata noktası olmamalı |
 | 2026-10-12 | Güvenlik ve şeffaflık özellikleri (dry-run, geçmiş, geri alma, malware taraması, "tamamen kaldır") **ücretsiz** katmanda | Güveni paywall arkasına koymak §1'deki temel farkımızı yok eder |
 | 2026-10-12 | "Purgeify'ı tamamen kaldır" akışı zorunlu özellik | Privileged helper kuran bir uygulama kaldırılırken root daemon artığı bırakmamalı; temizlik uygulaması kendi arkasında artık bırakamaz |
+| 2026-10-12 | **A1: Ödeme sağlayıcısı Paddle** (MoR). Uygulama içinde SDK yok, lisans anahtarı e-posta ile verilir | Vergi yükümlülüğü sağlayıcıda; tek kişilik ekip için global KDV beyanı sürdürülemez. SDK'sız entegrasyon sağlayıcı bağımlılığını ve §10.7 veri riskini ortadan kaldırır |
+| 2026-10-12 | **A2: Tek seferlik lisans + 1 yıl güncelleme**, sonrasında indirimli yenileme. Abonelik yok | Abonelik yorgunluğu; §10.6 karanlık desen yasağı. Süre bitince uygulama çalışmaya devam eder, yalnızca güncelleme durur |
+| 2026-10-12 | **A4: CI = GitHub Actions** (`macos-latest`). İmzalı derleme ayrı, yalnızca `v*` etiketinde | Ek altyapı bakımı yok, macOS runner hazır. İmzalama Developer ID gelene kadar devre dışı |
+| 2026-10-12 | **A5: Dağıtım ve imza DB barındırma = Cloudflare R2 + CDN** | Egress ücreti yok (imza DB sık indirilir), statik barındırmada sunucu bakımı gerekmez |
+| 2026-10-12 | Geliştirme ortamı doğrulandı: Xcode 26.5 / Swift 6.3.2 / macOS 27.0.1. **Developer ID sertifikası yok** | Phase 1–10 engelsiz; Phase 0'ın imza/notarizasyon maddeleri ve R8 testi sertifika alınana kadar bekler |
+| 2026-10-12 | Uygulama adı **kesinleşmedi** (A8). "Purgeify" çalışma adı olarak kullanılıyor; ad hiçbir yere hard-code edilmeyecek | App Store'da "Purgify" bulundu: tek harf fark, aynı kategori, §12.2'deki iOS planımızla aynı iş. Rebrand şimdi bedava, lansmandan sonra çok pahalı |

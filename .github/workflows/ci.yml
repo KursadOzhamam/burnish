@@ -1,0 +1,87 @@
+name: CI
+
+# Her push ve PR'da lint + derleme + test.
+# Imzali derleme ve notarizasyon BU is akisinda DEGIL; release.yml icinde ve yalnizca v* etiketinde
+# calisir (bkz. CLAUDE.md §13.1). O is akisi Developer ID sertifikasi alinana kadar olusturulmaz.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: SwiftLint
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install swiftlint
+      - run: swiftlint --strict
+
+  packages:
+    name: Packages (build + test)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Toolchain versions
+        run: |
+          xcodebuild -version
+          swift --version
+
+      # Her yerel paket bagimsiz derlenebilir ve test edilebilir olmali.
+      # Packages/ henuz olusmadiysa is akisi sessizce gecer (Phase 1 oncesi).
+      - name: Build & test local packages
+        run: |
+          shopt -s nullglob
+          found=0
+          for manifest in Packages/*/Package.swift Packages/Features/*/Package.swift; do
+            found=1
+            pkg="$(dirname "$manifest")"
+            echo "::group::$pkg"
+            swift build  --package-path "$pkg"
+            swift test   --package-path "$pkg" || {
+              echo "::error::Tests failed in $pkg"; exit 1;
+            }
+            echo "::endgroup::"
+          done
+          if [ "$found" -eq 0 ]; then
+            echo "Henuz yerel paket yok - atlaniyor."
+          fi
+
+  app:
+    name: App (build)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      # Imzasiz derleme: CI'da sertifika yok.
+      - name: Build app target
+        run: |
+          if [ ! -d Purgeify.xcodeproj ] && [ ! -d Purgeify.xcworkspace ]; then
+            echo "Xcode projesi henuz yok - atlaniyor."
+            exit 0
+          fi
+          xcodebuild build \
+            -scheme Purgeify \
+            -destination 'platform=macOS' \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGN_IDENTITY="" \
+            | xcbeautify || xcodebuild build \
+            -scheme Purgeify \
+            -destination 'platform=macOS' \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGN_IDENTITY=""
