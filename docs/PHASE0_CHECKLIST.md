@@ -65,12 +65,31 @@ markası ürün adının parçası olmasın ve adımızdan daha az baskın gör�
 **3. Marka araştırması.** TÜRKPATENT, USPTO, EUIPO — Nice sınıf 9 ve 42.
 **4. Varlıklar.** `.com` (tercihen `.app` de), GitHub org, X/Mastodon kullanıcı adı.
 
-### Değerlendirilen ve reddedilen adlar
+### Taranan adlar (2026-10-12)
 
-| Ad | Durum | Gerekçe |
+Yöntem: web + App Store/Mac App Store + GitHub taraması. **Bu hukuki marka araştırması değildir** —
+seçilen ad için yukarıdaki süzgecin 3. maddesi (TÜRKPATENT / USPTO / EUIPO) yine yapılmalıdır.
+
+| Ad | Sonuç | Bulgu |
 |---|---|---|
-| **Macify** | ❌ reddedildi | Apple kuralı madde **(c)**: `-ify` son ektir, kelime değil — izin verilen birleşim biçimi değil. Madde **(g)** nedeniyle tescil edilemez, marka kiralanmış olur. Ayrıca §12 iOS sürümünü anlamsızlaştırır (ve orada App Store incelemesi var). Benzer ad mevcut: Macaify |
-| **Purgeify** | ⚠️ riskli | App Store'da "Purgify" — tek harf fark, aynı kategori, §12.2'deki iOS planımızla aynı iş. `-ify` ayrıca kalabalık |
+| **Burnish** | ✅ **temiz** | İki bağımsız taramada yazılım/Mac alanında çakışma yok. Uyarı: içindeki "burn" bir bakım aracında yıkıcı çağrışım yapabilir — §4'ün güven vaadiyle ters okunabilir |
+| **Hone** | ✅ temiz | Mac uygulaması bulunamadı. Uyarı: çok kısa ve yaygın bir kelime (Hone Health, Hone leadership gibi şirketler var) → sahiplenmesi ve SEO'su zor |
+| Alder | ⚠️ sınırda | Mac utility alanında yok, ama Alder Security / Alder Holdings Sınıf 9'da risk |
+| **Macify** | ❌ | Apple kuralı (c): `-ify` son ektir, kelime değil. (g) nedeniyle tescil edilemez. §12 iOS'u anlamsızlaştırır. Benzer: Macaify |
+| **SpruceMacs** | ❌ | "Macs" çoğul → "trademarks may not be used in the plural form". Ayrıca "Do not make up names that contain Apple trademarks". (g) hâlâ geçerli. Sesten yazılamıyor |
+| **Purgeify** | ❌ | App Store'da "Purgify": tek harf fark, aynı kategori, §12.2 iOS planımızla aynı iş |
+| Spruce | ❌ | sprucetools.com (Apple endpoint yönetimi — komşu kategori), App Store'da "Spruce: Home Cleaning Service", buildwithspruce.com (macOS), `brew install spruce` alınmış, SPRUCEWARE.NET USPTO'da yazılım sınıfında tescilli |
+| Winnow | ❌ | Mac App Store'da "Winnow — Personal Rankings" (Utilities), "Winnow: Photo Cleaner" (§12.2 ile aynı iş), winnow.ca (Mac) |
+| Whittle | ❌ | whittle.tools — "small, sharp tools for macOS" |
+| Lathe | ❌ | Mac App Store'da "Lathe: Photo & Video Manager" — **kopya bulucu özelliği ve 49,99 USD tek seferlik Pro modeli var**, yani hem özellik hem iş modeli çakışıyor. Ayrıca GitHub'da macOS app switcher |
+| Patina | ❌ | İki Mac uygulaması: paint uygulaması + macOS 14+ menü çubuğu otomasyon aracı |
+| Vireo | ❌ | dearvireo.com — native macOS mail istemcisi |
+| Cairn | ❌ | Mac App Store'da "Cairn Tasks"; GitHub'da dört ayrı macOS uygulaması (menü çubuğu aracı, uygulama yöneticisi dahil) |
+
+**Taramadan çıkan örüntü:** "temizlik / ayıklama / düzenleme" anlam alanındaki tek kelimelik İngilizce
+adlar Mac utility pazarında tükenmiş. Başarılı Mac araçlarının adları işlevlerini tanımlamıyor
+(Hazel, Alfred, Bartender, DaisyDisk, Raycast, Keka) — işlevi tanımlayan ad hem kalabalığa düşüyor hem
+marka olarak zayıf kalıyor. Sonraki adaylar bu alanın **dışından** veya uydurma kelime olarak seçilmeli.
 
 ### Yapılacaklar
 
