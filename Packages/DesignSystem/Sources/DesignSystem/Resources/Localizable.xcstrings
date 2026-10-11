@@ -1,0 +1,50 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "designsystem.emptystate.default.title" : {
+      "comment" : "Fallback title for an empty result list.",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Burada gösterilecek bir şey yok"
+          }
+        }
+      }
+    },
+    "designsystem.ring.indeterminate" : {
+      "comment" : "VoiceOver value for a progress ring whose total is not yet known.",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sürüyor"
+          }
+        }
+      }
+    },
+    "designsystem.scanbutton.accessibility.hint" : {
+      "comment" : "VoiceOver hint on the primary scan button.",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taramayı başlatır. Hiçbir şey silinmez; önce ne bulunduğu gösterilir."
+          }
+        }
+      }
+    },
+    "designsystem.pro.badge" : {
+      "comment" : "Badge marking a feature that needs a licence.",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

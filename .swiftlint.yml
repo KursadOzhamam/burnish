@@ -1,4 +1,4 @@
-# Purgeify — SwiftLint
+# Burnish — SwiftLint
 # CLAUDE.md §15: tum kod Ingilizce, kullaniciya gorunen metin String Catalog'dan gelir.
 
 included:
@@ -96,14 +96,19 @@ custom_rules:
     severity: warning
 
   no_hardcoded_user_string:
+    # Warning, not error: #Preview bodies legitimately use literals, and SwiftLint
+    # custom rules cannot be scoped to a macro block. Real views must still use the
+    # String Catalog (CLAUDE.md §15).
     name: "Kullaniciya gorunen metin String Catalog'dan gelir"
     regex: 'Text\("(?![A-Za-z0-9_.]+\")[^"]{3,}"\)'
     message: "CLAUDE.md §15: kullaniciya gorunen metinler LocalizedStringKey/String Catalog uzerinden saglanir."
     severity: warning
 
   no_shell_in_helper:
-    name: "Helper'da kabuk komutu yasak"
-    regex: '(Process\(\)|NSTask|/bin/sh|/bin/bash|system\()'
+    name: "Kabuk komutu yasak"
+    # Negative lookbehind on the C `system(` call so SwiftUI's `Font.system(...)` and
+    # `Image(systemName:)` do not match.
+    regex: '(\bNSTask\b|\bProcess\s*\(|/bin/sh\b|/bin/bash\b|/usr/bin/env\b|(?<![\w.])system\s*\()'
     message: "CLAUDE.md §10.8: rastgele kabuk komutu calistirilmaz, ozellikle helper icinde. Gerekiyorsa once onay al."
     severity: error
 

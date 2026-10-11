@@ -51,3 +51,6 @@ notarization-*.json
 .swiftlint.cache
 fastlane/report.xml
 fastlane/README.md
+
+# XcodeGen cikti (project.yml kaynaktir)
+*.xcodeproj

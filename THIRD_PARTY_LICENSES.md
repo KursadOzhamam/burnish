@@ -29,14 +29,14 @@ Her kural kaynağı **tek tek** lisans doğrulamasından geçer. Doğrulanana ka
 
 | Kaynak | Lisans | Durum | Doğrulayan / Tarih |
 |---|---|---|---|
-| Purgeify kendi kuralları | Tescilli (bizim) | ✅ kullanımda | — |
+| Burnish kendi kuralları | Tescilli (bizim) | ✅ kullanımda | — |
 | _(eklenecek)_ | | beklemede | |
 
 ## Hash blocklist kaynakları
 
 | Kaynak | Kullanım koşulu | Durum |
 |---|---|---|
-| Purgeify kendi listesi | Tescilli (bizim) | ✅ kullanımda |
+| Burnish kendi listesi | Tescilli (bizim) | ✅ kullanımda |
 | _(eklenecek)_ | | beklemede |
 
 ## Apple framework'leri

@@ -22,22 +22,22 @@ Durum: ✅ bitti · 🟡 sende · ⏸ bloke
 
 ---
 
-## 1. 🟡 A8 — Uygulama adı (EN ÖNCELİKLİ)
+## 1. ✅ A8 — Uygulama adı: **Burnish** (karar: 2026-10-12)
 
-**Bulgu (2026-10-12):** "Purgeify" diye bir uygulama yok. Ancak App Store'da **"Purgify"** var:
-iPhone, fotoğraf temizleme, Utilities kategorisi, geliştirici Cian Striffler
-([App Store](https://apps.apple.com/us/app/purgify/id6787660976)).
+Pazarlama adı: **"Burnish for Mac"** — Apple'ın referans kullanımına izin verdiği biçim.
+Bundle ID'ler ve destek klasörü: CLAUDE.md §1.1.
 
-Neden bu önemli:
-- Tek harf fark (`Purgeify` / `Purgify`) — sesletim neredeyse aynı
-- Aynı ürün kategorisi (temizlik/utility yazılımı)
-- **Ve** bu tam olarak CLAUDE.md §12.2'de iOS sürümü için planladığımız iş: fotoğraf temizleyici
+Dokuz aday tarandı; yalnızca Burnish ve Hone çakışmasız çıktı (kayıt aşağıda). Reddedilen "Purgeify"
+App Store'daki "Purgify" ile tek harf farkla aynı kategoride çakışıyordu.
 
-Ayrıca aynı alanda `Purge` (açık kaynak Mac temizleyici), `Cleanify: Purge Lite`, `Purge for Safari`
-gibi isimler de var — "purge" kökü bu kategoride kalabalık.
+**Kalan iş (lansmandan önce — CLAUDE.md R15):**
 
-**Önerim: adı değiştir.** Şimdi maliyeti sıfır (tek tablo, kod yok). Lansmandan sonra ikon, domain,
-appcast URL'i, lisans anahtarları, kullanıcı tabanı ve SEO'ya yayılmış olur.
+- [ ] TÜRKPATENT marka araştırması — Nice sınıf 9 ve 42 → https://www.turkpatent.gov.tr/arastirma-yap
+- [ ] USPTO TESS — aynı sınıflar → https://tmsearch.uspto.gov/
+- [ ] EUIPO eSearch (AB satışı yapılacaksa) → https://euipo.europa.eu/eSearch/
+- [ ] `burnish.com` / `burnish.app` domain durumu
+- [ ] GitHub org, X/Mastodon kullanıcı adı
+- [ ] Bulgu çıkarsa: CLAUDE.md §1.1 tek değişiklik noktasıdır
 
 ### Ad süzgeci — her aday bundan geçer
 
@@ -93,7 +93,7 @@ marka olarak zayıf kalıyor. Sonraki adaylar bu alanın **dışından** veya uy
 
 ### Yapılacaklar
 
-- [ ] Karar: "Purgeify" ile devam mı, yeni ad mı?
+- [ ] Karar: "Burnish" ile devam mı, yeni ad mı?
 - [ ] Seçilen ad için kontroller:
   - [ ] App Store / Mac App Store aramasında çakışma yok
   - [ ] [TÜRKPATENT marka araştırması](https://www.turkpatent.gov.tr/arastirma-yap) — Nice sınıf 9 ve 42

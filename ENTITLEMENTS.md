@@ -3,7 +3,7 @@
 CLAUDE.md §13.2 uyarınca her entitlement burada gerekçesiyle belgelenir. Gerekçesi yazılmamış
 entitlement projeye eklenmez.
 
-## Ana uygulama (`com.purgeify.app`)
+## Ana uygulama (`com.burnish.app`)
 
 | Entitlement | Değer | Gerekçe |
 |---|---|---|
@@ -22,7 +22,7 @@ entitlement projeye eklenmez.
 | `com.apple.developer.system-extension.install` | Sistem uzantısı/kernel extension kullanılmıyor (§10.1). |
 | `com.apple.security.files.user-selected.read-write` | Sandbox kapalı olduğu için anlamsız. |
 
-## Privileged Helper (`com.purgeify.app.helper`)
+## Privileged Helper (`com.burnish.app.helper`)
 
 | Konu | Karar |
 |---|---|
@@ -45,7 +45,7 @@ entitlement projeye eklenmez.
 | `listLocalSnapshots` / `deleteLocalSnapshot(id:)` | Time Machine yerel anlık görüntüleri | Yalnızca `tmutil` API'si, yol parametresi yok |
 | `setLaunchAgentEnabled(label:enabled:)` | `launchctl` ile etkinleştirme/devre dışı bırakma | Yalnızca kullanıcıya ait ajan label'ları; sistem daemon'ları reddedilir |
 
-## Menü Çubuğu Ajanı (`com.purgeify.app.menubar`)
+## Menü Çubuğu Ajanı (`com.burnish.app.menubar`)
 
 | Konu | Karar |
 |---|---|

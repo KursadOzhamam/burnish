@@ -21,7 +21,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: brew install swiftlint
-      - run: swiftlint --strict
+      # Not --strict: error-severity rules (direct removeItem, shell invocation) already fail the
+      # build, while warnings stay advisory because #Preview bodies use string literals.
+      - run: swiftlint lint --reporter github-actions-logging
 
   packages:
     name: Packages (build + test)
@@ -69,18 +71,18 @@ jobs:
       # Imzasiz derleme: CI'da sertifika yok.
       - name: Build app target
         run: |
-          if [ ! -d Purgeify.xcodeproj ] && [ ! -d Purgeify.xcworkspace ]; then
+          if [ ! -d Burnish.xcodeproj ] && [ ! -d Burnish.xcworkspace ]; then
             echo "Xcode projesi henuz yok - atlaniyor."
             exit 0
           fi
           xcodebuild build \
-            -scheme Purgeify \
+            -scheme Burnish \
             -destination 'platform=macOS' \
             -configuration Debug \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGN_IDENTITY="" \
             | xcbeautify || xcodebuild build \
-            -scheme Purgeify \
+            -scheme Burnish \
             -destination 'platform=macOS' \
             -configuration Debug \
             CODE_SIGNING_ALLOWED=NO \

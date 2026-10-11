@@ -1,4 +1,4 @@
-# Proje Spesifikasyonu: Purgeify — macOS Bakım ve Optimizasyon Uygulaması
+# Proje Spesifikasyonu: Burnish — macOS Bakım ve Optimizasyon Uygulaması
 
 > Bu dosya projenin tek doğruluk kaynağıdır. Claude Code her oturumda bu dosyayı otomatik olarak context'e alır.
 > Bir karar bu dosyayla çelişiyorsa önce bana sor. Yaptığın her mimari kararı §14 "Karar Günlüğü"ne, henüz
@@ -23,21 +23,21 @@ Görsel kimlik tamamen özgün olmalı. CleanMyMac'in logosu, ikonları, ekran d
 
 | Konu | Değer |
 |---|---|
-| Uygulama adı | Purgeify |
-| Ana uygulama bundle ID | `com.purgeify.app` |
-| Privileged helper bundle ID | `com.purgeify.app.helper` |
-| Menü çubuğu ajanı bundle ID | `com.purgeify.app.menubar` |
-| Log subsystem | `com.purgeify.app` |
-| Destek klasörü | `~/Library/Application Support/Purgeify/` |
-| Ayarlar (UserDefaults suite) | `com.purgeify.app` |
-| App Group (ileride iOS/companion için) | `group.com.purgeify` |
+| Uygulama adı | **Burnish** (karar: 2026-10-12, §17) |
+| Pazarlama adı | "Burnish for Mac" — Apple'ın izin verdiği referans biçimi (§16.1) |
+| Ana uygulama bundle ID | `com.burnish.app` |
+| Privileged helper bundle ID | `com.burnish.app.helper` |
+| Menü çubuğu ajanı bundle ID | `com.burnish.app.menubar` |
+| Log subsystem | `com.burnish.app` |
+| Destek klasörü | `~/Library/Application Support/Burnish/` |
+| Ayarlar (UserDefaults suite) | `com.burnish.app` |
+| App Group (ileride iOS/companion için) | `group.com.burnish` |
 
-> **⚠️ Ad durumu — AÇIK KARAR (A8, §16.1).** "Purgeify" **çalışma adıdır**, kesinleşmemiştir.
-> 2026-10-12 taramasında App Store'da **"Purgify"** adlı bir uygulama bulundu (iPhone, fotoğraf temizleme,
-> Utilities kategorisi). Tek harf fark + aynı ürün kategorisi + §12.2'de bizim iOS için planladığımız işin
-> aynısı: benzerlik riski için en kötü kombinasyon. Ad kesinleşene kadar ikon, domain, appcast URL'i, imza
-> kimliği, lisans metinleri ve mağaza içerikleri **üretilmeyecek**. Kod bu karardan etkilenmez; §1.1 tablosu
-> tek değişiklik noktasıdır ve kod içinde ad string'i hard-code edilmez (Info.plist + String Catalog üzerinden gelir).
+> **Ad kesinleşti (2026-10-12).** Dokuz aday tarandı; "Burnish" yazılım/Mac alanında çakışmasız çıktı.
+> Tarama kaydı ve yöntemi: `docs/PHASE0_CHECKLIST.md`. **Hukuki marka araştırması (TÜRKPATENT / USPTO /
+> EUIPO, Sınıf 9 ve 42) ve domain kontrolü hâlâ yapılmalı** — kontrol listesindeki süzgecin 3. maddesi.
+> Ad kodda hiçbir yere hard-code edilmez: `Info.plist` (`CFBundleName`) ve String Catalog üzerinden gelir,
+> böylece olası bir rebrand tek noktadan yapılabilir.
 
 ### 1.2 Geliştirme ortamı taban çizgisi (2026-10-12 tespiti)
 
@@ -91,7 +91,7 @@ Onaylı bağımlılık listesi: **Sparkle 2**, **GRDB**, **YARA**. Bunların dı
 ## 3. Proje Yapısı
 
 ```
-Purgeify/
+Burnish/
 ├── App/                      # Giriş noktası, pencere, menü çubuğu, ayarlar
 ├── Packages/
 │   ├── DesignSystem/         # [cross-platform] Renkler, tipografi, boşluklar, animasyonlar, ortak bileşenler
@@ -145,11 +145,11 @@ Bu bölüm uygulamanın en önemli kısmıdır. Tüm silme işlemleri `SafetyKit
    - Çalışma zamanı: `/private/var/folders` (aktif geçici alan), **çalışan** uygulamaların
      `~/Library/Containers/<bundleID>` klasörleri
    - İndeks: harici disklerdeki `.Spotlight-V100` (yeniden indeksleme maliyeti kullanıcıya aittir, sessizce silinmez)
-   - Purgeify'ın kendi veri klasörü (yalnızca §6.9'daki açık "tamamen kaldır" eylemiyle silinir)
+   - Burnish'ın kendi veri klasörü (yalnızca §6.9'daki açık "tamamen kaldır" eylemiyle silinir)
 4. **Sembolik bağlantılar takip edilmez.** Silmeden önce yol `resolvingSymlinksInPath` ile çözülür ve tekrar izin listesine karşı kontrol edilir. Hard link'ler ve firmlink'ler de aynı kontrole tabidir.
 5. **Çalışan uygulamalara ait dosyalar** silinmez; ilgili uygulama açıksa kullanıcı uyarılır ve öğe atlanır.
 6. **Kuru çalıştırma (dry-run):** Her temizlik önce "ne silinecek" listesini üretir, kullanıcı onaylamadan hiçbir şey değişmez.
-7. **İşlem kaydı:** Her silme işlemi zaman, yol, boyut ve işlem tipiyle `~/Library/Application Support/Purgeify/history.sqlite` içine yazılır. Geçmiş ekranından görüntülenebilir; Çöp'e taşınanlar geri yüklenebilir.
+7. **İşlem kaydı:** Her silme işlemi zaman, yol, boyut ve işlem tipiyle `~/Library/Application Support/Burnish/history.sqlite` içine yazılır. Geçmiş ekranından görüntülenebilir; Çöp'e taşınanlar geri yüklenebilir.
 8. **Hata toleransı:** Tek bir dosyada hata olursa işlem durmaz; hata kaydedilir ve sonuç ekranında listelenir.
 9. `SafetyKit` için birim test kapsamı en az %90 olmalı. Korunan yolların her biri için "silinemez" testi yazılır.
 10. **Helper de aynı kurallara tabidir.** Root yetkisiyle çalışan kod, `SafetyKit` politikasını kendi içinde tekrar uygular; ana uygulamanın gönderdiği yola güvenmez.
@@ -165,7 +165,7 @@ Bu bölüm uygulamanın en önemli kısmıdır. Tüm silme işlemleri `SafetyKit
 - Boşluklar cömert, yoğun tablo görünümünden kaçın; bilgi kartlarla sunulur.
 
 ### 5.2 macOS sürümleri arası görünüm kararı
-Purgeify **kendi özgün görsel kimliğini** macOS 14'ten en güncel sürüme kadar aynı şekilde korur. Yeni
+Burnish **kendi özgün görsel kimliğini** macOS 14'ten en güncel sürüme kadar aynı şekilde korur. Yeni
 macOS sürümlerinin tasarım dili (ör. macOS 26 Tahoe'nun materyal davranışı) sistem kontrollerini
 etkilediğinde, uygulamanın kendi bileşenleri değişmez; yalnızca **sistem tarafından çizilen** öğeler
 (pencere kromu, standart kontroller, menüler) platformun doğal halinde bırakılır. Amaç: markanın her
@@ -270,11 +270,11 @@ Arayüz: kategori kartları → öğe listesi → onay sayfası → ilerleme →
 
 ### 6.4 Koruma
 
-> **Konumlandırma — arayüzde ve pazarlamada açıkça yazılır:** Purgeify **talep üzerine çalışan (on-demand)
+> **Konumlandırma — arayüzde ve pazarlamada açıkça yazılır:** Burnish **talep üzerine çalışan (on-demand)
 > bir tarayıcıdır**, gerçek zamanlı antivirüs değildir. Gerçek zamanlı dosya izleme Apple'ın Endpoint
 > Security framework'ünü ve özel başvuruyla alınan `com.apple.developer.endpoint-security.client`
 > entitlement'ını gerektirir; bu bizde yoktur. Kullanıcıya "antivirüs" izlenimi veren hiçbir metin
-> kullanılmaz; Purgeify macOS'un kendi savunmasını (XProtect, Gatekeeper, notarizasyon) **tamamlar**.
+> kullanılmaz; Burnish macOS'un kendi savunmasını (XProtect, Gatekeeper, notarizasyon) **tamamlar**.
 
 - **Kötü amaçlı yazılım taraması:**
   - **İmza motoru: YARA** (BSD-3-Clause). Kendi kural setimiz + lisansı ticari kullanıma uygun olduğu
@@ -333,8 +333,8 @@ Arayüz: kategori kartları → öğe listesi → onay sayfası → ilerleme →
 - İzinler: tam disk erişimi ve helper durumu, yeniden yükleme düğmeleri.
 - Lisans: lisans anahtarı girişi/durumu, cihaz yönetimi, deneme süresi durumu (§11).
 - Gizlilik: çökme raporu gönderimi (varsayılan **kapalı**), imza veritabanı güncelleme kanalı.
-- **Purgeify'ı tamamen kaldır:** Tek eylemle (a) privileged helper'ı `SMAppService.unregister` ile söker,
-  (b) menü çubuğu giriş öğesini kaldırır, (c) `~/Library/Application Support/Purgeify/`, Preferences ve
+- **Burnish'ı tamamen kaldır:** Tek eylemle (a) privileged helper'ı `SMAppService.unregister` ile söker,
+  (b) menü çubuğu giriş öğesini kaldırır, (c) `~/Library/Application Support/Burnish/`, Preferences ve
   Caches artıklarını temizler, (d) uygulamayı Çöp'e taşımayı önerir. İşlem öncesi ne silineceğini listeler.
   **Bir temizlik uygulaması kendi arkasında artık bırakmaz.**
 
@@ -380,7 +380,7 @@ Arayüz: kategori kartları → öğe listesi → onay sayfası → ilerleme →
 
 ## 10. Yapmayacaklarımız (yazılı taahhüt)
 
-Bu bölüm §4 kadar bağlayıcıdır. Purgeify'ın "güven" farkı buradan gelir.
+Bu bölüm §4 kadar bağlayıcıdır. Burnish'ın "güven" farkı buradan gelir.
 
 1. **Kernel extension veya Endpoint Security iddiası yok.** Gerçek zamanlı koruma sunmuyoruz, sunduğumuzu ima etmiyoruz.
 2. **TCC veritabanına yazma yok.** İzinler yalnızca okunur ve kullanıcı Sistem Ayarları'na yönlendirilir.
@@ -423,7 +423,7 @@ uygulama kodu etkilenmez ve §10.7 (veri dışarı çıkmaz) korunur.
 - Doğrulama **tamamen yerel ve çevrimdışıdır**; açık anahtar uygulamada gömülüdür. Uygulama lisans
   kontrolü için internete çıkmaz.
 - Cihaz aktivasyonu (limit takibi) için **isteğe bağlı** çevrimiçi kayıt; başarısız olursa uygulama
-  çalışmaya devam eder. İnternet yokken Purgeify asla kilitlenmez.
+  çalışmaya devam eder. İnternet yokken Burnish asla kilitlenmez.
 - Saat geri/ileri alma testleri yazılır; saat manipülasyonu uygulamayı bozmaz, en kötü halde deneme
   süresi dürüst davranan kullanıcı lehine yorumlanır.
 
@@ -474,7 +474,7 @@ uygulamanın önbelleğini okuyamazsın, sistem klasörü ve `launchd` erişimi 
 | **Mac'in uzaktan izlenmesi ve tarama başlatma (companion)** | Ayrıcalıklı işlemler |
 
 ### 12.2 Konumlandırma kararı
-iOS sürümü **"Purgeify for iPhone"**: (a) fotoğraf/medya temizleyici + (b) Mac companion paneli.
+iOS sürümü **"Burnish for iPhone"**: (a) fotoğraf/medya temizleyici + (b) Mac companion paneli.
 Mac sürümünün küçültülmüş bir kopyası olarak sunulmaz; ayrı ve dürüst bir ürün olarak konumlanır.
 
 ### 12.3 Bugünden uyulacak kurallar
@@ -552,7 +552,7 @@ Mac sürümünün küçültülmüş bir kopyası olarak sunulmaz; ayrı ve dür�
 
 Her aşamanın sonunda proje derlenir, testler geçer, ben ekranları kontrol ederim ve onayımdan sonra bir sonrakine geçilir. Bir aşama içinde bile büyük değişikliklerden önce kısa bir plan sun.
 
-0. **Kuruluş (kod yazılmadan):** "Purgeify" marka ve domain müsaitliği kontrolü; Apple Developer hesabı ve
+0. **Kuruluş (kod yazılmadan):** "Burnish" marka ve domain müsaitliği kontrolü; Apple Developer hesabı ve
    Developer ID sertifikası; git deposu + `.gitignore`; bundle ID'lerin kaydı; Sparkle EdDSA anahtar çifti
    üretimi ve yedeklenmesi; ödeme sağlayıcısı ve fiyat modeli kararı; uygulama ikonu konsepti; CI iskeleti.
 1. **Temel:** Proje yapısı, paketler (platform ayrımına uygun), `DesignSystem` (token'lar + ortak bileşenler), ana pencere ve kenar çubuğu, sahte verili Genel Bakış ekranı, tarama animasyonu prototipi, `Licensing` iskeleti (her şey Pro).
@@ -593,12 +593,12 @@ Karara bağlanan her madde buradan çıkarılıp §17 Karar Günlüğü'ne yazı
 ### 16.1 Açık kararlar
 | # | Konu | Durum | Ne zaman gerekli |
 |---|---|---|---|
-| **A8** | **Uygulama adı** — "Purgify" çakışması (§1.1) | **AÇIK — en öncelikli.** Seçenekler ve öneri: `docs/PHASE0_CHECKLIST.md` | Phase 0, Phase 1'den önce |
 | A6 | iOS companion senkronizasyonu | Açık — bilinçli olarak erteledi | Phase 12 |
 | A7 | Ücretsiz/Pro ayrımının son hali | §11.3 taslağıyla başlanacak, geri bildirimle ayarlanacak | Phase 10 |
 | A3' | Fiyat noktasının doğrulanması | §11.3'te geçici değer var (49/79 USD), pazar kontrolü bekliyor | Phase 10 |
 
-Karara bağlananlar: A1 (Paddle), A2 (tek seferlik + 1 yıl), A4 (GitHub Actions), A5 (Cloudflare R2) — §17.
+Karara bağlananlar: A1 (Paddle), A2 (tek seferlik + 1 yıl), A4 (GitHub Actions), A5 (Cloudflare R2),
+**A8 (ad: Burnish)** — §17.
 
 ### 16.2 Riskler
 | # | Risk | Etki | Azaltma |
@@ -609,14 +609,15 @@ Karara bağlananlar: A1 (Paddle), A2 (tek seferlik + 1 yıl), A4 (GitHub Actions
 | R4 | Yanlış pozitif malware bulgusu | Güven kaybı, destek yükü | Silme yok (karantina), "neden işaretlendi" açıklaması, allowlist |
 | R5 | Yeni macOS sürümünün API/izin değişiklikleri | Özellikler bozulur | Her beta döneminde regresyon taraması, özellik bazında kapatılabilirlik |
 | R6 | `SMAppService` helper kurulumunun kullanıcıda başarısız olması | Hız/sistem temizliği çalışmaz | Net hata ekranı, helper'sız çalışabilen uygulama, yeniden kurma düğmesi |
-| R7 | Marka adı çakışması ("Purgeify") | Rebrand maliyeti | Phase 0'da doğrulama; §1.1 tek değişiklik noktası |
+| R7 | Marka adı çakışması ("Burnish") | Rebrand maliyeti | Phase 0'da doğrulama; §1.1 tek değişiklik noktası |
 | R8 | Notarizasyon reddi (sandbox kapalı + helper) | Dağıtım gecikir | Phase 0'da boş bir iskeletle uçtan uca notarizasyon denemesi |
 | R9 | Ağır taramaların beklenenden çok yavaş olması | Kullanıcı memnuniyetsizliği | §8 ağır tarayıcı sözleşmesi (ilerleme, iptal, kısmi sonuç) |
 | R10 | Lisans korumasının kırılması | Gelir kaybı | Kabul edilen risk; dürüst kullanıcıyı cezalandıran önlem alınmaz (§11.2) |
 | R11 | Geliştirme Mac'i macOS 27, hedef macOS 14 | macOS 14'te çalışmayan kod fark edilmez | Gerçek macOS 14 VM/Mac'te aşama sonu doğrulaması; CI'da `-destination` ile eski SDK derlemesi; `if #available` disiplini |
 | R12 | GitHub Actions macOS runner dakikası/hızı | CI maliyeti veya yavaşlık | Önce GitHub-hosted; sorun olursa self-hosted Mac runner (§13.1) |
 | R13 | Paddle hesap onayının gecikmesi/reddi | Satış başlamaz | Phase 0'da erken başvuru; yedek plan Stripe + vergi danışmanı |
-| R14 | **"Purgify" ile ad benzerliği** | App Store adı reddi, SEO kanibalizasyonu, marka itirazı, rebrand maliyeti | A8 kararı Phase 1'den önce verilir; ad hiçbir yere hard-code edilmez; §1.1 tek değişiklik noktası |
+| R14 | ~~"Purgify" ile ad benzerliği~~ | — | **Kapandı:** ad Burnish olarak değişti (§17). Ad yine hard-code edilmez; §1.1 tek değişiklik noktası |
+| R15 | Burnish için hukuki marka araştırması henüz yapılmadı | Geç aşamada rebrand | Lansmandan (Phase 11) önce TÜRKPATENT/USPTO/EUIPO Sınıf 9 ve 42; bulgu çıkarsa §1.1 tek noktadan değişir |
 
 ---
 
@@ -624,7 +625,7 @@ Karara bağlananlar: A1 (Paddle), A2 (tek seferlik + 1 yıl), A4 (GitHub Actions
 
 | Tarih | Karar | Gerekçe |
 |---|---|---|
-| 2026-10-12 | Uygulama adı **Purgeify**, bundle ID `com.purgeify.app` | §1.1'de tek değişiklik noktası olarak toplandı; marka doğrulaması Phase 0 görevi |
+| 2026-10-12 | Uygulama adı **Burnish**, bundle ID `com.burnish.app` | §1.1'de tek değişiklik noktası olarak toplandı; marka doğrulaması Phase 0 görevi |
 | 2026-10-12 | Spesifikasyon dosyası `CLAUDE.md` olarak adlandırıldı | Claude Code bu adı her oturumda otomatik context'e alır; "her oturumda oku" talimatı böylece garanti altında |
 | 2026-10-12 | **ClamAV kullanılmayacak**, yerine YARA + kendi hash blocklist'i | ClamAV GPL-2.0; kapalı kaynak ticari uygulamaya bağlanması tüm uygulamayı GPL'e tabi kılar. YARA BSD-3-Clause, ticari kullanıma uygun |
 | 2026-10-12 | Gerçek zamanlı koruma **yok**; on-demand tarayıcı olarak konumlandırılacak | Endpoint Security entitlement'ı Apple'dan özel başvuruyla alınır ve elimizde yok. Kullanıcıya antivirüs izlenimi vermemek etik ve hukuki zorunluluk |
@@ -636,10 +637,11 @@ Karara bağlananlar: A1 (Paddle), A2 (tek seferlik + 1 yıl), A4 (GitHub Actions
 | 2026-10-12 | Üçüncü parti analytics/çökme SDK'sı kullanılmayacak; çökme raporu opt-in ve varsayılan kapalı | Gizlilik odaklı bir temizlik uygulamasında veri toplama marka ile çelişir; §10.7 taahhüdü |
 | 2026-10-12 | Lisans doğrulaması tamamen **çevrimdışı** (Ed25519 imzalı lisans) | İnternet yokken uygulamanın kilitlenmesi kabul edilemez; lisans sunucusu tek hata noktası olmamalı |
 | 2026-10-12 | Güvenlik ve şeffaflık özellikleri (dry-run, geçmiş, geri alma, malware taraması, "tamamen kaldır") **ücretsiz** katmanda | Güveni paywall arkasına koymak §1'deki temel farkımızı yok eder |
-| 2026-10-12 | "Purgeify'ı tamamen kaldır" akışı zorunlu özellik | Privileged helper kuran bir uygulama kaldırılırken root daemon artığı bırakmamalı; temizlik uygulaması kendi arkasında artık bırakamaz |
+| 2026-10-12 | "Burnish'ı tamamen kaldır" akışı zorunlu özellik | Privileged helper kuran bir uygulama kaldırılırken root daemon artığı bırakmamalı; temizlik uygulaması kendi arkasında artık bırakamaz |
 | 2026-10-12 | **A1: Ödeme sağlayıcısı Paddle** (MoR). Uygulama içinde SDK yok, lisans anahtarı e-posta ile verilir | Vergi yükümlülüğü sağlayıcıda; tek kişilik ekip için global KDV beyanı sürdürülemez. SDK'sız entegrasyon sağlayıcı bağımlılığını ve §10.7 veri riskini ortadan kaldırır |
 | 2026-10-12 | **A2: Tek seferlik lisans + 1 yıl güncelleme**, sonrasında indirimli yenileme. Abonelik yok | Abonelik yorgunluğu; §10.6 karanlık desen yasağı. Süre bitince uygulama çalışmaya devam eder, yalnızca güncelleme durur |
 | 2026-10-12 | **A4: CI = GitHub Actions** (`macos-latest`). İmzalı derleme ayrı, yalnızca `v*` etiketinde | Ek altyapı bakımı yok, macOS runner hazır. İmzalama Developer ID gelene kadar devre dışı |
 | 2026-10-12 | **A5: Dağıtım ve imza DB barındırma = Cloudflare R2 + CDN** | Egress ücreti yok (imza DB sık indirilir), statik barındırmada sunucu bakımı gerekmez |
 | 2026-10-12 | Geliştirme ortamı doğrulandı: Xcode 26.5 / Swift 6.3.2 / macOS 27.0.1. **Developer ID sertifikası yok** | Phase 1–10 engelsiz; Phase 0'ın imza/notarizasyon maddeleri ve R8 testi sertifika alınana kadar bekler |
-| 2026-10-12 | Uygulama adı **kesinleşmedi** (A8). "Purgeify" çalışma adı olarak kullanılıyor; ad hiçbir yere hard-code edilmeyecek | App Store'da "Purgify" bulundu: tek harf fark, aynı kategori, §12.2'deki iOS planımızla aynı iş. Rebrand şimdi bedava, lansmandan sonra çok pahalı |
+| 2026-10-12 | Uygulama adı **kesinleşmedi** (A8). "Burnish" çalışma adı olarak kullanılıyor; ad hiçbir yere hard-code edilmeyecek | App Store'da "Purgify" bulundu: tek harf fark, aynı kategori, §12.2'deki iOS planımızla aynı iş. Rebrand şimdi bedava, lansmandan sonra çok pahalı |
+| 2026-10-12 | **A8: Uygulama adı Burnish.** Pazarlamada "Burnish for Mac" | Dokuz aday tarandı, yalnızca Burnish ve Hone temiz çıktı (kayıt: `docs/PHASE0_CHECKLIST.md`). "Cilalamak" anlamı §1'deki premium/güven konumlandırmasına "purge/clean"den iyi oturuyor; işlevi tanımlamadığı için kalabalığa düşmüyor. "Mac" içeren adlar Apple kuralı madde (g) nedeniyle tescil edilemediği için reddedildi; Mac bağı referans kullanımıyla bedavaya kuruluyor |
