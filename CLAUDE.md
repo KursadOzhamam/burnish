@@ -1,0 +1,590 @@
+# Proje Spesifikasyonu: Purgeify — macOS Bakım ve Optimizasyon Uygulaması
+
+> Bu dosya projenin tek doğruluk kaynağıdır. Claude Code her oturumda bu dosyayı otomatik olarak context'e alır.
+> Bir karar bu dosyayla çelişiyorsa önce bana sor. Yaptığın her mimari kararı §14 "Karar Günlüğü"ne, henüz
+> karara bağlanmamış her konuyu §15 "Risk Kaydı ve Açık Sorular"a ekle.
+
+**Platform sırası:** Önce macOS sürümü tamamlanır. Mobil (iOS) sürümü ancak macOS sürümü Phase 10'u geçtikten
+sonra başlar — ayrıntılar için §12 Platform Stratejisi.
+
+---
+
+## 1. Vizyon
+
+macOS için CleanMyMac sınıfında, hatta onu aşan bir sistem bakım uygulaması geliştiriyoruz. Uygulama şunları tek çatı altında yapmalı: gereksiz dosya temizliği, kötü amaçlı yazılım taraması, performans optimizasyonu, uygulama yönetimi, disk alanı analizi ve gizlilik temizliği.
+
+Farkımız iki noktada olacak:
+1. **Arayüz:** Animasyonları, derinliği ve canlı verileriyle kullanması keyifli, "premium" hissettiren bir deneyim.
+2. **Güven:** Hiçbir dosya kullanıcının bilgisi dışında kalıcı olarak silinmez. Her işlem önizlenir, geri alınabilir ve kayıt altına alınır.
+
+Görsel kimlik tamamen özgün olmalı. CleanMyMac'in logosu, ikonları, ekran düzeni, renk paleti veya metinleri kopyalanmayacak.
+
+### 1.1 Kimlik Bilgileri
+
+| Konu | Değer |
+|---|---|
+| Uygulama adı | Purgeify |
+| Ana uygulama bundle ID | `com.purgeify.app` |
+| Privileged helper bundle ID | `com.purgeify.app.helper` |
+| Menü çubuğu ajanı bundle ID | `com.purgeify.app.menubar` |
+| Log subsystem | `com.purgeify.app` |
+| Destek klasörü | `~/Library/Application Support/Purgeify/` |
+| Ayarlar (UserDefaults suite) | `com.purgeify.app` |
+| App Group (ileride iOS/companion için) | `group.com.purgeify` |
+
+> **Phase 0 görevi:** "Purgeify" adının TÜRKPATENT ve USPTO marka müsaitliği ile `purgeify.com` domain müsaitliği
+> doğrulanmadan ikon, appcast URL'i, imza kimliği ve mağaza metinleri kesinleştirilmeyecek. Ad değişirse
+> yukarıdaki tablo tek değişiklik noktasıdır.
+
+---
+
+## 2. Teknik Temel
+
+| Konu | Karar |
+|---|---|
+| Dil | Swift 6 (strict concurrency açık) |
+| Arayüz | SwiftUI; gerektiğinde AppKit köprüsü (`NSViewRepresentable`) |
+| Minimum sürüm | macOS 14 Sonoma |
+| Mimari | MVVM + Feature modülleri, `@Observable` makrosu |
+| Eşzamanlılık | async/await, `actor`, `TaskGroup`; ana thread asla bloklanmaz |
+| Grafikler | Swift Charts; özel çizimler Canvas/`TimelineView` |
+| Proje yönetimi | Xcode projesi + yerel Swift Package'lar (modüller ayrı paket) |
+| Kalıcı veri | SQLite üzerinde **GRDB** (gerekçe Karar Günlüğü'nde) |
+| Ayrıcalıklı işlemler | `SMAppService.daemon(plistName:)` ile kurulan Privileged Helper + XPC |
+| Kötü amaçlı yazılım | **YARA** (BSD-3-Clause) + kendi hash blocklist'imiz. ClamAV **kullanılmaz** (§6.4) |
+| Güncelleme | Sparkle 2 (EdDSA imzalı appcast) |
+| Dağıtım | App Store dışı; Developer ID imzası + notarizasyon. Sandbox kapalı, Hardened Runtime açık |
+| Lisanslama | Çevrimdışı doğrulanabilir Ed25519 imzalı lisans dosyası (§11) |
+| Test | Swift Testing (`@Test`), kritik akışlar için XCUITest |
+| Loglama | `os.Logger` (subsystem: bundle ID, kategori: modül adı) |
+| Telemetri | Üçüncü parti analytics SDK'sı **yok**. Opt-in, kendi barındırdığımız minimal çökme raporu (§13.4) |
+
+Harici bağımlılıkları minimumda tut. Yeni bir paket eklemeden önce gerekçesini Karar Günlüğü'ne yaz.
+Onaylı bağımlılık listesi: **Sparkle 2**, **GRDB**, **YARA**. Bunların dışındaki her ekleme ayrı onay gerektirir.
+
+---
+
+## 3. Proje Yapısı
+
+```
+Purgeify/
+├── App/                      # Giriş noktası, pencere, menü çubuğu, ayarlar
+├── Packages/
+│   ├── DesignSystem/         # [cross-platform] Renkler, tipografi, boşluklar, animasyonlar, ortak bileşenler
+│   ├── CoreKit/              # [cross-platform] Boyut hesaplama, model tipleri, loglama, yardımcılar
+│   ├── CoreKitMac/           # [macOS] Dosya sistemi gezinmesi, izin kontrolü, sistem yolları
+│   ├── SafetyKit/            # [cross-platform çekirdek] Politika motoru, karar modelleri, işlem kaydı
+│   ├── SafetyKitMac/         # [macOS] Korunan yollar, trashItem, karantina, geri alma
+│   ├── ScanEngine/           # [cross-platform] Tarayıcı protokolü, orkestrasyon, sonuç modelleri
+│   ├── SystemMonitor/        # [macOS] CPU, RAM, disk, pil, ağ, sıcaklık okumaları
+│   ├── Licensing/            # [cross-platform] Lisans doğrulama, deneme süresi, Pro kapıları
+│   ├── HelperProtocol/       # [macOS] Helper ile paylaşılan XPC protokolü
+│   └── Features/             # [macOS]
+│       ├── Dashboard/
+│       ├── SmartScan/
+│       ├── Cleanup/
+│       ├── Protection/
+│       ├── Performance/
+│       ├── Applications/
+│       ├── Files/            # Space Lens, büyük/eski dosyalar, kopyalar, parçalayıcı
+│       └── Privacy/
+├── PrivilegedHelper/         # Ayrı hedef, root yetkili XPC servisi
+├── MenuBarAgent/             # Menü çubuğu mini paneli
+└── Tests/
+```
+
+Her Feature modülü kendi View, ViewModel ve Scanner/Service dosyalarını içerir. Modüller birbirini doğrudan import etmez; ortak ihtiyaçlar CoreKit veya ScanEngine üzerinden karşılanır.
+
+**Platform disiplini (iOS sürümünü mümkün kılan kural):** `[cross-platform]` işaretli paketler
+`Package.swift` içinde hem macOS hem iOS platformu bildirir ve macOS'a özgü API kullanmaz. Platforma özgü
+ihtiyaçlar `*Mac` kardeş paketine veya protokol arkasına konur — `#if os(macOS)` bir kaçış yolu değil, son
+çaredir. Bu kural Phase 1'den itibaren geçerlidir; sonradan ayrıştırma pahalıdır.
+
+---
+
+## 4. Güvenlik Kuralları (en yüksek öncelik — asla esnetilmez)
+
+Bu bölüm uygulamanın en önemli kısmıdır. Tüm silme işlemleri `SafetyKit` içindeki tek bir `DeletionService` üzerinden geçer; başka hiçbir kod doğrudan `FileManager.removeItem` çağırmaz.
+
+1. **Varsayılan davranış Çöp Kutusu'na taşımaktır** (`FileManager.trashItem`). Kalıcı silme yalnızca kullanıcının açıkça seçtiği durumlarda (Parçalayıcı, Çöp'ü boşaltma) ve ek onayla yapılır.
+2. **İzin listesi yaklaşımı:** Her tarayıcı yalnızca kendi tanımlı klasörlerinde çalışır. Tanımlı kökün dışına çıkan hiçbir yol silinemez.
+3. **Korunan yollar listesi** (hiçbir koşulda dokunulmaz):
+   - Sistem: `/System`, `/usr` (`/usr/local` hariç), `/bin`, `/sbin`, `/private/var/db`, `/Library/Apple`,
+     `/Library/Developer/CommandLineTools`
+   - Kullanıcı verisi: `Documents`, `Desktop`, `Pictures`, `Movies`, `Music` klasörlerinin **kendisi**;
+     `~/Library/Mobile Documents` (iCloud Drive), `*.photoslibrary` paketleri
+   - Kimlik ve güvenlik: `~/Library/Keychains`, `/Library/Keychains`, `.ssh`, `.gnupg`,
+     `/Library/Application Support/com.apple.TCC`, FileVault kurtarma anahtarı dosyaları
+   - Posta verisi: `~/Library/Mail` ve `~/Library/Containers/com.apple.mail` içindeki `V*` posta veritabanı
+     (yalnızca indirilen ekler klasörü temizlenebilir — §6.3)
+   - Yedek ve anlık görüntü: aktif Time Machine yedekleri, mount edilmiş yedek birimleri
+   - Çalışma zamanı: `/private/var/folders` (aktif geçici alan), **çalışan** uygulamaların
+     `~/Library/Containers/<bundleID>` klasörleri
+   - İndeks: harici disklerdeki `.Spotlight-V100` (yeniden indeksleme maliyeti kullanıcıya aittir, sessizce silinmez)
+   - Purgeify'ın kendi veri klasörü (yalnızca §6.9'daki açık "tamamen kaldır" eylemiyle silinir)
+4. **Sembolik bağlantılar takip edilmez.** Silmeden önce yol `resolvingSymlinksInPath` ile çözülür ve tekrar izin listesine karşı kontrol edilir. Hard link'ler ve firmlink'ler de aynı kontrole tabidir.
+5. **Çalışan uygulamalara ait dosyalar** silinmez; ilgili uygulama açıksa kullanıcı uyarılır ve öğe atlanır.
+6. **Kuru çalıştırma (dry-run):** Her temizlik önce "ne silinecek" listesini üretir, kullanıcı onaylamadan hiçbir şey değişmez.
+7. **İşlem kaydı:** Her silme işlemi zaman, yol, boyut ve işlem tipiyle `~/Library/Application Support/Purgeify/history.sqlite` içine yazılır. Geçmiş ekranından görüntülenebilir; Çöp'e taşınanlar geri yüklenebilir.
+8. **Hata toleransı:** Tek bir dosyada hata olursa işlem durmaz; hata kaydedilir ve sonuç ekranında listelenir.
+9. `SafetyKit` için birim test kapsamı en az %90 olmalı. Korunan yolların her biri için "silinemez" testi yazılır.
+10. **Helper de aynı kurallara tabidir.** Root yetkisiyle çalışan kod, `SafetyKit` politikasını kendi içinde tekrar uygular; ana uygulamanın gönderdiği yola güvenmez.
+
+---
+
+## 5. Tasarım Sistemi
+
+### 5.1 Genel his
+- Koyu tema öncelikli, açık tema da tam destekli.
+- Arka planlar buzlu cam (`.ultraThinMaterial` / `.regularMaterial`), katmanlı derinlik, yumuşak gölgeler.
+- Pencere: kenar çubuklu `NavigationSplitView`, şeffaf başlık çubuğu, tam boyutlu içerik.
+- Boşluklar cömert, yoğun tablo görünümünden kaçın; bilgi kartlarla sunulur.
+
+### 5.2 macOS sürümleri arası görünüm kararı
+Purgeify **kendi özgün görsel kimliğini** macOS 14'ten en güncel sürüme kadar aynı şekilde korur. Yeni
+macOS sürümlerinin tasarım dili (ör. macOS 26 Tahoe'nun materyal davranışı) sistem kontrollerini
+etkilediğinde, uygulamanın kendi bileşenleri değişmez; yalnızca **sistem tarafından çizilen** öğeler
+(pencere kromu, standart kontroller, menüler) platformun doğal halinde bırakılır. Amaç: markanın her
+sürümde tutarlı görünmesi, ama sistemle kavga etmemesi.
+
+Pratik kurallar:
+- Kendi bileşenlerimiz (`GlassCard`, `GradientRing` vb.) sistem materyali davranışına bağımlı olmayacak
+  şekilde yazılır; materyal yalnızca arka plan katmanı olarak kullanılır.
+- Sürüme özgü API'ler `if #available` ile ilerici geliştirme (progressive enhancement) olarak eklenir,
+  asla zorunlu olmaz.
+- Her yeni macOS major sürümünde görsel regresyon kontrolü yapılır ve bulgular §15'e yazılır.
+
+### 5.3 Token'lar (`DesignSystem` paketinde)
+- **Renk:** Her bölümün kendine ait gradyanı var. Örnek başlangıç paleti (özgün, değiştirilebilir):
+  - Genel Bakış: çivit → mor
+  - Temizlik: turkuaz → yeşil
+  - Koruma: kırmızı-pembe → turuncu
+  - Hız: amber → sarı
+  - Uygulamalar: mavi → camgöbeği
+  - Dosyalar: mor → pembe
+  - Gizlilik: lacivert → mavi
+- **Tipografi:** SF Pro; büyük sayılar için `.rounded` tasarım ve `monospacedDigit()`.
+- **Köşe yarıçapı:** 8 / 14 / 22 / 32.
+- **Boşluk ölçeği:** 4, 8, 12, 16, 24, 32, 48.
+- **Animasyon:** `Motion.snappy`, `Motion.smooth`, `Motion.bouncy` adlı hazır spring tanımları; süreler tek yerden yönetilir.
+- **Erişilebilirlik:** "Hareketi Azalt" açıksa tüm dekoratif animasyonlar sadeleşir; kontrast oranları WCAG AA'yı sağlar; tüm etkileşimli öğelerin VoiceOver etiketi vardır.
+
+### 5.4 Ortak bileşenler
+- `GlassCard`: buzlu cam kart, hover'da %2 büyüme ve gölge artışı.
+- `GradientRing`: animasyonlu ilerleme halkası (disk doluluğu, tarama ilerlemesi).
+- `AnimatedCounter`: sayıyı yumuşakça artıran/azaltan metin (`contentTransition(.numericText())`).
+- `MetricTile`: ikon + başlık + değer + mini grafik.
+- `SectionHeader`: bölüm gradyanlı başlık ve açıklama.
+- `ScanButton`: büyük, nefes alan (hafif pulse) birincil eylem düğmesi.
+- `ResultRow`: onay kutusu, ikon, ad, yol, boyut; genişletilebilir alt öğeler.
+- `ConfirmationSheet`: silinecek toplam boyut, öğe sayısı ve "Çöp'e taşı / kalıcı sil" seçimi.
+- `EmptyState` ve `PermissionPrompt` görünümleri.
+- `ProGate`: Pro özelliklerinde gösterilen, baskı kurmayan yükseltme kartı (§11.3).
+
+### 5.5 Animasyon ilkeleri
+- **Tarama ekranı** uygulamanın imza anıdır: dönen gradyan halka, arka planda yavaşça akan parçacıklar (Canvas + TimelineView), anlık olarak taranan klasör adı, artan "bulunan alan" sayacı.
+- Tarama bitince sonuç kartları sırayla (stagger, 60 ms aralık) yaylı animasyonla belirir.
+- Kart → detay geçişi `matchedGeometryEffect` ile yapılır.
+- Temizlik tamamlanınca kısa bir kutlama animasyonu ve kazanılan alanın büyük gösterimi.
+- SF Symbols için `symbolEffect` (bounce, pulse, variableColor) kullanılır.
+- Animasyonlar 60 fps'te kalmalı; ağır çizimler `drawingGroup()` ile optimize edilir.
+
+---
+
+## 6. Ekranlar ve Özellikler
+
+Her özellik için: tarayıcı, sonuç modeli, arayüz, testler. Tüm tarayıcılar `ScanEngine` içindeki ortak protokolü uygular:
+
+```swift
+protocol Scanner: Sendable {
+    var id: ScannerID { get }
+    var title: LocalizedStringResource { get }
+    var requiresFullDiskAccess: Bool { get }
+    var weight: ScannerWeight { get }   // .light → Akıllı Tarama'ya dahil, .heavy → ayrı başlatılır
+    func scan(progress: @Sendable (ScanProgress) -> Void) async throws -> [ScanItem]
+}
+```
+
+### 6.1 Genel Bakış (Dashboard)
+- Üstte büyük karşılama alanı: Mac modeli, macOS sürümü, son tarama zamanı, genel "sağlık skoru" (0–100, animasyonlu halka).
+- Bilgi kartları ızgarası (uyarlanabilir sütun sayısı):
+  - Disk: kullanılan / boş / temizlenebilir (purgeable dahil), halka grafik.
+  - Bellek: kullanılan, sıkıştırılmış, swap; canlı çizgi grafik (son 60 sn).
+  - CPU: toplam ve çekirdek bazında yük; canlı grafik.
+  - Pil: şarj, sağlık, döngü sayısı (IOKit `AppleSmartBattery`).
+  - Ağ: anlık indirme/yükleme hızı.
+  - Koruma durumu: son tehdit taraması ve sonucu.
+- "Akıllı Tarama" birincil düğmesi.
+- Öneri kartları: "Xcode artıkları 14 GB yer kaplıyor", "3 uygulamanın güncellemesi var" gibi bağlama duyarlı öneriler.
+
+**Sağlık skoru dürüstlüğü:** Skor, ölçülebilir ve kullanıcıya açıklanabilir girdilerden hesaplanır
+(boş disk yüzdesi, bellek baskısı, bulunan tehdit sayısı, bekleyen güncellemeler, temizlenebilir alan).
+Formül arayüzde "nasıl hesaplandı?" bağlantısıyla gösterilir. Yeni kurulumda skoru yapay olarak düşük
+göstermek yasaktır (§10).
+
+### 6.2 Akıllı Tarama
+- `weight == .light` olan Temizlik, Koruma ve Hız tarayıcılarını paralel çalıştırır (`TaskGroup`).
+- Sonuçta üç özet kart: temizlenebilir alan, bulunan tehditler, hız önerileri.
+- Tek tıkla "Hepsini Çalıştır" veya kart bazında detaya inme.
+- Ağır tarayıcılar (kopya bulucu, benzer fotoğraflar, Space Lens tam tarama) Akıllı Tarama'ya **dahil
+  edilmez**; sonuç ekranında "ayrıca şunları da tarayabilirsin" önerisi olarak sunulur.
+
+### 6.3 Temizlik
+Tarayıcılar (her biri ayrı ve ayarlardan açılıp kapatılabilir):
+- Kullanıcı önbellekleri: `~/Library/Caches` (Apple'ın kritik önbellekleri hariç tutulur).
+- Sistem önbellekleri ve loglar: `/Library/Caches`, `/Library/Logs`, `~/Library/Logs` (sistem yolları helper üzerinden).
+- Dil dosyaları: uygulama paketlerindeki kullanılmayan `.lproj` klasörleri. **Varsayılan kapalı**, imzalı uygulamalarda imzayı bozma riski açıkça belirtilir; Apple uygulamalarına asla dokunulmaz.
+- Geliştirici artıkları: Xcode `DerivedData`, `Archives`, `iOS DeviceSupport`, eski simülatörler (`xcrun simctl delete unavailable`), CocoaPods/Carthage/SPM önbellekleri, `node_modules` bulucu (yalnızca listeler, kullanıcı seçer), Homebrew önbelleği.
+- Tarayıcı önbellekleri: Safari, Chrome, Firefox, Edge, Brave, Arc (tarayıcı açıksa atlanır).
+- Mail ekleri indirme klasörü (posta veritabanının kendisine dokunulmaz — §4.3).
+- iOS/iPadOS yedekleri ve yazılım güncelleme dosyaları (`.ipsw`).
+- Bozuk tercih dosyaları (okunamayan `.plist`'ler).
+- Çöp kutuları: kullanıcı Çöp'ü, harici disklerin `.Trashes` klasörleri, uygulamaların kendi çöpleri (Fotoğraflar, Mail).
+- Time Machine yerel anlık görüntüleri: `tmutil listlocalsnapshots` ile listeleme, onayla silme.
+
+Arayüz: kategori kartları → öğe listesi → onay sayfası → ilerleme → sonuç.
+
+### 6.4 Koruma
+
+> **Konumlandırma — arayüzde ve pazarlamada açıkça yazılır:** Purgeify **talep üzerine çalışan (on-demand)
+> bir tarayıcıdır**, gerçek zamanlı antivirüs değildir. Gerçek zamanlı dosya izleme Apple'ın Endpoint
+> Security framework'ünü ve özel başvuruyla alınan `com.apple.developer.endpoint-security.client`
+> entitlement'ını gerektirir; bu bizde yoktur. Kullanıcıya "antivirüs" izlenimi veren hiçbir metin
+> kullanılmaz; Purgeify macOS'un kendi savunmasını (XProtect, Gatekeeper, notarizasyon) **tamamlar**.
+
+- **Kötü amaçlı yazılım taraması:**
+  - **İmza motoru: YARA** (BSD-3-Clause). Kendi kural setimiz + lisansı ticari kullanıma uygun olduğu
+    tek tek doğrulanmış topluluk kuralları. Her kural kaynağının lisansı `THIRD_PARTY_LICENSES.md`
+    dosyasında kayıtlıdır.
+  - **ClamAV kullanılmaz.** Gerekçe: ClamAV GPL-2.0 lisanslıdır; kapalı kaynak ticari bir uygulamaya
+    bağlanması veya birlikte dağıtılması tüm uygulamayı GPL'e tabi kılar. İmza veritabanı (CVD) de ayrı
+    kısıtlara tabidir. Bu karar Karar Günlüğü'nde kayıtlıdır ve yeniden açılmayacaktır.
+  - **Hash blocklist'i:** Bilinen zararlı dosyaların SHA-256 listesi; kendi sunucumuzdan imzalı olarak
+    güncellenir (güncelleme kanalı Sparkle'dan ayrıdır).
+  - **Kalıcılık noktaları analizi:** `LaunchAgents`, `LaunchDaemons`, oturum öğeleri, tarayıcı uzantıları,
+    konfigürasyon profilleri.
+  - **Apple savunma durumu kontrolü:** Kod imzası doğrulama (`SecStaticCodeCheckValidity`), notarizasyon
+    durumu, `com.apple.quarantine` özniteliği, Gatekeeper ve XProtect sürüm bilgisi.
+  - Şüpheli bulgular silinmez; karantina klasörüne taşınır ve geri alınabilir.
+  - **Yanlış pozitif politikası:** Her bulgu için "neden işaretlendi" açıklaması ve "bu güvenli, bir daha
+    sorma" seçeneği bulunur.
+- **Gizlilik:** Tarayıcı geçmişi, çerezler, form verileri, son kullanılan öğeler listeleri, Wi-Fi ağ geçmişi (helper ile). Her tarayıcı ayrı seçilebilir; tarayıcı açıksa işlem yapılmaz.
+- **Uygulama izinleri görünümü:** Kamera, mikrofon, ekran kaydı, tam disk erişimi gibi izinlere sahip uygulamaları listeler (okunabildiği ölçüde) ve kullanıcıyı ilgili Sistem Ayarları paneline yönlendirir. TCC veritabanına **yazma yapılmaz**.
+
+### 6.5 Hız
+- **Bakım görevleri:** DNS önbelleğini temizleme, Spotlight'ı yeniden indeksleme, Launch Services veritabanını yeniden kurma, disk izinlerini doğrulama (`diskutil verifyVolume`), RAM'i boşaltma (`purge`, helper ile), periyodik bakım betikleri. Her görevin ne yaptığı sade dille açıklanır.
+- **Başlangıç öğeleri:** Oturum öğeleri ve arka plan ajanlarını listeleme; kullanıcıya ait ajanları devre dışı bırakma (plist'i yeniden adlandırarak değil, `launchctl` ile ve geri alınabilir şekilde).
+- **Yoğun kaynak tüketenler:** CPU ve RAM'i en çok kullanan süreçler; seçilen uygulamayı kapatma (sistem süreçleri hariç).
+- **Bellek izleme:** Bellek baskısı yüksek olduğunda bildirim (ayarlanabilir).
+
+> **Dürüstlük notu:** "RAM boşaltma" ve benzeri görevlerin ölçülebilir faydası sınırlıdır ve macOS bellek
+> yönetimini zaten kendi yapar. Arayüzde bu görevler "hızlandırma" olarak değil, ne yaptıkları olduğu gibi
+> anlatılır. Ölçülemeyen performans iddiası yapılmaz (§10).
+
+### 6.6 Uygulamalar
+- **Kaldırıcı:** `/Applications` ve `~/Applications` taraması; her uygulama için bundle ID ile ilişkili artıkların bulunması (`Application Support`, `Caches`, `Preferences`, `Containers`, `Group Containers`, `Saved Application State`, `LaunchAgents`, `HTTPStorages`, `WebKit`). Kullanıcı tek tek seçebilir.
+- **Artık dosyalar:** Silinmiş uygulamalardan kalan dosyaları bulma (bundle ID'si yüklü hiçbir uygulamayla eşleşmeyen klasörler; düşük güvenli eşleşmeler varsayılan olarak seçilmez).
+- **Sıfırlama:** Uygulamayı silmeden ayarlarını ve önbelleğini temizleme.
+- **Güncelleyici:** Sparkle akışı olan uygulamaların güncel sürümlerini kontrol etme ve App Store uygulamaları için Mac App Store'a yönlendirme. Güncellemeyi uygulamanın kendisine bırakır.
+- **Uzantılar:** Safari uzantıları, tercih panelleri, QuickLook eklentileri, giriş öğeleri listesi.
+- Uygulama ızgarası: ikon, ad, boyut, son kullanım tarihi; sıralama ve filtreleme.
+
+### 6.7 Dosyalar
+- **Space Lens (alan haritası):** Seçilen birimin interaktif sunburst grafiği (Canvas ile özel çizim). Dilime tıklayınca içine animasyonla zoom; üstte gezinti yolu (breadcrumb). Boyutlar `totalFileAllocatedSizeKey` ile hesaplanır, sert bağlantılar bir kez sayılır, APFS klonları için not düşülür. `weight: .heavy`
+- **Büyük ve eski dosyalar:** Boyut ve son erişim tarihine göre filtreleme; tür bazında gruplama.
+- **Kopya bulucu:** Boyuta göre grupla → ilk/son 64 KB karşılaştırması → tam hash (SHA-256 veya xxHash). Hangi kopyanın tutulacağını otomatik öneren kurallar (en eski, en kısa yol vb.). `weight: .heavy`
+- **Benzer fotoğraflar:** Vision framework `VNFeaturePrintObservation` ile benzerlik; seri çekimleri gruplama. Fotoğraflar kütüphanesine doğrudan yazma yok; yalnızca listeleme ve Fotoğraflar'da gösterme. `weight: .heavy`
+- **Parçalayıcı:** Kalıcı silme. SSD'lerde ve APFS üzerinde (kopyala-yaz, wear leveling, TRIM nedeniyle) güvenli üzerine yazmanın **garanti edilemeyeceği** arayüzde dürüstçe belirtilir; gerçek güvenlik için FileVault önerilir.
+
+### 6.8 Menü Çubuğu Paneli
+- `MenuBarExtra` (window stili) ile açılan mini panel: CPU, RAM, disk, ağ, pil özetleri; hızlı eylemler (RAM boşalt, Çöp'ü boşalt, tarama başlat).
+- Ayarlardan açılıp kapatılabilir; giriş öğesi olarak `SMAppService.mainApp` ile kaydedilir.
+
+### 6.9 Ayarlar
+- Genel: başlangıçta açıl, menü çubuğu, dil (Türkçe ve İngilizce, String Catalog ile).
+- Tarama: tarayıcıları aç/kapat, hariç tutulan klasörler listesi, büyük dosya eşiği.
+- Silme: varsayılan davranış (Çöp / kalıcı), onay seviyesi.
+- Zamanlanmış tarama ve bildirimler.
+- İşlem geçmişi ve geri yükleme.
+- İzinler: tam disk erişimi ve helper durumu, yeniden yükleme düğmeleri.
+- Lisans: lisans anahtarı girişi/durumu, cihaz yönetimi, deneme süresi durumu (§11).
+- Gizlilik: çökme raporu gönderimi (varsayılan **kapalı**), imza veritabanı güncelleme kanalı.
+- **Purgeify'ı tamamen kaldır:** Tek eylemle (a) privileged helper'ı `SMAppService.unregister` ile söker,
+  (b) menü çubuğu giriş öğesini kaldırır, (c) `~/Library/Application Support/Purgeify/`, Preferences ve
+  Caches artıklarını temizler, (d) uygulamayı Çöp'e taşımayı önerir. İşlem öncesi ne silineceğini listeler.
+  **Bir temizlik uygulaması kendi arkasında artık bırakmaz.**
+
+---
+
+## 7. İzinler ve Ayrıcalıklı İşlemler
+
+- **Tam Disk Erişimi:** Açılışta kontrol edilir (korumalı bir yolun okunabilirliği denenerek). Yoksa adım adım rehber ekranı gösterilir ve `x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles` ile ilgili panel açılır. İzin olmadan da uygulama çalışır, etkilenen tarayıcılar "izin gerekli" olarak işaretlenir.
+- **Privileged Helper:** `SMAppService.daemon(plistName:)` ile kurulur (eski `SMJobBless` kullanılmaz). Launchd plist'i `Contents/Library/LaunchDaemons/` içinde, helper binary'si `Contents/MacOS/` içinde bulunur ve ana uygulamayla aynı Developer ID ile ayrı ayrı imzalanır. XPC bağlantısında istemcinin kod imzası `audit_token` üzerinden doğrulanır (yalnızca kendi uygulamamız bağlanabilir). Helper'ın yapabileceği işlemler küçük, açıkça tanımlı bir komut kümesiyle sınırlıdır (ör. `purge`, DNS temizleme, belirli sistem klasörlerinde silme). Helper asla rastgele kabuk komutu çalıştırmaz ve kendi içinde de `SafetyKit` kurallarını uygular (§4.10).
+- **Bildirimler:** `UNUserNotificationCenter`, ilk ihtiyaç anında izin istenir.
+- **Fotoğraflar:** Benzer fotoğraf taraması için `PHPhotoLibrary` okuma izni, yalnızca o özellik ilk kez kullanıldığında istenir.
+
+---
+
+## 8. Performans Hedefleri
+
+- Uygulama açılışı: 1 saniyenin altında ilk kare.
+- **Akıllı Tarama (yalnızca `.light` tarayıcılar):** tipik bir Mac'te 60 saniyenin altında.
+- **Ağır tarayıcılar** (`.heavy`: kopya bulucu, benzer fotoğraflar, Space Lens tam tarama) için süre hedefi
+  yoktur; bunun yerine zorunlu gereksinimler: canlı ilerleme yüzdesi, kalan süre tahmini, her an iptal
+  edilebilirlik, kısmi sonuçların gösterilmesi ve uygulama kapanıp açıldığında kaldığı yerden devam
+  (ya da en azından sonucun önbelleklenmesi).
+- Dosya taraması `FileManager.enumerator` ve `URLResourceValues` önceden istenmiş anahtarlarla yapılır; büyük ağaçlar paralel taranır.
+- Tarama sırasında arayüz akıcı kalır; ilerleme güncellemeleri saniyede en fazla 20 kez yayınlanır.
+- Canlı sistem metrikleri 1 saniye aralıkla okunur ve yalnızca ilgili görünüm ekrandayken çalışır.
+- Bellek kullanımı boşta 150 MB'ın altında; ağır tarama sırasında 1 GB'ın altında (hash tamponları akış halinde okunur, dosya belleğe tümüyle alınmaz).
+- Tarama iptal edilebilir olmalı (`Task.checkCancellation()`).
+- Enerji: ağır taramalar pil modunda kullanıcıyı uyarır; zamanlanmış taramalar pil düşükken ertelenir.
+
+---
+
+## 9. Test Stratejisi
+
+- `SafetyKit`: korunan yollar, symlink kaçışları, izin listesi dışı yollar, çalışan uygulama dosyaları için kapsamlı testler.
+- Her tarayıcı geçici bir sahte dosya ağacı (`FileManager.temporaryDirectory`) üzerinde test edilir; gerçek sistem klasörlerine testlerde dokunulmaz.
+- Kopya bulucu ve boyut hesaplama için doğruluk testleri (sert bağlantılar, boş dosyalar, izinsiz klasörler, APFS klonları).
+- ViewModel'ler için durum geçişi testleri (boşta → taranıyor → sonuç → temizleniyor → tamamlandı / hata).
+- `Licensing`: geçerli/geçersiz/süresi geçmiş imza, saat ileri alma, bozuk lisans dosyası testleri.
+- Kritik akışlar için UI testleri: Akıllı Tarama, temizlik onayı, uygulama kaldırma.
+- SwiftUI önizlemeleri (`#Preview`) sahte verilerle her ekran ve bileşen için tanımlanır.
+
+---
+
+## 10. Yapmayacaklarımız (yazılı taahhüt)
+
+Bu bölüm §4 kadar bağlayıcıdır. Purgeify'ın "güven" farkı buradan gelir.
+
+1. **Kernel extension veya Endpoint Security iddiası yok.** Gerçek zamanlı koruma sunmuyoruz, sunduğumuzu ima etmiyoruz.
+2. **TCC veritabanına yazma yok.** İzinler yalnızca okunur ve kullanıcı Sistem Ayarları'na yönlendirilir.
+3. **Korku pazarlaması yok.** "Mac'iniz tehlikede", "N sorun bulundu!" gibi abartı yok; kırmızı uyarı rengi yalnızca gerçek tehdit bulgularında kullanılır.
+4. **Bulgu sayısı veya kazanılacak alan şişirilmez.** Temizlenebilir alan gerçek, doğrulanabilir bayt sayısıdır; purgeable alan ayrı etiketlenir ve "kazanç" olarak sayılmaz.
+5. **Ölçülemeyen performans iddiası yok.** "%300 daha hızlı" türü ifadeler kullanılmaz.
+6. **Karanlık arayüz deseni yok.** İptal düğmesi gizlenmez, abonelik yenilemesi sürpriz olmaz, deneme süresi bitince kullanıcı verisi rehin alınmaz.
+7. **Kullanıcı verisi dışarı çıkmaz.** Dosya adları, yollar, dizin yapısı, disk içeriği hiçbir koşulda sunucuya gönderilmez. Üçüncü parti analytics SDK'sı kullanılmaz.
+8. **Rastgele kabuk komutu çalıştırılmaz** — özellikle helper içinde. Her ayrıcalıklı işlem adı belli, parametreleri doğrulanmış bir komuttur.
+9. **Başka ürünlerin varlıkları kopyalanmaz** — ikon, metin, düzen, palet dahil.
+10. **Otomatik silme yok.** Hiçbir ayar, kullanıcı onayı olmadan dosya silen bir otomasyon açmaz; zamanlanmış tarama yalnızca *tarar* ve rapor eder.
+
+---
+
+## 11. Lisanslama ve Para Kazanma
+
+App Store dışı dağıtım seçildiği için ödeme, lisans ve vergi tamamen bizim sorumluluğumuzdadır. Bu bölüm
+mimariyi etkiler ve Phase 0'da kararlaştırılır, Phase 10'da uygulanır. `Licensing` paketi Phase 1'den
+itibaren var olur ve başlangıçta her şeyi "Pro" döndürecek sahte bir uygulamayla çalışır — böylece Pro
+kapıları baştan doğru yerlere konur.
+
+### 11.1 Ödeme sağlayıcısı
+**Öneri: Merchant of Record (MoR) modeli** — Paddle veya Lemon Squeezy. Gerekçe: KDV/satış vergisi
+yükümlülüğünü sağlayıcı üstlenir, Türkiye'den global dijital satışta bu en büyük operasyonel yükü kaldırır.
+Stripe daha düşük komisyon ama vergi beyanı bize kalır. **Karar §15'te açık.**
+
+### 11.2 Lisans doğrulama (çevrimdışı çalışmalı)
+- Satın alma sonrası kullanıcıya **Ed25519 ile imzalanmış lisans dosyası / anahtarı** verilir. İçerik:
+  lisans ID'si, e-posta, ürün, sürüm üst sınırı, cihaz limiti, düzenleme tarihi.
+- Doğrulama **tamamen yerel ve çevrimdışıdır**; açık anahtar uygulamada gömülüdür. Uygulama lisans
+  kontrolü için internete çıkmaz.
+- Cihaz aktivasyonu (limit takibi) için **isteğe bağlı** çevrimiçi kayıt; başarısız olursa uygulama
+  çalışmaya devam eder. İnternet yokken Purgeify asla kilitlenmez.
+- Saat geri/ileri alma testleri yazılır; saat manipülasyonu uygulamayı bozmaz, en kötü halde deneme
+  süresi dürüst davranan kullanıcı lehine yorumlanır.
+
+### 11.3 Ücretsiz / Pro ayrımı
+İlke: **güvenlik ve şeffaflık asla ücretli değildir.** Ücretsiz sürüm gerçek, kullanışlı bir araç olmalı —
+sakatlanmış bir demo değil.
+
+| Ücretsiz | Pro |
+|---|---|
+| Genel Bakış ve tüm canlı sistem metrikleri | Akıllı Tarama orkestrasyonu |
+| Menü çubuğu paneli | Ağır tarayıcılar: kopya bulucu, benzer fotoğraflar, Space Lens |
+| Temel temizlik (kullanıcı önbellekleri, çöp kutuları, geliştirici artıkları) | Uygulama kaldırıcı ve artık bulucu |
+| Kötü amaçlı yazılım **taraması** ve bulgu raporu | Karantina yönetimi ve toplu işlem |
+| Tüm güvenlik özellikleri: dry-run, geçmiş, geri alma, "tamamen kaldır" | Hız bakım görevleri, başlangıç öğeleri |
+| | Zamanlanmış tarama, gizlilik temizliği |
+
+- **Deneme:** 14 gün, tüm Pro özellikleri açık, kredi kartı istenmez. Deneme bitince bulunan sonuçlar
+  görünmeye devam eder; yalnızca Pro eylemleri kapanır (kullanıcı verisi rehin alınmaz — §10.6).
+- **Fiyat modeli kararı §15'te açık:** tek seferlik + büyük sürüm yükseltmesi (ömür boyu güncelleme değil)
+  vs. yıllık abonelik. Tercihim: **1 yıl güncelleme içeren tek seferlik lisans**, sonrasında indirimli
+  yenileme — abonelik yorgunluğuna girmemek için.
+- Deneme durumu saklama: Keychain + destek klasöründe imzalı kayıt. Kolayca sıfırlanabilmesi kabul edilebilir
+  bir maliyettir; dürüst kullanıcıyı cezalandıran agresif önlemler alınmaz.
+
+---
+
+## 12. Platform Stratejisi: macOS → iOS
+
+**Sıralama kesindir:** macOS sürümü Phase 10 (Cila) tamamlanıp onaylanana kadar iOS kodu yazılmaz.
+Bu bölümün amacı iOS'u şimdi yapmak değil, macOS'u **iOS'u imkânsız kılmayacak şekilde** kurmaktır.
+
+### 12.1 Acı gerçek: iOS aynı uygulama olamaz
+iOS sandbox'ı nedeniyle §6'daki özelliklerin büyük kısmı iOS'ta **teknik olarak imkânsızdır** — başka bir
+uygulamanın önbelleğini okuyamazsın, sistem klasörü ve `launchd` erişimi yoktur, disk ağacını gezemezsin.
+"Telefon temizleyici" diye pazarlanan uygulamaların yaptığı şeyin çoğu tiyatrodur; biz onu yapmayacağız (§10.4, §10.5).
+
+| iOS'ta gerçekten yapılabilir | iOS'ta imkânsız |
+|---|---|
+| Fotoğraf kopya / benzer / seri çekim bulucu (PhotoKit + Vision) | Uygulama ve sistem önbelleği temizliği |
+| Büyük video ve Live Photo avcısı, ekran görüntüsü yığını temizliği | Kötü amaçlı yazılım taraması |
+| Fotoğraf kütüphanesi ve uygulama sandbox'ı için depolama görselleştirme | Başlangıç öğeleri, bakım görevleri, RAM/`purge` |
+| Rehber kopya temizleyici, takvim/hatırlatıcı yığını | Diğer uygulamaların artıkları, kaldırıcı |
+| "Offload / depolama boşaltma" rehberi (kullanıcıyı Ayarlar'a yönlendirme) | Space Lens (tam disk ağacı) |
+| **Mac'in uzaktan izlenmesi ve tarama başlatma (companion)** | Ayrıcalıklı işlemler |
+
+### 12.2 Konumlandırma kararı
+iOS sürümü **"Purgeify for iPhone"**: (a) fotoğraf/medya temizleyici + (b) Mac companion paneli.
+Mac sürümünün küçültülmüş bir kopyası olarak sunulmaz; ayrı ve dürüst bir ürün olarak konumlanır.
+
+### 12.3 Bugünden uyulacak kurallar
+- `DesignSystem` cross-platform yazılır. `NSColor`/`NSImage`/`NSView` doğrudan kullanılmaz; `Color`,
+  `Image` ve platform-agnostik soyutlamalar tercih edilir. Pencere/hover gibi macOS'a özgü davranışlar
+  `#if os(macOS)` ile **bileşenin içinde izole** edilir, API yüzeyi aynı kalır.
+- `CoreKit` ve `SafetyKit` platform-agnostik çekirdek olarak kalır (politika, modeller, boyut
+  hesaplama, işlem kaydı). Dosya sistemi gezinmesi ve macOS yolları `CoreKitMac`/`SafetyKitMac`'e taşınır.
+- `ScanEngine` protokolü platform-agnostik kalır (zaten öyle) — iOS'taki fotoğraf tarayıcıları aynı
+  `Scanner` protokolünü uygulayacak.
+- `Licensing` cross-platform yazılır; lisans tek olup her iki platformu kapsayacak şekilde tasarlanır.
+- İşlem kaydı şeması (`history.sqlite`) platform alanı içerir, böylece companion senkronizasyonu
+  ileride mümkün olur.
+- Hedef iOS sürümü: **iOS 17+** (Observation makrosu ve SwiftUI paritesi için).
+- Companion senkronizasyonu için teknoloji kararı §15'te açık (CloudKit vs. yerel ağ + App Group).
+
+---
+
+## 13. Dağıtım Altyapısı
+
+### 13.1 Sürüm kontrolü ve CI
+- Git deposu zorunlu. Dal modeli: `main` (kararlı) + özellik dalları.
+- SemVer: `MAJOR.MINOR.PATCH`; `CFBundleShortVersionString` = SemVer, `CFBundleVersion` = artan derleme sayısı.
+- `CHANGELOG.md` elle tutulur ve Sparkle sürüm notlarının kaynağıdır.
+- CI (GitHub Actions veya yerel runner): her push'ta `xcodebuild build` + `swift test` + SwiftLint.
+  İmzalı derleme ve notarizasyon yalnızca sürüm etiketlerinde (`v*`) çalışır.
+- Sırlar: Developer ID sertifikası (p12), App Store Connect API key, Sparkle özel anahtarı CI secret olarak
+  tutulur; depoya asla girmez.
+
+### 13.2 İmzalama ve notarizasyon
+- Developer ID Application sertifikası; Hardened Runtime açık, App Sandbox kapalı.
+- İmza sırası içten dışa: yerel paketler → helper → menü çubuğu ajanı → ana uygulama (`--deep` kullanılmaz,
+  her bileşen ayrı imzalanır).
+- Notarizasyon `notarytool` ile App Store Connect API key kullanılarak; sonra `stapler`.
+- Gerekli entitlement'lar gerekçeleriyle belgelenir (`ENTITLEMENTS.md`).
+- Dağıtım paketi: imzalı ve notarize edilmiş DMG (özel arka plan, sürükle-bırak yerleşimi).
+
+### 13.3 Sparkle güncelleme kanalı
+- **EdDSA anahtar çifti Phase 0'da üretilir.** Özel anahtar kaybolursa tüm güncelleme zinciri ölür;
+  mevcut kullanıcılara bir daha güncelleme gönderilemez.
+- Yedekleme politikası: özel anahtar en az iki ayrı şifreli konumda saklanır (parola yöneticisi + çevrimdışı
+  şifreli yedek). Bu, projenin tek telafisi olmayan sırrıdır.
+- `appcast.xml` HTTPS üzerinden barındırılır; sürüm notları TR/EN olarak sunulur.
+- İmza veritabanı (YARA kuralları + hash listesi) güncellemesi Sparkle'dan **ayrı** bir kanaldır ve
+  kendi imzasıyla doğrulanır.
+
+### 13.4 Çökme raporu ve telemetri
+- Üçüncü parti analytics veya çökme SDK'sı kullanılmaz (§10.7).
+- Opsiyonel, **varsayılan kapalı**, açık rızayla çalışan minimal çökme raporu: yalnızca çağrı yığını,
+  uygulama sürümü, macOS sürümü ve donanım modeli. Dosya yolu, dosya adı, kullanıcı adı veya disk içeriği
+  **asla** gönderilmez; gönderim öncesi rapor kullanıcıya ham haliyle gösterilir.
+- Kullanım istatistiği toplanmaz.
+
+### 13.5 Yasal metinler (dağıtımdan önce zorunlu)
+- **EULA:** lisans kapsamı, cihaz limiti, iade koşulları.
+- **Gizlilik Politikası:** "kullanıcı dosya verisi işlenmez ve iletilmez" taahhüdü, çökme raporu opt-in'i,
+  lisans aktivasyonunda işlenen veriler (e-posta, cihaz tanımlayıcısı).
+- **Sorumluluk reddi:** özellikle Parçalayıcı (SSD/APFS'te güvenli silme garanti edilemez) ve kötü amaçlı
+  yazılım taraması (on-demand tarayıcı, antivirüs değil) için.
+- `THIRD_PARTY_LICENSES.md`: Sparkle (MIT), GRDB (MIT), YARA (BSD-3-Clause) ve kullanılan her YARA kural
+  kaynağının lisansı. Uygulama içinde "Hakkında" ekranından erişilebilir.
+- İade politikası (MoR sağlayıcısının kurallarıyla uyumlu).
+
+---
+
+## 14. Geliştirme Aşamaları
+
+Her aşamanın sonunda proje derlenir, testler geçer, ben ekranları kontrol ederim ve onayımdan sonra bir sonrakine geçilir. Bir aşama içinde bile büyük değişikliklerden önce kısa bir plan sun.
+
+0. **Kuruluş (kod yazılmadan):** "Purgeify" marka ve domain müsaitliği kontrolü; Apple Developer hesabı ve
+   Developer ID sertifikası; git deposu + `.gitignore`; bundle ID'lerin kaydı; Sparkle EdDSA anahtar çifti
+   üretimi ve yedeklenmesi; ödeme sağlayıcısı ve fiyat modeli kararı; uygulama ikonu konsepti; CI iskeleti.
+1. **Temel:** Proje yapısı, paketler (platform ayrımına uygun), `DesignSystem` (token'lar + ortak bileşenler), ana pencere ve kenar çubuğu, sahte verili Genel Bakış ekranı, tarama animasyonu prototipi, `Licensing` iskeleti (her şey Pro).
+2. **Güvenlik çekirdeği:** `SafetyKit`, `DeletionService`, GRDB işlem kaydı, geri yükleme, testleri (%90 kapsam).
+3. **Sistem izleme:** `SystemMonitor` ile gerçek CPU/RAM/disk/pil/ağ verileri, Genel Bakış'ın canlı hale gelmesi.
+4. **Temizlik:** Tarayıcı protokolü, Temizlik bölümündeki tüm tarayıcılar, sonuç ve onay akışı.
+5. **Dosyalar:** Space Lens, büyük/eski dosyalar, kopya bulucu, benzer fotoğraflar, parçalayıcı (ağır tarayıcı ilerleme/iptal altyapısı dahil).
+6. **Uygulamalar:** Kaldırıcı, artıklar, sıfırlama, uzantılar, güncelleyici.
+7. **Helper ve Hız:** Privileged Helper (imza doğrulama + kendi SafetyKit katmanı), bakım görevleri, başlangıç öğeleri, kaynak tüketenler, "tamamen kaldır" akışı.
+8. **Koruma ve Gizlilik:** YARA motoru, hash blocklist'i, kalıcılık analizi, karantina, yanlış pozitif yönetimi, gizlilik temizliği.
+9. **Akıllı Tarama ve menü çubuğu:** Orkestrasyon, öneri motoru, sağlık skoru (açıklanabilir), menü çubuğu paneli.
+10. **Cila:** Ayarlar, lisanslama ve deneme akışının gerçek hale gelmesi, yerelleştirme, erişilebilirlik, performans profillemesi (Instruments), boş/hata durumları, ilk açılış karşılama akışı.
+11. **Dağıtım:** Uygulama ikonu, Developer ID imzası, notarizasyon betiği, Sparkle güncelleme akışı, DMG paketleme, yasal metinler, satış sayfası.
+12. **(macOS onayından sonra) iOS:** §12'ye göre ayrı planlama yapılır. Bu aşamaya macOS Phase 11 tamamlanmadan geçilmez.
+
+---
+
+## 15. Çalışma Kuralları (Claude Code için)
+
+- Kod yazmadan önce ilgili bölümü bu dosyadan tekrar oku.
+- Küçük, derlenebilir adımlarla ilerle; her adımdan sonra `xcodebuild` ile derle ve testleri çalıştır.
+- Gerçek dosya sistemi üzerinde silme yapan kodu test etmeden önce mutlaka dry-run modunda çalıştır ve çıktıyı bana göster.
+- Belirsiz bir konuda tahmin yürütmek yerine sor; özellikle silme ve izinlerle ilgili kararlarda.
+- **İsimlendirme:** Tüm kod İngilizce — tip, değişken, fonksiyon, dosya ve dal adları dahil. Kod içi
+  açıklamalar İngilizce. Kullanıcıya görünen **her** metin String Catalog üzerinden Türkçe ve İngilizce;
+  kaynak kodda hard-coded kullanıcı metni bulunmaz.
+- Kullanımdan kalkmış API'ler kullanma; macOS 14+ API'lerini tercih et.
+- `[cross-platform]` işaretli paketlere macOS'a özgü kod ekleme (§3).
+- Her aşama sonunda kısa bir özet yaz: ne yapıldı, ne test edildi, bilinen eksikler.
+- Yeni bir bağımlılık, yeni bir ayrıcalıklı işlem veya yeni bir ağ çağrısı eklemek her zaman ayrı onay gerektirir.
+
+---
+
+## 16. Risk Kaydı ve Açık Sorular
+
+Karara bağlanan her madde buradan çıkarılıp §17 Karar Günlüğü'ne yazılır.
+
+### 16.1 Açık kararlar
+| # | Konu | Seçenekler | Önerim | Ne zaman gerekli |
+|---|---|---|---|---|
+| A1 | Ödeme sağlayıcısı | Paddle / Lemon Squeezy (MoR) vs. Stripe | MoR — vergi yükü kalkıyor | Phase 0 |
+| A2 | Fiyat modeli | Tek seferlik + 1 yıl güncelleme vs. yıllık abonelik | Tek seferlik + indirimli yenileme | Phase 0 |
+| A3 | Fiyat noktası ve para birimi | — | — | Phase 0 |
+| A4 | CI altyapısı | GitHub Actions vs. yerel Mac runner | GitHub Actions (self-hosted mac gerekebilir) | Phase 0 |
+| A5 | İmza veritabanı barındırma | Kendi sunucu vs. object storage + CDN | Object storage + CDN (basit, ucuz) | Phase 8 |
+| A6 | iOS companion senkronizasyonu | CloudKit vs. yerel ağ + App Group | Phase 12'de karar | Phase 12 |
+| A7 | Ücretsiz/Pro ayrımının son hali | §11.3 taslağı | §11.3 ile başla, kullanıcı geri bildirimiyle ayarla | Phase 10 |
+
+### 16.2 Riskler
+| # | Risk | Etki | Azaltma |
+|---|---|---|---|
+| R1 | Sparkle özel anahtarının kaybı | Telafisi yok — güncelleme zinciri ölür | §13.3 çift şifreli yedek, Phase 0'da kurulur |
+| R2 | Yanlış silme ile kullanıcı veri kaybı | Marka ölümü | §4 kuralları, %90 test kapsamı, Çöp varsayılanı, geri alma |
+| R3 | YARA kural kaynaklarının lisans uyumsuzluğu | Hukuki risk | Her kaynak tek tek doğrulanır, `THIRD_PARTY_LICENSES.md` |
+| R4 | Yanlış pozitif malware bulgusu | Güven kaybı, destek yükü | Silme yok (karantina), "neden işaretlendi" açıklaması, allowlist |
+| R5 | Yeni macOS sürümünün API/izin değişiklikleri | Özellikler bozulur | Her beta döneminde regresyon taraması, özellik bazında kapatılabilirlik |
+| R6 | `SMAppService` helper kurulumunun kullanıcıda başarısız olması | Hız/sistem temizliği çalışmaz | Net hata ekranı, helper'sız çalışabilen uygulama, yeniden kurma düğmesi |
+| R7 | Marka adı çakışması ("Purgeify") | Rebrand maliyeti | Phase 0'da doğrulama; §1.1 tek değişiklik noktası |
+| R8 | Notarizasyon reddi (sandbox kapalı + helper) | Dağıtım gecikir | Phase 0'da boş bir iskeletle uçtan uca notarizasyon denemesi |
+| R9 | Ağır taramaların beklenenden çok yavaş olması | Kullanıcı memnuniyetsizliği | §8 ağır tarayıcı sözleşmesi (ilerleme, iptal, kısmi sonuç) |
+| R10 | Lisans korumasının kırılması | Gelir kaybı | Kabul edilen risk; dürüst kullanıcıyı cezalandıran önlem alınmaz (§11.2) |
+
+---
+
+## 17. Karar Günlüğü
+
+| Tarih | Karar | Gerekçe |
+|---|---|---|
+| 2026-10-12 | Uygulama adı **Purgeify**, bundle ID `com.purgeify.app` | §1.1'de tek değişiklik noktası olarak toplandı; marka doğrulaması Phase 0 görevi |
+| 2026-10-12 | Spesifikasyon dosyası `CLAUDE.md` olarak adlandırıldı | Claude Code bu adı her oturumda otomatik context'e alır; "her oturumda oku" talimatı böylece garanti altında |
+| 2026-10-12 | **ClamAV kullanılmayacak**, yerine YARA + kendi hash blocklist'i | ClamAV GPL-2.0; kapalı kaynak ticari uygulamaya bağlanması tüm uygulamayı GPL'e tabi kılar. YARA BSD-3-Clause, ticari kullanıma uygun |
+| 2026-10-12 | Gerçek zamanlı koruma **yok**; on-demand tarayıcı olarak konumlandırılacak | Endpoint Security entitlement'ı Apple'dan özel başvuruyla alınır ve elimizde yok. Kullanıcıya antivirüs izlenimi vermemek etik ve hukuki zorunluluk |
+| 2026-10-12 | Kalıcı veri katmanı **GRDB** | Ham SQLite C API çok fazla kod ve hata yüzeyi; SwiftData append-only işlem kaydı için fazla ağır ve migration riski taşıyor. GRDB olgun, Sendable-uyumlu ve MIT lisanslı. "Bağımlılığı minimumda tut" kuralından bilinçli sapma |
+| 2026-10-12 | Paketler `[cross-platform]` / `[macOS]` olarak ayrıldı, platforma özgü kod `*Mac` kardeş paketlere alındı | iOS sürümü için sonradan yapılacak ayrıştırma çok pahalı; Phase 1'den itibaren disiplin uygulanması gerekiyor |
+| 2026-10-12 | iOS sürümü ayrı bir ürün olarak konumlanacak: fotoğraf/medya temizleyici + Mac companion | iOS sandbox'ı §6'daki özelliklerin çoğunu imkânsız kılıyor; "telefon temizleyici" tiyatrosu yapmamak §10 ile tutarlı |
+| 2026-10-12 | 60 saniyelik tarama hedefi yalnızca `.light` tarayıcılara uygulanacak | Kopya bulucu (SHA-256) ve Vision tabanlı fotoğraf karşılaştırması terabaytlarda dakikalar sürer; hedef gerçekçi değildi. Ağır tarayıcılar için süre yerine ilerleme/iptal/kısmi sonuç sözleşmesi tanımlandı |
+| 2026-10-12 | macOS sürümleri arasında **kendi özgün görsel kimliğimiz** korunacak, sistem kromu doğal bırakılacak | Marka tutarlılığı; her macOS sürümünde tasarım dilini takip etmek sürekli yeniden yazma demek. Yeni API'ler progressive enhancement olarak eklenir |
+| 2026-10-12 | Üçüncü parti analytics/çökme SDK'sı kullanılmayacak; çökme raporu opt-in ve varsayılan kapalı | Gizlilik odaklı bir temizlik uygulamasında veri toplama marka ile çelişir; §10.7 taahhüdü |
+| 2026-10-12 | Lisans doğrulaması tamamen **çevrimdışı** (Ed25519 imzalı lisans) | İnternet yokken uygulamanın kilitlenmesi kabul edilemez; lisans sunucusu tek hata noktası olmamalı |
+| 2026-10-12 | Güvenlik ve şeffaflık özellikleri (dry-run, geçmiş, geri alma, malware taraması, "tamamen kaldır") **ücretsiz** katmanda | Güveni paywall arkasına koymak §1'deki temel farkımızı yok eder |
+| 2026-10-12 | "Purgeify'ı tamamen kaldır" akışı zorunlu özellik | Privileged helper kuran bir uygulama kaldırılırken root daemon artığı bırakmamalı; temizlik uygulaması kendi arkasında artık bırakamaz |
