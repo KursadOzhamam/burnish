@@ -57,13 +57,13 @@ for scanner in scanners {
     grandTotal += actionable.totalSize()
     grandBlocked += blocked.totalSize()
 
-    guards[scanner.id] = PathGuard(allowedRoots: scanner.allowedRoots)
+    guards[scanner.id] = PathGuard(allowedRoots: scanner.allowedRoots, allowedTargets: scanner.allowedTargets)
     allItems += items
 
     print("")
     print("\(scanner.rule.id)")
-    print("  roots      \(scanner.allowedRoots.count) declared, "
-          + "\(scanner.allowedRoots.filter { FileManager.default.fileExists(atPath: $0.path) }.count) present")
+    print("  roots      \(scanner.allowedRoots.count + scanner.allowedTargets.count) declared, "
+          + "\((scanner.allowedRoots + scanner.allowedTargets).filter { FileManager.default.fileExists(atPath: $0.path) }.count) present")
     print("  found      \(items.count) items, \(total.formatted())")
     if !unreadable.isEmpty {
         print("  UNREADABLE \(unreadable.count) root(s), needs Full Disk Access: "

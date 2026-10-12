@@ -38,7 +38,12 @@ public struct CleanupScanner: Scanning {
 
     /// The roots this scanner may act within — its allowlist in `SafetyKit` (§4.2).
     public var allowedRoots: [URL] {
-        rule.roots.map { $0.url(home: home) }
+        rule.roots.filter(\.listsChildren).map { $0.url(home: home) }
+    }
+
+    /// Whole-folder roots: the folder itself is the finding, so it may be removed as a unit.
+    public var allowedTargets: [URL] {
+        rule.roots.filter { !$0.listsChildren }.map { $0.url(home: home) }
     }
 
     /// What a scan found, and what it could not look at.
@@ -91,7 +96,7 @@ public struct CleanupScanner: Scanning {
             // "WebKitCache" and the like. Deciding per child silently failed to block anything.
             let blocked = blockedReason(
                 forRoot: url,
-                rootOwner: root.owner,
+                rootOwners: root.owners,
                 running: running,
                 runningOwners: runningOwners
             )
@@ -110,6 +115,7 @@ public struct CleanupScanner: Scanning {
                 }
             } else if let item = try scanWhole(
                 url,
+                label: root.label,
                 blocked: blocked,
                 discovered: &discovered,
                 fraction: fraction,
@@ -167,6 +173,7 @@ public struct CleanupScanner: Scanning {
 
     private func scanWhole(
         _ url: URL,
+        label: String?,
         blocked: ScanItem.BlockedReason?,
         discovered: inout ByteCount,
         fraction: Double,
@@ -188,6 +195,7 @@ public struct CleanupScanner: Scanning {
         return ScanItem(
             scanner: rule.id,
             url: url,
+            displayName: label,
             size: result.totalSize,
             confidence: rule.confidence,
             blockedReason: blocked
@@ -200,14 +208,14 @@ public struct CleanupScanner: Scanning {
     /// application's bundle identifier appears.
     private func blockedReason(
         forRoot url: URL,
-        rootOwner: String?,
+        rootOwners: [String],
         running: Set<String>,
         runningOwners: Set<String>
     ) -> ScanItem.BlockedReason? {
         if rule.requiresHelper { return .needsHelper }
 
         // Explicit ownership first: it does not depend on the path naming the application.
-        if let rootOwner, running.contains(where: { $0.hasPrefix(rootOwner) }) {
+        if rootOwners.contains(where: { owner in running.contains { $0.hasPrefix(owner) } }) {
             return .ownerRunning
         }
 

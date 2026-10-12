@@ -93,7 +93,10 @@ public final class CleanupModel {
         // Each scanner may act only within its own declared roots (§4.2).
         var guards: [ScannerID: PathGuard] = [:]
         for scanner in scanners {
-            guards[scanner.id] = PathGuard(allowedRoots: scanner.allowedRoots)
+            guards[scanner.id] = PathGuard(
+                allowedRoots: scanner.allowedRoots,
+                allowedTargets: scanner.allowedTargets
+            )
         }
         self.service = DeletionService(guards: guards, history: history)
     }

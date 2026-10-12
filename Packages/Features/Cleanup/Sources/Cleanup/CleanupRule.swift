@@ -96,29 +96,54 @@ public struct CleanupRoot: Sendable, Hashable {
     /// Declared explicitly because the identifier is often *not* in the path: Chrome keeps its
     /// cache under `Caches/Google/Chrome`, which names no bundle id at all, so a check that only
     /// looks at path components never saw it was running.
-    public let owner: String?
+    public var owner: String? { owners.first }
 
-    public init(base: Base, path: String, listsChildren: Bool = true, owner: String? = nil) {
+    /// Every application that may be using this root. Usually one; shared folders such as
+    /// Adobe's media cache are written by several applications, and any of them running blocks it.
+    public let owners: [String]
+
+    /// Name shown for a whole-folder root. Needed because the folder's own name is often
+    /// meaningless on its own ("Cache", "Code Cache").
+    public let label: String?
+
+    public init(
+        base: Base,
+        path: String,
+        listsChildren: Bool = true,
+        owners: [String] = [],
+        label: String? = nil
+    ) {
         self.base = base
         self.path = path
         self.listsChildren = listsChildren
-        self.owner = owner
+        self.owners = owners
+        self.label = label
     }
 
     public static func home(
         _ path: String,
         listsChildren: Bool = true,
-        owner: String? = nil
+        owner: String? = nil,
+        owners: [String] = [],
+        label: String? = nil
     ) -> CleanupRoot {
-        CleanupRoot(base: .home, path: path, listsChildren: listsChildren, owner: owner)
+        CleanupRoot(
+            base: .home, path: path, listsChildren: listsChildren,
+            owners: owner.map { [$0] } ?? owners, label: label
+        )
     }
 
     public static func absolute(
         _ path: String,
         listsChildren: Bool = true,
-        owner: String? = nil
+        owner: String? = nil,
+        owners: [String] = [],
+        label: String? = nil
     ) -> CleanupRoot {
-        CleanupRoot(base: .absolute, path: path, listsChildren: listsChildren, owner: owner)
+        CleanupRoot(
+            base: .absolute, path: path, listsChildren: listsChildren,
+            owners: owner.map { [$0] } ?? owners, label: label
+        )
     }
 
     /// Resolves against a home directory.

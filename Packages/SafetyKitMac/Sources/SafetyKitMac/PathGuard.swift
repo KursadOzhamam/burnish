@@ -11,8 +11,17 @@ import SafetyKit
 /// The order matters and is deliberate: resolve first, then test containment, then test
 /// protection. Testing before resolving is exactly the mistake §4.4 exists to prevent.
 public struct PathGuard: Sendable {
-    /// The roots this guard permits, already standardized.
+    /// The roots this guard permits, already standardized. Everything *inside* a root may be
+    /// removed; the root itself may not.
     public let allowedRoots: [URL]
+
+    /// Folders that may be removed whole.
+    ///
+    /// A scanner whose finding is one specific folder (an application's cache directory) names
+    /// that folder as a target. The target and what is inside it are allowed, nothing beside it
+    /// is, and unlike a root it may be deleted itself. Kept separate so the "never remove a
+    /// scanner's own root" rule below stays absolute for roots.
+    public let allowedTargets: [URL]
 
     private let home: URL
 
@@ -21,9 +30,11 @@ public struct PathGuard: Sendable {
     ///   - home: the user's home directory, used to resolve the home-relative protected list.
     public init(
         allowedRoots: [URL],
+        allowedTargets: [URL] = [],
         home: URL = FileManager.default.homeDirectoryForCurrentUser
     ) {
         self.allowedRoots = allowedRoots.map { $0.standardizedFileURL.resolvingSymlinksInPath() }
+        self.allowedTargets = allowedTargets.map { $0.standardizedFileURL.resolvingSymlinksInPath() }
         // Resolved too: on macOS the home directory itself can sit behind a firmlink, and an
         // unresolved home would silently fail to match the protected list.
         self.home = home.standardizedFileURL.resolvingSymlinksInPath()
@@ -47,7 +58,7 @@ public struct PathGuard: Sendable {
         guard let root = containingRoot(of: resolved) else {
             throw SafetyError.outsideAllowlist(
                 path: resolved.path,
-                root: allowedRoots.first?.path ?? "(none)"
+                root: (allowedRoots + allowedTargets).first?.path ?? "(none)"
             )
         }
 
@@ -56,8 +67,10 @@ public struct PathGuard: Sendable {
         }
 
         // Refuse to delete a scanner's own root: a bug in a scanner must not wipe the folder
-        // it was pointed at.
-        if resolved.path == root.path {
+        // it was pointed at. A declared target is the one exception, because removing that exact
+        // folder is the whole point of it.
+        let isTarget = allowedTargets.contains { $0.path == resolved.path }
+        if resolved.path == root.path, !isTarget {
             throw SafetyError.protectedPath(root.path)
         }
 
@@ -76,7 +89,7 @@ public struct PathGuard: Sendable {
     }
 
     private func containingRoot(of url: URL) -> URL? {
-        allowedRoots.first { Self.path(url.path, isWithin: $0.path) }
+        (allowedRoots + allowedTargets).first { Self.path(url.path, isWithin: $0.path) }
     }
 
     /// True when `path` is `root` or lies beneath it.

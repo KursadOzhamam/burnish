@@ -235,3 +235,58 @@ struct FirmlinkNormalizationTests {
         #expect(subject.protectedMatch(for: URL(fileURLWithPath: "/private/var/db/anything")) != nil)
     }
 }
+
+/// A declared target may be removed whole; nothing beside it may, and roots stay protected.
+@Suite("Allowed targets")
+struct AllowedTargetTests {
+    private let home = URL(fileURLWithPath: "/Users/tester")
+    private var target: URL { home.appendingPathComponent("Library/Application Support/Notion/Cache") }
+
+    private func guardWithTarget() -> PathGuard {
+        PathGuard(allowedRoots: [], allowedTargets: [target], home: home)
+    }
+
+    @Test("The target folder itself may be removed")
+    func targetItselfIsAllowed() {
+        #expect(guardWithTarget().isAllowed(target))
+    }
+
+    @Test("Anything inside the target is allowed too")
+    func insideTargetIsAllowed() {
+        #expect(guardWithTarget().isAllowed(target.appendingPathComponent("data_0")))
+    }
+
+    @Test("A sibling of the target is refused")
+    func siblingIsRefused() {
+        let sibling = home.appendingPathComponent("Library/Application Support/Notion/Partitions")
+        #expect(!guardWithTarget().isAllowed(sibling))
+    }
+
+    @Test("The target's parent is refused: only the named folder is reachable")
+    func parentIsRefused() {
+        #expect(!guardWithTarget().isAllowed(target.deletingLastPathComponent()))
+    }
+
+    @Test("A name that merely starts like the target is refused")
+    func prefixCollisionIsRefused() {
+        let lookalike = home.appendingPathComponent("Library/Application Support/Notion/Cache-old")
+        #expect(!guardWithTarget().isAllowed(lookalike))
+    }
+
+    @Test("Roots keep their rule: the root itself still cannot be removed")
+    func rootsStayProtected() {
+        let root = home.appendingPathComponent("Library/Caches")
+        let subject = PathGuard(allowedRoots: [root], allowedTargets: [target], home: home)
+        #expect(!subject.isAllowed(root))
+        #expect(subject.isAllowed(root.appendingPathComponent("com.example")))
+        #expect(subject.isAllowed(target))
+    }
+
+    @Test("A protected path is refused even when declared as a target")
+    func protectedBeatsTarget() {
+        let documents = home.appendingPathComponent("Documents")
+        let subject = PathGuard(allowedRoots: [], allowedTargets: [documents], home: home)
+        #expect(!subject.isAllowed(documents), "the protected list wins over any target")
+    }
+}
+

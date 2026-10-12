@@ -64,6 +64,8 @@ public enum CleanupCatalogue {
         xcodeDeviceSupport,
         xcodeArchives,
         browserCaches,
+        appCaches,
+        adobeMediaCaches,
         mailDownloads,
         mobileBackups,
         userTrash,
@@ -166,6 +168,64 @@ public enum CleanupCatalogue {
         confidence: .high,
         requiresFullDiskAccess: true
     )
+
+    /// Caches that Electron and Chromium based applications keep under Application Support.
+    ///
+    /// Each entry is one verified cache folder, not the application's folder: the rest of what
+    /// lives beside it (profiles, databases, settings) is user data and is never listed. Each is
+    /// offered whole, because the files inside are meaningless one by one, and skipped while its
+    /// application runs (§4.5).
+    public static let appCaches = CleanupRule(
+        id: ScannerID("cleanup.appCaches"),
+        titleKey: "cleanup.appCaches.title",
+        explanationKey: "cleanup.appCaches.explanation",
+        roots: [
+            .home("Library/Application Support/Notion/Partitions/notion/Cache",
+                  listsChildren: false, owner: "notion.id", label: "Notion"),
+            .home("Library/Application Support/Claude/Cache",
+                  listsChildren: false, owner: "com.anthropic.claudefordesktop", label: "Claude"),
+            .home("Library/Application Support/Claude/Code Cache",
+                  listsChildren: false, owner: "com.anthropic.claudefordesktop", label: "Claude (code)"),
+            .home("Library/Application Support/Figma/DesktopProfile/v43/Cache",
+                  listsChildren: false, owner: "com.figma.Desktop", label: "Figma"),
+            .home("Library/Application Support/Figma/DesktopProfile/v43/Code Cache",
+                  listsChildren: false, owner: "com.figma.Desktop", label: "Figma (code)"),
+            .home("Library/Application Support/Cursor/CachedData",
+                  listsChildren: false, owner: "com.todesktop.230313mzl4w4u92", label: "Cursor"),
+            .home("Library/Application Support/Code/CachedData",
+                  listsChildren: false, owner: "com.microsoft.VSCode", label: "Visual Studio Code"),
+            .home("Library/Application Support/Code/CachedExtensionVSIXs",
+                  listsChildren: false, owner: "com.microsoft.VSCode", label: "Visual Studio Code (extensions)")
+        ],
+        confidence: .medium
+    )
+
+    /// Adobe's shared media and peak-file caches.
+    ///
+    /// Several Adobe applications write to the same folder, so any of them running blocks it.
+    /// Nothing is preselected: rebuilding a large project's cache can take a long time even
+    /// though no work is lost.
+    public static let adobeMediaCaches = CleanupRule(
+        id: ScannerID("cleanup.adobeMediaCaches"),
+        titleKey: "cleanup.adobeMediaCaches.title",
+        explanationKey: "cleanup.adobeMediaCaches.explanation",
+        roots: [
+            .home("Library/Application Support/Adobe/Common/Media Cache Files",
+                  listsChildren: false, owners: Self.adobeOwners, label: "Adobe Media Cache"),
+            .home("Library/Application Support/Adobe/Common/Peak Files",
+                  listsChildren: false, owners: Self.adobeOwners, label: "Adobe Peak Files")
+        ],
+        confidence: .low
+    )
+
+    private static let adobeOwners = [
+        "com.adobe.PremierePro",
+        "com.adobe.Audition",
+        "com.adobe.AfterEffects",
+        "com.adobe.ame",
+        "com.adobe.Character-Animator",
+        "com.adobe.Photoshop"
+    ]
 
     /// Mail's downloaded attachments. The mailbox database itself is on the protected list
     /// (§4.3) and is never touched.

@@ -493,6 +493,70 @@
           }
         }
       }
+    },
+    "cleanup.appCaches.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulama önbellekleri"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App caches"
+          }
+        }
+      }
+    },
+    "cleanup.appCaches.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notion, Figma, Claude, Cursor ve VS Code gibi uygulamaların yeniden oluşturulabilen önbellek klasörleri. Yalnızca önbellek klasörünün kendisi listelenir; ayarlar ve verilerin dokunulmaz. Uygulama açıkken atlanır."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rebuildable cache folders of apps such as Notion, Figma, Claude, Cursor and VS Code. Only the cache folder itself is listed; your settings and data are never touched. Skipped while the app is open."
+          }
+        }
+      }
+    },
+    "cleanup.adobeMediaCaches.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adobe medya önbelleği"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adobe media cache"
+          }
+        }
+      }
+    },
+    "cleanup.adobeMediaCaches.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premiere Pro, Audition ve diğer Adobe uygulamalarının ortak önbellek ve dalga biçimi dosyaları. Proje kaybolmaz, ama büyük projelerde yeniden oluşması uzun sürebilir; bu yüzden hiçbiri önceden seçilmez."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shared cache and waveform files of Premiere Pro, Audition and other Adobe apps. No project is lost, but rebuilding can take long on large projects, so nothing is preselected."
+          }
+        }
+      }
     }
   },
   "version": "1.0"
