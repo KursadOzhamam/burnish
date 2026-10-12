@@ -22,6 +22,18 @@ enum FilesStrings {
     static let ageFilter = key("files.filter.age")
     static let allKinds = key("files.filter.kind.all")
     static let cloud = key("files.cloud")
+    static let hubLarge = key("files.hub.large")
+    static let hubMap = key("files.hub.map")
+    static let mapTitle = key("files.map.title")
+    static let mapSubtitle = key("files.map.subtitle")
+    static let mapOther = key("files.map.other")
+    static let mapUnreadable = key("files.map.unreadable")
+    static let mapUp = key("files.map.up")
+    static let mapHint = key("files.map.hint")
+
+    static func share(percent: Int) -> LocalizedStringResource {
+        LocalizedStringResource("files.map.share \(percent)", bundle: .atURL(bundleURL))
+    }
 
     static func kind(_ kind: FileKind) -> LocalizedStringResource {
         key("files.kind.\(kind.rawValue)")

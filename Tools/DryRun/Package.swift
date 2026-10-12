@@ -20,6 +20,10 @@ let package = Package(
             dependencies: ["CoreKit", "ScanEngine", "SafetyKit", "SafetyKitMac", "Cleanup"]
         ),
         .executableTarget(
+            name: "DryRunSpaceLens",
+            dependencies: ["CoreKit", "ScanEngine", "Files"]
+        ),
+        .executableTarget(
             name: "DryRunLargeFiles",
             dependencies: ["CoreKit", "ScanEngine", "Files"]
         )

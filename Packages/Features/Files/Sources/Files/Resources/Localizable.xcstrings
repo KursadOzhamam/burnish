@@ -449,6 +449,150 @@
           }
         }
       }
+    },
+    "files.hub.large": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Büyük dosyalar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Large files"
+          }
+        }
+      }
+    },
+    "files.hub.map": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alan haritası"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Space map"
+          }
+        }
+      }
+    },
+    "files.map.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alan haritası"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Space map"
+          }
+        }
+      }
+    },
+    "files.map.subtitle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ev klasörünün neyin ne kadar yer kapladığını gösterir. Bir klasöre tıklayınca içine girersin; hiçbir şey önceden seçilmez ve yalnızca Çöp'e taşınır."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shows what takes how much space in your home folder. Click a folder to zoom in; nothing is preselected and items only go to the Trash."
+          }
+        }
+      }
+    },
+    "files.map.other": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diğer küçük öğeler"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Other small items"
+          }
+        }
+      }
+    },
+    "files.map.unreadable": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Okunamadı (izin gerekli)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not be read (permission needed)"
+          }
+        }
+      }
+    },
+    "files.map.up": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir üst klasör"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Up one level"
+          }
+        }
+      }
+    },
+    "files.map.hint": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Küçük öğeler gruplanır; toplam boyut değişmez."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Small items are grouped; the total size does not change."
+          }
+        }
+      }
+    },
+    "files.map.share %lld": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Üst klasörün %%%lld'i"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld%% of the folder"
+          }
+        }
+      }
     }
   }
 }

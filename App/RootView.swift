@@ -16,7 +16,7 @@ struct RootView: View {
     /// Same log as Cleanup writes to, so what was just removed is what the sheet lists.
     @State private var historyModel = HistoryModel(store: Self.history)
     @State private var showHistory = false
-    @State private var filesModel = LargeFilesModel(history: Self.history)
+    @State private var filesModels = FilesModels(history: Self.history)
 
     var body: some View {
         NavigationSplitView {
@@ -80,7 +80,7 @@ struct RootView: View {
             CleanupView(model: scanCoordinator.cleanup)
 
         case .files:
-            LargeFilesView(model: filesModel)
+            FilesHubView(models: filesModels)
 
         default:
             PlaceholderView(section: selection)
