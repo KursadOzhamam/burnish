@@ -186,7 +186,7 @@
 <script>
 /* Güncelleme için: yalnızca META, DEC, PH ve LOG değişir. Durum kodları:
    d tamamlandı · t bekliyor · u sende · k karar bekliyor · o opsiyonel */
-const META={updated:"2026-10-12",rev:9,
+const META={updated:"2026-10-12",rev:10,
   focus:"Faz 4 kapanışı: kalan temizlik tarayıcıları (4.13, 4.15–4.23). Ardından Faz 5 (İndirilenler dahil). UI testleri (10.10) erkene çekilmeye değer. Senden bekleyenler: D1–D9 kararları, Faz 0 maddeleri ve CleanMyMac kopyasının kapatılması (0.14)."};
 
 const ST={d:["done","tamamlandı","tdone"],t:["","bekliyor","tmig"],u:["user","sende","tuser"],k:["dec","karar bekliyor","tdec"],o:["opt","opsiyonel","topt"]};
@@ -266,12 +266,12 @@ const PH=[
  ["4.14","d","Bilinen uygulama konumları listesi","Adobe Media Cache/Peak Files (~11,9 GB, hiçbiri önceden seçilmez), Notion, Figma, Claude, Cursor, VS Code önbellekleri. Her girdi bu Mac'te ölçülerek doğrulandı; yalnızca önbellek klasörünün kendisi hedef, yanındaki veri dokunulmaz. Çalışan sahip uygulama engeller. Spotify/diğerleri doğrulanınca eklenir.","Mac"],
  ["4.15","t","Containers / Group Containers önbellekleri","Tam Disk Erişimi gerektirir; 530 klasör şu an okunamıyor. Ölçüm (rev 8): bu Mac'te Group Containers önbelleği 0 kB, Containers kabuktan okunamıyor (Tam Disk Erişimi); doğrulanmadan eklenmez, uygulama içinden okunarak ölçülecek.","Mac"],
  ["4.16","t","Sistem önbellekleri ve günlükleri","Listelenir, silme Faz 7'deki helper ile.","Helper"],
- ["4.17","t","Dil dosyaları (.lproj)","Varsayılan kapalı, imza uyarısı, Apple uygulamalarına asla dokunulmaz (D7).","Mac,Güvenlik"],
- ["4.18","t","Bozuk oturum açılışı öğeleri","Hedefi olmayan LaunchAgent/oturum öğeleri.","Mac"],
+ ["4.17","t","Dil dosyaları (.lproj)","Varsayılan kapalı, imza uyarısı, Apple uygulamalarına asla dokunulmaz (D7). Ölçüm (rev 10): Apple dışı uygulamalarda ≈500 MB kullanılmayan dil klasörü (Word 198 MB, Excel 109 MB, Outlook 80 MB…). Paketi değiştirmek kod imzasını bozar ve Microsoft kendi kendini onarabilir; risk kararı kullanıcıdadır, uygulanmadı.","Mac,Güvenlik"],
+ ["4.18","t","Bozuk oturum açılışı öğeleri","Hedefi olmayan LaunchAgent/oturum öğeleri. Ölçüm (rev 10): 5 LaunchAgent içinden hedefi gerçekten olmayan tek kayıt Steam; Google Keystone ProgramArguments kullanmıyor, yanlış pozitif riski var. Başlangıç öğeleriyle aynı mantık olduğundan Faz 7'de (launchctl) birlikte yapılacak.","Mac"],
  ["4.19","d","Bozuk tercih dosyaları (.plist)","Yalnızca okunup çözümlenemeyen veya boş plist; izin yüzünden açılamayanlar bozuk sayılmaz, com.apple.* hiç listelenmez, hiçbiri önceden seçilmez. Bu Mac'te basit 'okunamıyor' ölçütü 10 dosya işaretlerdi (Mesajlar, Rehber, Home dahil); gerçekte bozuk olan yalnızca 2 boş Adobe dosyası.","Mac"],
- ["4.20","t","Document Versions, iOS aygıt yedekleri, .ipsw","Hiçbiri önceden seçilmez.","Mac"],
- ["4.21","t","Birim başına Çöp kutuları","Harici disk .Trashes, Google Drive çöpü; Çöp boşaltma kalıcıdır, ek onay.","Mac"],
- ["4.22","t","Time Machine yerel anlık görüntüleri","tmutil ile listele; silme helper gerektirebilir.","Mac,Helper"],
+ ["4.20","t","Document Versions, iOS aygıt yedekleri, .ipsw","Hiçbiri önceden seçilmez. Ölçüm (rev 10): bu Mac'te iOS yedeği ve .ipsw yok (0); doğrulanacak veri yok.","Mac"],
+ ["4.21","t","Birim başına Çöp kutuları","Harici disk .Trashes, Google Drive çöpü; Çöp boşaltma kalıcıdır, ek onay. Ölçüm (rev 10): harici disk yok; kullanıcı Çöp'ü zaten Temizlik'te. Harici birim bağlanınca ölçülecek.","Mac"],
+ ["4.22","t","Time Machine yerel anlık görüntüleri","tmutil ile listele; silme helper gerektirebilir. Ölçüm (rev 10): yerel anlık görüntü yok. Listeleme `tmutil` alt süreci gerektirir; ayrı onay bekliyor.","Mac,Helper"],
  ["4.23","t","Yaş tabanlı kısmî seçim","Önbellekler için 'N günden eski' ölçütü; ScanItem'a son kullanım tarihi. Kullanıcı içeriğine uygulanmaz.","Mac"],
  ["4.24","d","Akıllı Tarama gerçek tarayıcılara bağlandı","Temizlik modelini sürer: paralel TaskGroup (§6.2), aynı eleme ve rakam, 'Sonuçları İncele' yeniden taramadan geçer. Başlık yalnızca seçili güvenli set (5,88 GB); elle seçilebilir ve izin gerektiren kısım ayrı yazılır. İlerleme en çok 20 güncelleme/sn.","Mac"],
 ]},
