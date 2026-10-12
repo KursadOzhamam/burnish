@@ -72,6 +72,13 @@ extension ScanItem {
     }
 
     public enum BlockedReason: String, Sendable, Codable, CaseIterable {
+        /// On the protected list and never removable (§4.3).
+        ///
+        /// Distinct from `excludedByUser` on purpose: telling someone "you excluded this" when
+        /// the app refused it is a small lie, and §10 rules those out.
+        case protectedPath
+        /// Outside the scanner's declared root, so this scanner has no business touching it (§4.2).
+        case outsideScope
         /// The owning application is running (§4.5).
         case ownerRunning
         /// Reading or removing it needs Full Disk Access (§7).

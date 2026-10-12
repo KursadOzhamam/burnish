@@ -11,10 +11,20 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../CoreKit"),
-        .package(path: "../ScanEngine")
+        .package(path: "../ScanEngine"),
+        // CLAUDE.md §17: GRDB over raw SQLite (too much hand-written code and error surface)
+        // and over SwiftData (heavy for an append-only log, and migration risk).
+        .package(url: "https://github.com/groue/GRDB.swift.git", from: "7.0.0")
     ],
     targets: [
-        .target(name: "SafetyKit", dependencies: ["CoreKit", "ScanEngine"]),
+        .target(
+            name: "SafetyKit",
+            dependencies: [
+                "CoreKit",
+                "ScanEngine",
+                .product(name: "GRDB", package: "GRDB.swift")
+            ]
+        ),
         .testTarget(name: "SafetyKitTests", dependencies: ["SafetyKit"])
     ]
 )

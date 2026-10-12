@@ -18,6 +18,13 @@ Bu dosya [Keep a Changelog](https://keepachangelog.com/) biçimini ve
   - Sahte verili Genel Bakış ekranı ve açıklanabilir sağlık skoru
   - Tarama animasyonu prototipi (gradyan halka, parçacık alanı, canlı sayaç)
   - Türkçe/İngilizce String Catalog'lar
+- **Phase 2 güvenlik çekirdeği** — `SafetyKit` + yeni `SafetyKitMac`, 71 test:
+  - `ProtectedPaths` — §4.3 korunan yollar listesi, her girdi için ayrı test
+  - `PathGuard` — izin listesi, symlink çözümü, `/private` firmlink normalleştirmesi
+  - `DeletionService` — kuru çalıştırma → onay → uygulama; tek silme kapısı
+  - `HistoryStore` — GRDB tabanlı işlem kaydı, filtreleme, budama
+  - `RestoreService` — Çöp'ten geri yükleme; üzerine yazmayı reddeder
+  - Kapsam: `SafetyKit` %96–100, `SafetyKitMac` %92–100 (§4.9 eşiği %90)
 
 ### Kararlar
 - Ödeme sağlayıcısı: Paddle (Merchant of Record).
@@ -30,9 +37,9 @@ Bu dosya [Keep a Changelog](https://keepachangelog.com/) biçimini ve
 - Proje dosyası XcodeGen ile üretiliyor; `project.yml` kaynaktır.
 
 ### Bilinen eksikler
+- `DeletionService` henüz arayüze bağlı değil; Temizlik akışı Phase 4'te gelecek.
 - Developer ID sertifikası yok; imzalı derleme ve notarizasyon iş akışı henüz oluşturulmadı (R8).
 - "Burnish" için hukuki marka araştırması yapılmadı (R15).
-- `SafetyKit` yalnızca model katmanı; `DeletionService` Phase 2'de gelecek.
 - `SystemMonitor` sahte veri üretiyor; gerçek okumalar Phase 3'te.
 - Akıllı Tarama simüle; gerçek tarayıcılar Phase 4'te.
 - `Licensing` her şeyi Pro döndürüyor; gerçek doğrulama Phase 10'da.

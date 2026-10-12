@@ -650,4 +650,9 @@ Karara bağlananlar: A1 (Paddle), A2 (tek seferlik + 1 yıl), A4 (GitHub Actions
 | 2026-10-12 | Xcode projesi **XcodeGen** ile üretiliyor; `project.yml` kaynak, `.xcodeproj` gitignore'da | 15+ modülle elle bakılan `pbxproj` birleştirme çatışması üretir. XcodeGen derleme zamanı aracıdır, uygulama bağımlılığı değil |
 | 2026-10-12 | `Licensing` paketi Phase 1'de kuruldu (her şey Pro döndürür) | Pro kapılarının doğru yerlere baştan konması için; Phase 10'da sonradan serpiştirmek hata üretir |
 | 2026-10-12 | Sağlık skoru **bileşenlerinin toplamıdır**, sonradan eğri uygulanmaz (§6.1) | "Nasıl hesaplandı?" panelinin gerçek aritmetiği gösterebilmesi için. Ölçülmemiş etken tam puan alır — §10.4 gereği kullanıcı yapmadığı tarama yüzünden cezalandırılmaz |
+| 2026-10-12 | `PathGuard` yolları **kanonik biçimde** karşılaştırır (`/var` → `/private/var`) | `standardizedFileURL` tutarsız: `/private/var/db`'yi `/var/db`'ye çeviriyor ama `/private/var/db/x`'i olduğu gibi bırakıyor. İki taraf farklı normalleştiği için `/private/var/db` koruması altındaki hiçbir şeyi korumuyordu. Üretimde sessizce başarısız olacak bir hata sınıfı |
+| 2026-10-12 | `BlockedReason` ayrıştırıldı: `protectedPath` ve `outsideScope` eklendi | Korumalı bir sistem yolu için kullanıcıya "sen hariç tuttun" demek küçük bir yalan; §10 bunları yasaklıyor. Arayüz artık gerçek nedeni söyleyebiliyor |
+| 2026-10-12 | `DeletionService.execute` kalıcı plan için `confirmedIrreversible` şart koşar | §4.1'in ikinci onayı tip düzeyinde zorunlu; çağıranın unutması mümkün değil, unutursa atar |
+| 2026-10-12 | `RestoreService` hedefte dosya varsa geri yüklemeyi **reddeder** | Geri alma işleminin ikinci bir veri kaybına yol açması kabul edilemez |
+| 2026-10-12 | `/private/var/folders` korumalı kaldı; testler `/private/tmp` kullanıyor | Kullanıcı başına geçici alan aktif durum tutuyor. Muhafazakâr taraf seçildi; `NSTemporaryDirectory()` oraya düştüğü için test fixture'ları taşındı |
 

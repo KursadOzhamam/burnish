@@ -45,6 +45,8 @@ packages:
     path: Packages/DesignSystem
   SafetyKit:
     path: Packages/SafetyKit
+  SafetyKitMac:
+    path: Packages/SafetyKitMac
   ScanEngine:
     path: Packages/ScanEngine
   Licensing:
@@ -91,6 +93,8 @@ targets:
         product: DesignSystem
       - package: SafetyKit
         product: SafetyKit
+      - package: SafetyKitMac
+        product: SafetyKitMac
       - package: ScanEngine
         product: ScanEngine
       - package: Licensing
