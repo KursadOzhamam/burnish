@@ -186,7 +186,7 @@
 <script>
 /* Güncelleme için: yalnızca META, DEC, PH ve LOG değişir. Durum kodları:
    d tamamlandı · t bekliyor · u sende · k karar bekliyor · o opsiyonel */
-const META={updated:"2026-10-12",rev:7,
+const META={updated:"2026-10-12",rev:8,
   focus:"Faz 4 kapanışı: kalan temizlik tarayıcıları (4.13, 4.15–4.23). Ardından Faz 5 (İndirilenler dahil). UI testleri (10.10) erkene çekilmeye değer. Senden bekleyenler: D1–D9 kararları, Faz 0 maddeleri ve CleanMyMac kopyasının kapatılması (0.14)."};
 
 const ST={d:["done","tamamlandı","tdone"],t:["","bekliyor","tmig"],u:["user","sende","tuser"],k:["dec","karar bekliyor","tdec"],o:["opt","opsiyonel","topt"]};
@@ -262,9 +262,9 @@ const PH=[
  ["4.10","d","Tam Disk Erişimi algılama","Korumalı klasörü listeleyerek sınar (nil = bilinmiyor); uyarı bandı ve Sistem Ayarları bağlantısı hazır. Adım adım rehber ekranı 10.2'de (ilk açılış).","Mac"],
  ["4.11","d","Geçmiş ekranı + geri yükleme arayüzü","Araç çubuğunda Geçmiş: kayıtlar, toplam kazanç (yalnızca gerçekten kaldırılanlar), Geri Yükle. Hedefte dosya varsa reddeder ve nedenini söyler. Gerçek Çöp'e gidiş-dönüş testi geçti; geri yükleme Tam Disk Erişimi gerektirmiyor.","Mac"],
  ["4.12","d","Xcode: iOS DeviceSupport ve Archives","Cihaz/sürüm başına satır; gerçek makinede 12,81 GB (CleanMyMac ile aynı). İkisi de .low güven: hiçbiri önceden seçilmez; Xcode açıkken engellenir.","Mac"],
- ["4.13","t","Xcode: kullanılamaz simülatör cihazları","simctl delete unavailable; kullanıcı düzeyi.","Mac"],
+ ["4.13","t","Xcode: kullanılamaz simülatör cihazları","Bu Mac'te kullanılamaz cihaz yok (7,2 GB cihaz klasörü hep kullanılabilir), doğrulanacak veri yok. Listeleme `simctl` alt süreci gerektirir: CLAUDE.md §15 uyarınca yeni süreç çağrısı ayrı onaydır, o yüzden onayını bekliyor. Silme yine DeletionService (Çöp) üzerinden.","Mac"],
  ["4.14","d","Bilinen uygulama konumları listesi","Adobe Media Cache/Peak Files (~11,9 GB, hiçbiri önceden seçilmez), Notion, Figma, Claude, Cursor, VS Code önbellekleri. Her girdi bu Mac'te ölçülerek doğrulandı; yalnızca önbellek klasörünün kendisi hedef, yanındaki veri dokunulmaz. Çalışan sahip uygulama engeller. Spotify/diğerleri doğrulanınca eklenir.","Mac"],
- ["4.15","t","Containers / Group Containers önbellekleri","Tam Disk Erişimi gerektirir; 530 klasör şu an okunamıyor.","Mac"],
+ ["4.15","t","Containers / Group Containers önbellekleri","Tam Disk Erişimi gerektirir; 530 klasör şu an okunamıyor. Ölçüm (rev 8): bu Mac'te Group Containers önbelleği 0 kB, Containers kabuktan okunamıyor (Tam Disk Erişimi); doğrulanmadan eklenmez, uygulama içinden okunarak ölçülecek.","Mac"],
  ["4.16","t","Sistem önbellekleri ve günlükleri","Listelenir, silme Faz 7'deki helper ile.","Helper"],
  ["4.17","t","Dil dosyaları (.lproj)","Varsayılan kapalı, imza uyarısı, Apple uygulamalarına asla dokunulmaz (D7).","Mac,Güvenlik"],
  ["4.18","t","Bozuk oturum açılışı öğeleri","Hedefi olmayan LaunchAgent/oturum öğeleri.","Mac"],
