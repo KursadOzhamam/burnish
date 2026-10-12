@@ -201,7 +201,18 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ içinde boş"
+            "value": "toplam %@ içinde"
+          }
+        }
+      }
+    },
+    "dashboard.metric.disk.free": {
+      "comment": "Tile title. States plainly that the value is free space, not used.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boş disk alanı"
           }
         }
       }

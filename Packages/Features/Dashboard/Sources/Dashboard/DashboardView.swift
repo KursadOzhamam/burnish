@@ -82,11 +82,12 @@ public struct DashboardView: View {
                 GradientRing(
                     progress: Double(model.score.value) / 100,
                     palette: section.palette,
-                    lineWidth: 12
+                    lineWidth: 16
                 )
-                AnimatedCounter("\(model.score.value)", font: Typography.metric)
+                AnimatedCounter("\(model.score.value)", font: Typography.hero)
+                    .frame(maxWidth: 108)
             }
-            .frame(width: 112, height: 112)
+            .frame(width: 164, height: 164)
 
             Button {
                 model.isShowingScoreBreakdown = true
@@ -108,7 +109,7 @@ public struct DashboardView: View {
         ) {
             MetricTile(
                 symbol: "internaldrive",
-                title: DashboardStrings.disk,
+                title: DashboardStrings.diskFree,
                 value: model.snapshot.disk.free.formatted(),
                 detail: DashboardStrings.diskDetail(total: model.snapshot.disk.total.formatted()),
                 palette: AppSection.files.palette

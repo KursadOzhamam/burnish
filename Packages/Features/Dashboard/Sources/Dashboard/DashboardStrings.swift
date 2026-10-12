@@ -17,6 +17,7 @@ enum DashboardStrings {
     static let scanAction = key("dashboard.scan.action")
 
     static let disk = key("dashboard.metric.disk")
+    static let diskFree = key("dashboard.metric.disk.free")
     static let memory = key("dashboard.metric.memory")
     static let cpu = key("dashboard.metric.cpu")
     static let battery = key("dashboard.metric.battery")

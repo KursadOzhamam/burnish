@@ -26,12 +26,12 @@ struct ScanParticleField: View {
     /// Fixed layout so the field looks designed rather than noisy; only the phase animates.
     private static let particles: [Particle] = {
         var generator = SystemRandomNumberGenerator()
-        return (0..<42).map { index in
+        return (0..<96).map { index in
             Particle(
-                angle: Double(index) / 42 * 360 + Double.random(in: -6...6, using: &generator),
-                radius: Double.random(in: 0.42...1.0, using: &generator),
-                size: Double.random(in: 1.4...3.6, using: &generator),
-                speed: Double.random(in: 0.04...0.14, using: &generator)
+                angle: Double(index) / 96 * 360 + Double.random(in: -8...8, using: &generator),
+                radius: Double.random(in: 0.48...1.0, using: &generator),
+                size: Double.random(in: 1.8...5.4, using: &generator),
+                speed: Double.random(in: 0.05...0.20, using: &generator)
             )
         }
     }()
@@ -52,17 +52,34 @@ struct ScanParticleField: View {
                             y: center.y + sin(angle.radians) * distance
                         )
                         // Fade with distance so the field reads as depth, not as confetti.
-                        let opacity = 0.10 + 0.22 * (1 - particle.radius)
+                        let depth = 1 - particle.radius
+                        let opacity = 0.22 + 0.46 * depth
                         let rect = CGRect(
                             x: point.x - particle.size / 2,
                             y: point.y - particle.size / 2,
                             width: particle.size,
                             height: particle.size
                         )
-                        canvas.fill(
-                            Path(ellipseIn: rect),
-                            with: .color(palette.end.color.opacity(opacity))
-                        )
+                        // Nearer particles take the warmer end of the gradient, which separates
+                        // the layers far better than opacity alone.
+                        let tint = depth > 0.5 ? palette.end.color : palette.start.color
+                        let dot = Path(ellipseIn: rect)
+                        canvas.fill(dot, with: .color(tint.opacity(opacity)))
+
+                        // Soft halo on the closest particles only — enough to read as depth
+                        // without turning the field into fog.
+                        if depth > 0.62 {
+                            let halo = rect.insetBy(dx: -particle.size * 1.6, dy: -particle.size * 1.6)
+                            canvas.fill(
+                                Path(ellipseIn: halo),
+                                with: .radialGradient(
+                                    Gradient(colors: [tint.opacity(0.18), .clear]),
+                                    center: point,
+                                    startRadius: 0,
+                                    endRadius: halo.width / 2
+                                )
+                            )
+                        }
                     }
                 }
                 // §5.5: heavy drawing is flattened so it stays at 60 fps.

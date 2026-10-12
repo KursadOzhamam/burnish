@@ -32,22 +32,26 @@ public struct SmartScanView: View {
                 palette: section.palette
             )
 
-            Spacer(minLength: 0)
+            // One centred stage holding the ring, its particle field and the status line.
+            // Grouping them means the block centres as a unit instead of the ring drifting
+            // upward as the status text changes height.
+            VStack(spacing: Spacing.large) {
+                ZStack {
+                    if phase.isScanning {
+                        ScanParticleField(palette: section.palette)
+                            .frame(width: 400, height: 400)
+                            .transition(.opacity)
+                    }
 
-            ZStack {
-                if phase.isScanning {
-                    ScanParticleField(palette: section.palette)
-                        .frame(width: 420, height: 420)
-                        .transition(.opacity)
+                    ring
                 }
+                .frame(width: 400, height: 400)
 
-                ring
+                statusText
+                    // Reserve the line so the ring does not shift when the text swaps.
+                    .frame(minHeight: 44, alignment: .top)
             }
-            .frame(height: 420)
-
-            statusText
-
-            Spacer(minLength: 0)
+            .frame(maxHeight: .infinity)
 
             controls
         }
