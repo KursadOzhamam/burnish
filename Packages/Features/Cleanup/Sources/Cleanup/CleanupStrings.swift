@@ -29,6 +29,7 @@ enum CleanupStrings {
     static let moveToTrash = key("cleanup.confirm.moveToTrash")
     static let deletePermanently = key("cleanup.confirm.deletePermanently")
     static let resultTitle = key("cleanup.result.title")
+    static let noHistory = key("cleanup.confirm.noHistory")
     static let protectedPath = key("cleanup.blocked.protectedPath")
     static let nested = key("cleanup.blocked.nested")
     static let otherBlocked = key("cleanup.blocked.other")

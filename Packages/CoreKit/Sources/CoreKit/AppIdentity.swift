@@ -45,16 +45,25 @@ public struct AppIdentity: Sendable {
 extension AppIdentity {
     /// `~/Library/Application Support/<DisplayName>/`, where the operation history lives (§4.7).
     ///
-    /// Derived from `displayName` rather than a literal so it follows the bundle.
+    /// Derived from `displayName` rather than a literal so it follows the bundle, and **created**
+    /// if missing. `FileManager.url(for:create:)` only creates the Application Support folder
+    /// itself, not a subfolder of it, so the first version of this returned a path that did not
+    /// exist: SQLite could not open a database there, the history store failed to start, and
+    /// the app deleted files without recording anything to restore from.
+    ///
+    /// - Parameter base: overrides the Application Support location, for tests.
     public func supportDirectory(
+        under base: URL? = nil,
         fileManager: FileManager = .default
     ) throws -> URL {
-        try fileManager.url(
+        let root = try base ?? fileManager.url(
             for: .applicationSupportDirectory,
             in: .userDomainMask,
             appropriateFor: nil,
             create: true
         )
-        .appendingPathComponent(displayName, isDirectory: true)
+        let directory = root.appendingPathComponent(displayName, isDirectory: true)
+        try fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
+        return directory
     }
 }

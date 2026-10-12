@@ -669,3 +669,5 @@ Karara bağlananlar: A1 (Paddle), A2 (tek seferlik + 1 yıl), A4 (GitHub Actions
 | 2026-10-12 | Güvenlik elemesi **taramadan hemen sonra** uygulanır (`DeletionService.screened`) | Eleme yalnızca plan kurulurken yapılınca inceleme ekranı 7,81 GB, onay sayfası daha az gösterecekti. Ekranın ve sayfanın aynı rakamı göstermesi, kullanıcının onayladığı şeyin yapılan şey olması demek |
 | 2026-10-12 | Onay sayfası her öğenin klasörünü de gösterir | "Adobe" gibi adlar hem Caches'te hem Logs'ta geçiyor; yalnızca ada bakan kullanıcı neyin gittiğini ayırt edemez |
 \n
+| 2026-10-12 | `AppIdentity.supportDirectory` destek klasörünü **oluşturur**; kayıt tutulamıyorsa onay sayfası bunu söyler | `FileManager.url(for:create: true)` yalnızca `Application Support`'un kendisini oluşturuyor, altındaki `Burnish` klasörünü değil. Klasör olmadığı için SQLite açılamadı, `HistoryStore` başlamadı ve uygulama ilk gerçek temizlikte hiçbir kayıt tutmadan sildi — §4.7'nin geri yükleme dayanağı yoktu. Kullanıcı bunu çalıştırınca ortaya çıktı; testim yalnızca klasör adına bakıyordu |
+

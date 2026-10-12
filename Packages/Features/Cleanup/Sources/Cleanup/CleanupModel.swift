@@ -56,6 +56,12 @@ public final class CleanupModel {
     /// The plan awaiting approval. Non-nil only while the confirmation sheet is up.
     public private(set) var pendingPlan: DeletionPlan?
 
+    /// Whether this run will be written to the operation log.
+    ///
+    /// False when the log could not be opened. Deleting still works, but nothing can be restored
+    /// from the app afterwards, and the user is told before approving rather than after.
+    public let canRecordHistory: Bool
+
     private let scanners: [CleanupScanner]
     private let service: DeletionService
     private var task: Task<Void, Never>?
@@ -65,6 +71,7 @@ public final class CleanupModel {
         history: HistoryStore? = nil
     ) {
         self.scanners = scanners
+        self.canRecordHistory = history != nil
         // Each scanner may act only within its own declared roots (§4.2).
         var guards: [ScannerID: PathGuard] = [:]
         for scanner in scanners {

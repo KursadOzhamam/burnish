@@ -402,6 +402,17 @@
           }
         }
       }
+    },
+    "cleanup.confirm.noHistory": {
+      "comment": "Warns that this run will not be recorded, so it cannot be restored from the app.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geri yükleme kaydı tutulamıyor. Öğeler Çöp'e gider ama buradan geri yüklenemez; Finder'daki Çöp'ten alabilirsin."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

@@ -11,6 +11,7 @@ import SafetyKit
 /// shown here too, with their reason, rather than disappearing silently.
 struct ConfirmationSheet: View {
     let plan: DeletionPlan
+    let canRecordHistory: Bool
     let onCancel: () -> Void
     let onConfirm: () -> Void
 
@@ -23,6 +24,17 @@ struct ConfirmationSheet: View {
             headline
 
             reversibilityNote
+
+            if !canRecordHistory {
+                Label {
+                    Text(CleanupStrings.noHistory)
+                } icon: {
+                    Image(systemName: "exclamationmark.circle")
+                        .foregroundStyle(Semantic.warning.color)
+                }
+                .font(Typography.caption)
+                .foregroundStyle(.secondary)
+            }
 
             if !plan.skipped.isEmpty {
                 skippedSummary

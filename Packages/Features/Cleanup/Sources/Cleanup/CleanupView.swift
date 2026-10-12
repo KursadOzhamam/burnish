@@ -49,6 +49,7 @@ public struct CleanupView: View {
         )) { wrapper in
             ConfirmationSheet(
                 plan: wrapper.plan,
+                canRecordHistory: model.canRecordHistory,
                 onCancel: model.dismissConfirmation,
                 onConfirm: { model.confirm(wrapper.plan) }
             )
