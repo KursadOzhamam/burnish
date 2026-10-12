@@ -316,6 +316,7 @@ Arayüz: kategori kartları → öğe listesi → onay sayfası → ilerleme →
 ### 6.7 Dosyalar
 - **Space Lens (alan haritası):** Seçilen birimin interaktif sunburst grafiği (Canvas ile özel çizim). Dilime tıklayınca içine animasyonla zoom; üstte gezinti yolu (breadcrumb). Boyutlar `totalFileAllocatedSizeKey` ile hesaplanır, sert bağlantılar bir kez sayılır, APFS klonları için not düşülür. `weight: .heavy`
 - **Büyük ve eski dosyalar:** Boyut ve son erişim tarihine göre filtreleme; tür bazında gruplama.
+- **İndirilenler:** `~/Downloads` içinde işini bitirmiş kurulum dosyalarını (`.dmg`, `.pkg`, `.iso`, `.xip`) ve belirlenen süredir (varsayılan 30 gün) dokunulmamış öğeleri listeler. Burası kullanıcının kendi içeriğidir, bu yüzden: **hiçbir öğe önceden seçilmez** (`confidence: .low`), yalnızca Çöp'e taşıma vardır (kalıcı silme yok), klasörün kendisi asla hedef olmaz ve izin listesi yalnızca `~/Downloads`'tır. Bir kurulum dosyasının uygulaması zaten yüklüyse bu, öğenin yanında gerekçe olarak gösterilir. `weight: .light`
 - **Kopya bulucu:** Boyuta göre grupla → ilk/son 64 KB karşılaştırması → tam hash (SHA-256 veya xxHash). Hangi kopyanın tutulacağını otomatik öneren kurallar (en eski, en kısa yol vb.). `weight: .heavy`
 - **Benzer fotoğraflar:** Vision framework `VNFeaturePrintObservation` ile benzerlik; seri çekimleri gruplama. Fotoğraflar kütüphanesine doğrudan yazma yok; yalnızca listeleme ve Fotoğraflar'da gösterme. `weight: .heavy`
 - **Parçalayıcı:** Kalıcı silme. SSD'lerde ve APFS üzerinde (kopyala-yaz, wear leveling, TRIM nedeniyle) güvenli üzerine yazmanın **garanti edilemeyeceği** arayüzde dürüstçe belirtilir; gerçek güvenlik için FileVault önerilir.
@@ -559,7 +560,7 @@ Her aşamanın sonunda proje derlenir, testler geçer, ben ekranları kontrol ed
 2. **Güvenlik çekirdeği:** `SafetyKit`, `DeletionService`, GRDB işlem kaydı, geri yükleme, testleri (%90 kapsam).
 3. **Sistem izleme:** `SystemMonitor` ile gerçek CPU/RAM/disk/pil/ağ verileri, Genel Bakış'ın canlı hale gelmesi.
 4. **Temizlik:** Tarayıcı protokolü, Temizlik bölümündeki tüm tarayıcılar, sonuç ve onay akışı.
-5. **Dosyalar:** Space Lens, büyük/eski dosyalar, kopya bulucu, benzer fotoğraflar, parçalayıcı (ağır tarayıcı ilerleme/iptal altyapısı dahil).
+5. **Dosyalar:** Space Lens, büyük/eski dosyalar, İndirilenler, kopya bulucu, benzer fotoğraflar, parçalayıcı (ağır tarayıcı ilerleme/iptal altyapısı dahil).
 6. **Uygulamalar:** Kaldırıcı, artıklar, sıfırlama, uzantılar, güncelleyici.
 7. **Helper ve Hız:** Privileged Helper (imza doğrulama + kendi SafetyKit katmanı), bakım görevleri, başlangıç öğeleri, kaynak tüketenler, "tamamen kaldır" akışı.
 8. **Koruma ve Gizlilik:** YARA motoru, hash blocklist'i, kalıcılık analizi, karantina, yanlış pozitif yönetimi, gizlilik temizliği.
@@ -670,4 +671,5 @@ Karara bağlananlar: A1 (Paddle), A2 (tek seferlik + 1 yıl), A4 (GitHub Actions
 | 2026-10-12 | Onay sayfası her öğenin klasörünü de gösterir | "Adobe" gibi adlar hem Caches'te hem Logs'ta geçiyor; yalnızca ada bakan kullanıcı neyin gittiğini ayırt edemez |
 \n
 | 2026-10-12 | `AppIdentity.supportDirectory` destek klasörünü **oluşturur**; kayıt tutulamıyorsa onay sayfası bunu söyler | `FileManager.url(for:create: true)` yalnızca `Application Support`'un kendisini oluşturuyor, altındaki `Burnish` klasörünü değil. Klasör olmadığı için SQLite açılamadı, `HistoryStore` başlamadı ve uygulama ilk gerçek temizlikte hiçbir kayıt tutmadan sildi — §4.7'nin geri yükleme dayanağı yoktu. Kullanıcı bunu çalıştırınca ortaya çıktı; testim yalnızca klasör adına bakıyordu |
+| 2026-10-12 | **İndirilenler tarayıcısı** §6.7'ye ve Phase 5'e eklendi; hiçbir öğe önceden seçilmez, yalnızca Çöp | CleanMyMac incelemesinde (kapsam karşılaştırması) bizde olmayan tek gerçek işlev boşluğu buydu. `~/Downloads` kullanıcının kendi içeriği olduğu için varsayılanı "hiçbir şeyi seçme". Hesap bağlayan Cloud/E-posta temizliği bilinçli olarak kapsam dışı: §10.7 hesap bilgisi tutmayı ve verinin dışarı çıkmasını yasaklıyor |
 

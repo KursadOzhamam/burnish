@@ -1,0 +1,176 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "history.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçmiş"
+          }
+        }
+      }
+    },
+    "history.subtitle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Burnish'in kaldırdığı her şey burada kayıtlıdır. Çöp'e taşınanları geri yükleyebilirsin."
+          }
+        }
+      }
+    },
+    "history.empty": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henüz bir şey kaldırılmadı."
+          }
+        }
+      }
+    },
+    "history.unavailable": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İşlem kaydı açılamadı. Bu yüzden bu oturumdaki işlemler burada görünmez ve geri yüklenemez."
+          }
+        }
+      }
+    },
+    "history.restore": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geri Yükle"
+          }
+        }
+      }
+    },
+    "history.close": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapat"
+          }
+        }
+      }
+    },
+    "history.badge.restored": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geri yüklendi"
+          }
+        }
+      }
+    },
+    "history.reclaimed %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toplam kazanılan alan: %@"
+          }
+        }
+      }
+    },
+    "history.notice.restored %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ geri yüklendi."
+          }
+        }
+      }
+    },
+    "history.outcome.trashed": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çöp'e taşındı"
+          }
+        }
+      }
+    },
+    "history.outcome.deleted": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalıcı silindi"
+          }
+        }
+      }
+    },
+    "history.outcome.skipped": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atlandı"
+          }
+        }
+      }
+    },
+    "history.outcome.failed": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silinemedi"
+          }
+        }
+      }
+    },
+    "history.failure.notRestorable": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu öğe geri yüklenemez."
+          }
+        }
+      }
+    },
+    "history.failure.missingFromTrash": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öğe artık Çöp'te değil; muhtemelen Çöp boşaltıldı."
+          }
+        }
+      }
+    },
+    "history.failure.destinationOccupied": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eski konumda şu an başka bir dosya var; üzerine yazmamak için geri yüklenmedi."
+          }
+        }
+      }
+    },
+    "history.failure.moveFailed": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taşıma sırasında bir hata oluştu."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
