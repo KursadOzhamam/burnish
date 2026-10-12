@@ -27,6 +27,7 @@ PACKAGES=(
     Packages/Features/SmartScan
     Packages/Features/Cleanup
     Packages/Features/History
+    Packages/Features/Files
 )
 
 total=0

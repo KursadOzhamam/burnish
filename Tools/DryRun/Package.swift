@@ -11,12 +11,17 @@ let package = Package(
         .package(path: "../../Packages/ScanEngine"),
         .package(path: "../../Packages/SafetyKit"),
         .package(path: "../../Packages/SafetyKitMac"),
-        .package(path: "../../Packages/Features/Cleanup")
+        .package(path: "../../Packages/Features/Cleanup"),
+        .package(path: "../../Packages/Features/Files")
     ],
     targets: [
         .executableTarget(
             name: "DryRun",
             dependencies: ["CoreKit", "ScanEngine", "SafetyKit", "SafetyKitMac", "Cleanup"]
+        ),
+        .executableTarget(
+            name: "DryRunLargeFiles",
+            dependencies: ["CoreKit", "ScanEngine", "Files"]
         )
     ]
 )

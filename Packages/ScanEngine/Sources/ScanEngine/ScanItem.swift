@@ -29,6 +29,10 @@ public struct ScanItem: Sendable, Identifiable, Hashable {
     /// Set when the item was found but cannot be acted on, e.g. its owning app is running (§4.5).
     public let blockedReason: BlockedReason?
 
+    /// When the item was last opened or changed, if the scanner knows. Lets a screen offer
+    /// "untouched for a year" without the scanner deciding what counts as old.
+    public let lastUsed: Date?
+
     public init(
         id: UUID = UUID(),
         scanner: ScannerID,
@@ -37,12 +41,14 @@ public struct ScanItem: Sendable, Identifiable, Hashable {
         size: ByteCount,
         confidence: Confidence = .high,
         children: [ScanItem] = [],
-        blockedReason: BlockedReason? = nil
+        blockedReason: BlockedReason? = nil,
+        lastUsed: Date? = nil
     ) {
         self.id = id
         self.scanner = scanner
         self.url = url
         self.displayName = displayName ?? url.lastPathComponent
+        self.lastUsed = lastUsed
         self.size = size
         self.confidence = confidence
         self.children = children
@@ -119,7 +125,8 @@ extension ScanItem {
             size: size,
             confidence: confidence,
             children: children,
-            blockedReason: reason
+            blockedReason: reason,
+            lastUsed: lastUsed
         )
     }
 }
