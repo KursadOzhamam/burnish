@@ -16,6 +16,10 @@ public struct AnimatedCounter: View {
         Text(text)
             .numericStyle(font)
             .contentTransition(.numericText())
+            .lineLimit(1)
+            // A counter sits inside fixed containers such as the scan ring, and the value grows
+            // as a scan runs ("9 GB" to "118,4 GB"). Shrink rather than overflow or truncate.
+            .minimumScaleFactor(0.5)
             .motion(Motion.smooth, value: text)
     }
 }

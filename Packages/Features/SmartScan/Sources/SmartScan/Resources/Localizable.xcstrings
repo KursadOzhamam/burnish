@@ -1,0 +1,109 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "smartscan.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akıllı Tarama"
+          }
+        }
+      }
+    },
+    "smartscan.subtitle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlik, koruma ve hız tarayıcıları birlikte çalışır. Hiçbir şey silinmez — sadece ne bulunduğunu gösterir."
+          }
+        }
+      }
+    },
+    "smartscan.idle.action": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taramayı Başlat"
+          }
+        }
+      }
+    },
+    "smartscan.cancel": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İptal"
+          }
+        }
+      }
+    },
+    "smartscan.found": {
+      "comment": "Label above the running total of reclaimable space found.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bulunan"
+          }
+        }
+      }
+    },
+    "smartscan.finished.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarama tamamlandı"
+          }
+        }
+      }
+    },
+    "smartscan.finished.note": {
+      "comment": "Reassurance that nothing was deleted. CLAUDE.md §4.6.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hiçbir şey silinmedi. Ne yapılacağını sen seçeceksin."
+          }
+        }
+      }
+    },
+    "smartscan.cancelled": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarama iptal edildi"
+          }
+        }
+      }
+    },
+    "smartscan.heavy.hint": {
+      "comment": "Explains that heavy scanners are excluded from Smart Scan. CLAUDE.md §6.2.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopya bulucu, benzer fotoğraflar ve Space Lens bu taramaya dahil değil — çok daha uzun sürerler, onları ayrıca başlatabilirsin."
+          }
+        }
+      }
+    },
+    "smartscan.itemsFound %lld": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld öğe"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

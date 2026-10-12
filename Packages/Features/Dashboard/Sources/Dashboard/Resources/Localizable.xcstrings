@@ -1,0 +1,211 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "dashboard.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Genel Bakış"
+          }
+        }
+      }
+    },
+    "dashboard.subtitle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac'inin durumu, tek bakışta."
+          }
+        }
+      }
+    },
+    "dashboard.health.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sağlık skoru"
+          }
+        }
+      }
+    },
+    "dashboard.health.explain": {
+      "comment": "Link that opens the score breakdown.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nasıl hesaplandı?"
+          }
+        }
+      }
+    },
+    "dashboard.health.neverScanned": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henüz tarama yapılmadı"
+          }
+        }
+      }
+    },
+    "dashboard.scan.action": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akıllı Tarama"
+          }
+        }
+      }
+    },
+    "dashboard.metric.disk": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk"
+          }
+        }
+      }
+    },
+    "dashboard.metric.memory": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bellek"
+          }
+        }
+      }
+    },
+    "dashboard.metric.cpu": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İşlemci"
+          }
+        }
+      }
+    },
+    "dashboard.metric.battery": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pil"
+          }
+        }
+      }
+    },
+    "dashboard.metric.network": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ağ"
+          }
+        }
+      }
+    },
+    "dashboard.factor.freeSpace": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boş alan"
+          }
+        }
+      }
+    },
+    "dashboard.factor.memoryPressure": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bellek baskısı"
+          }
+        }
+      }
+    },
+    "dashboard.factor.threats": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tehditler"
+          }
+        }
+      }
+    },
+    "dashboard.factor.pendingUpdates": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekleyen güncellemeler"
+          }
+        }
+      }
+    },
+    "dashboard.factor.startupLoad": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başlangıç öğeleri"
+          }
+        }
+      }
+    },
+    "dashboard.purgeable.note %@": {
+      "comment": "Explains that purgeable space is not a cleanup gain. CLAUDE.md §10.4.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bunun %@ kadarı macOS'un gerektiğinde kendi boşaltacağı alan; Burnish bunu kazanç saymıyor."
+          }
+        }
+      }
+    },
+    "dashboard.score.points %lld %lld": {
+      "comment": "Points earned out of available, e.g. 24/30.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld/%2$lld puan"
+          }
+        }
+      }
+    },
+    "dashboard.metric.network.detail": {
+      "comment": "Clarifies that network figures are per second.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "saniyede indirme"
+          }
+        }
+      }
+    },
+    "dashboard.metric.disk.detail %@": {
+      "comment": "Free space out of total, e.g. '1 TB icinde bos'.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ içinde boş"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

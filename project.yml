@@ -1,0 +1,113 @@
+# XcodeGen manifest — this file is the source of truth; Burnish.xcodeproj is generated and
+# gitignored. Declarative here means no pbxproj merge conflicts as the module count grows
+# (CLAUDE.md §17).
+#
+# Regenerate with:  xcodegen generate
+
+name: Burnish
+
+options:
+  bundleIdPrefix: com.burnish
+  createIntermediateGroups: true
+  deploymentTarget:
+    macOS: "14.0"
+  groupSortPosition: top
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    # CLAUDE.md §2: Swift 6 strict concurrency.
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_UPCOMING_FEATURE_CONCISE_MAGIC_FILE: YES
+    DEAD_CODE_STRIPPING: YES
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    # §13.2: Hardened Runtime on, App Sandbox off.
+    ENABLE_HARDENED_RUNTIME: YES
+    ENABLE_APP_SANDBOX: NO
+    # No signing identity on this machine yet (§1.2); release signing arrives with Developer ID.
+    CODE_SIGN_STYLE: Automatic
+    CODE_SIGN_IDENTITY: "-"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+  configs:
+    Debug:
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+      GCC_OPTIMIZATION_LEVEL: "0"
+      SWIFT_OPTIMIZATION_LEVEL: "-Onone"
+    Release:
+      SWIFT_OPTIMIZATION_LEVEL: "-O"
+      SWIFT_COMPILATION_MODE: wholemodule
+
+packages:
+  CoreKit:
+    path: Packages/CoreKit
+  DesignSystem:
+    path: Packages/DesignSystem
+  SafetyKit:
+    path: Packages/SafetyKit
+  ScanEngine:
+    path: Packages/ScanEngine
+  Licensing:
+    path: Packages/Licensing
+  SystemMonitor:
+    path: Packages/SystemMonitor
+  Dashboard:
+    path: Packages/Features/Dashboard
+  SmartScan:
+    path: Packages/Features/SmartScan
+
+targets:
+  Burnish:
+    type: application
+    platform: macOS
+    sources:
+      - path: App
+    settings:
+      base:
+        PRODUCT_NAME: Burnish
+        PRODUCT_BUNDLE_IDENTIFIER: com.burnish.app
+        # §15: the product name reaches code only through Info.plist and the String Catalog.
+        INFOPLIST_KEY_NSHumanReadableCopyright: ""
+        COMBINE_HIDPI_IMAGES: YES
+        ENABLE_PREVIEWS: YES
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleName: Burnish
+        CFBundleDisplayName: Burnish
+        CFBundlePackageType: APPL
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        LSApplicationCategoryType: public.app-category.utilities
+        NSHighResolutionCapable: true
+        # Turkish and English, per §6.9.
+        CFBundleLocalizations: [en, tr]
+        CFBundleDevelopmentRegion: en
+    dependencies:
+      - package: CoreKit
+        product: CoreKit
+      - package: DesignSystem
+        product: DesignSystem
+      - package: SafetyKit
+        product: SafetyKit
+      - package: ScanEngine
+        product: ScanEngine
+      - package: Licensing
+        product: Licensing
+      - package: SystemMonitor
+        product: SystemMonitor
+      - package: Dashboard
+        product: Dashboard
+      - package: SmartScan
+        product: SmartScan
+
+schemes:
+  Burnish:
+    build:
+      targets:
+        Burnish: all
+    run:
+      config: Debug
+    archive:
+      config: Release

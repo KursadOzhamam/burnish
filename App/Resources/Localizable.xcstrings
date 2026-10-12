@@ -1,0 +1,37 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "sidebar.dashboard" : {
+      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Genel Bakış" } } }
+    },
+    "sidebar.smartScan" : {
+      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Akıllı Tarama" } } }
+    },
+    "sidebar.cleanup" : {
+      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Temizlik" } } }
+    },
+    "sidebar.protection" : {
+      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Koruma" } } }
+    },
+    "sidebar.performance" : {
+      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hız" } } }
+    },
+    "sidebar.applications" : {
+      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Uygulamalar" } } }
+    },
+    "sidebar.files" : {
+      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Dosyalar" } } }
+    },
+    "sidebar.privacy" : {
+      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Gizlilik" } } }
+    },
+    "placeholder.title" : {
+      "comment" : "Shown for sections that arrive in a later phase.",
+      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu bölüm henüz hazır değil" } } }
+    },
+    "placeholder.message" : {
+      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Phase 1 temel yapıyı kuruyor. Bu ekran sırası gelen aşamada gerçek hale gelecek." } } }
+    }
+  },
+  "version" : "1.0"
+}

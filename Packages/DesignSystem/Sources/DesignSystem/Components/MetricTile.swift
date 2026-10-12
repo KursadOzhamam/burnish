@@ -47,12 +47,19 @@ public struct MetricTile: View {
                         .foregroundStyle(.tertiary)
                 }
 
-                if trend.count > 1 {
-                    Sparkline(values: trend, palette: palette)
-                        .frame(height: 34)
-                        .padding(.top, Spacing.xxs)
+                // Reserve the trend slot whether or not there is a series, so tiles in the
+                // same grid row line up instead of ragging (CLAUDE.md §5.1).
+                Group {
+                    if trend.count > 1 {
+                        Sparkline(values: trend, palette: palette)
+                    } else {
+                        Color.clear
+                    }
                 }
+                .frame(height: 34)
+                .padding(.top, Spacing.xxs)
             }
+            .frame(maxHeight: .infinity, alignment: .topLeading)
         }
         // One accessibility element per tile; reading icon, label and value separately is noise.
         .accessibilityElement(children: .combine)
