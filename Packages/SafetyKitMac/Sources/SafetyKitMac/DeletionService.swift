@@ -21,6 +21,7 @@ public struct DeletionService: Sendable {
     private let trashItem: @Sendable (URL) throws -> URL?
     private let removeItem: @Sendable (URL) throws -> Void
     private let fileExists: @Sendable (URL) -> Bool
+    private let protectedProcessPaths: [URL]
 
     /// - Parameters:
     ///   - guards: one `PathGuard` per scanner, defining where that scanner may act (§4.2).
@@ -30,12 +31,14 @@ public struct DeletionService: Sendable {
     public init(
         guards: [ScannerID: PathGuard],
         inspector: any RunningApplicationInspecting = RunningApplicationInspector(),
-        history: HistoryStore? = nil
+        history: HistoryStore? = nil,
+        protectedProcessPaths: [URL] = [Bundle.main.bundleURL]
     ) {
         self.init(
             guards: guards,
             inspector: inspector,
             history: history,
+            protectedProcessPaths: protectedProcessPaths,
             trashItem: { url in
                 var resulting: NSURL?
                 try FileManager.default.trashItem(at: url, resultingItemURL: &resulting)
@@ -58,6 +61,7 @@ public struct DeletionService: Sendable {
         guards: [ScannerID: PathGuard],
         inspector: any RunningApplicationInspecting,
         history: HistoryStore?,
+        protectedProcessPaths: [URL] = [],
         trashItem: @escaping @Sendable (URL) throws -> URL?,
         removeItem: @escaping @Sendable (URL) throws -> Void,
         fileExists: @escaping @Sendable (URL) -> Bool
@@ -68,6 +72,17 @@ public struct DeletionService: Sendable {
         self.trashItem = trashItem
         self.removeItem = removeItem
         self.fileExists = fileExists
+        self.protectedProcessPaths = protectedProcessPaths
+    }
+
+    /// True when removing `url` would remove the running process's own bundle.
+    ///
+    /// §4.5 recognises an owner by bundle identifier, which cannot see this case: Xcode names a
+    /// build folder `Burnish-<hash>`, not `com.burnish.app`. Found when the dry run offered to
+    /// trash the folder this very app was running from, preselected. Comparing paths is the
+    /// robust check: anything that contains the running bundle is off limits.
+    private func containsRunningProcess(_ url: URL) -> Bool {
+        protectedProcessPaths.contains { PathGuard.path($0.path, isWithin: url.path) }
     }
 
     // MARK: Dry run
@@ -77,13 +92,20 @@ public struct DeletionService: Sendable {
     /// Items that cannot be acted on are carried in `plan.skipped` with a reason, so the
     /// confirmation sheet can show what was left out instead of quietly dropping it.
     public func plan(for items: [ScanItem], mode: DeletionMode) -> DeletionPlan {
-        let screened = items.map { item -> ScanItem in
-            if let reason = refusalReason(for: item) {
-                return item.blocking(reason)
-            }
-            return item
+        DeletionPlan(items: screened(items), mode: mode)
+    }
+
+    /// Marks every item the safety layer would refuse, without building a plan.
+    ///
+    /// The Cleanup screen calls this straight after a scan, so the review list, its totals and
+    /// the preselection already reflect what can really be removed. Without it the list showed
+    /// one number and the confirmation sheet a smaller one — the app offering to trash its own
+    /// build folder, then quietly dropping it at the last step.
+    public func screened(_ items: [ScanItem]) -> [ScanItem] {
+        items.map { item in
+            guard let reason = refusalReason(for: item) else { return item }
+            return item.blocking(reason)
         }
-        return DeletionPlan(items: screened, mode: mode)
     }
 
     /// Why this item cannot be removed, or nil when it can.
@@ -105,6 +127,7 @@ public struct DeletionService: Sendable {
 
         // §4.5: skip anything belonging to a running application.
         if inspector.owningBundleIdentifier(of: item.url) != nil { return .ownerRunning }
+        if containsRunningProcess(item.url) { return .ownerRunning }
 
         return nil
     }
@@ -156,7 +179,7 @@ public struct DeletionService: Sendable {
             return DeletionOutcome(item: item, result: .failed(message: error.localizedDescription))
         }
 
-        if inspector.owningBundleIdentifier(of: resolved) != nil {
+        if inspector.owningBundleIdentifier(of: resolved) != nil || containsRunningProcess(resolved) {
             return DeletionOutcome(item: item, result: .skipped(.ownerRunning))
         }
 

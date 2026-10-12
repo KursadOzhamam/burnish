@@ -1,6 +1,8 @@
 import SwiftUI
 import CoreKit
+import SafetyKit
 import DesignSystem
+import Cleanup
 import Dashboard
 import SmartScan
 
@@ -8,6 +10,9 @@ import SmartScan
 struct RootView: View {
     @State private var selection: AppSection = .dashboard
     @State private var scanCoordinator = ScanCoordinator()
+
+    /// Held here rather than inside the view so findings survive navigating away and back.
+    @State private var cleanupModel = CleanupModel(history: Self.makeHistory())
 
     var body: some View {
         NavigationSplitView {
@@ -54,8 +59,27 @@ struct RootView: View {
                 onCancel: scanCoordinator.cancel
             )
 
+        case .cleanup:
+            CleanupView(model: cleanupModel)
+
         default:
             PlaceholderView(section: selection)
+        }
+    }
+}
+
+extension RootView {
+    /// The operation log at `~/Library/Application Support/<App>/history.sqlite` (§4.7).
+    ///
+    /// A log that cannot be opened must not stop the app from running; cleanup still works,
+    /// it just cannot offer restore afterwards.
+    static func makeHistory() -> HistoryStore? {
+        do {
+            let directory = try AppIdentity.current.supportDirectory()
+            return try HistoryStore(url: directory.appendingPathComponent("history.sqlite"))
+        } catch {
+            Log.module("App").error("history unavailable: \(error.localizedDescription)")
+            return nil
         }
     }
 }

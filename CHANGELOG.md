@@ -31,6 +31,9 @@ Bu dosya [Keep a Changelog](https://keepachangelog.com/) biçimini ve
   - `IOKitReaders` — pil şarjı/sağlığı/döngü sayısı, IORegistry'den model adı
   - `LiveSystemMonitor` — aktör tabanlı önceki örnek durumu, 1 sn akış
   - Genel Bakış artık canlı: gerçek disk, bellek, işlemci, pil, ağ
+- **Phase 4 Temizlik ekranı** — kategori kartları, öğe listesi, onay sayfası, sonuç ekranı;
+  `CleanupModel` §4.6 sırasını (tara → incele → onayla → uygula) tip düzeyinde zorluyor.
+  Uygulamaya bağlı; **silme yolu artık açık** — gerçek silme henüz çalıştırılmadı.
 - **Phase 4 (kısmi) temizlik tarayıcıları** — 26 test:
   - `CoreKitMac/FileTreeWalker` — sert bağlantı tekilleştirmesi, symlink dışlama, iptal, ilerleme
   - `CleanupCatalogue` — 8 tarayıcı kuralı, dokunulmayacak Apple önbellekleri listesi
@@ -59,9 +62,8 @@ Bu dosya [Keep a Changelog](https://keepachangelog.com/) biçimini ve
 - `DeletionService` henüz arayüze bağlı değil; Temizlik akışı Phase 4'te gelecek.
 - Developer ID sertifikası yok; imzalı derleme ve notarizasyon iş akışı henüz oluşturulmadı (R8).
 - "Burnish" için hukuki marka araştırması yapılmadı (R15).
-- **Phase 4 yarım:** tarayıcılar ve kuru çalıştırma hazır, Temizlik arayüzü (kategori kartları,
-  öğe listesi, onay sayfası, sonuç ekranı) henüz yazılmadı. `DeletionService` hâlâ arayüze bağlı
-  değil — uygulama şu an hiçbir dosya silmiyor.
+- Gerçek silme uçtan uca denenmedi: `DeletionService` arayüze bağlı ve test edildi, ama ilk gerçek
+  temizlik kullanıcı onayıyla yapılacak (CLAUDE.md §15).
 - Akıllı Tarama simüle; gerçek tarayıcılara bağlanması Temizlik arayüzünden sonra.
 - `Licensing` her şeyi Pro döndürüyor; gerçek doğrulama Phase 10'da.
 - Kenar çubuğundaki 6 bölüm yer tutucu.

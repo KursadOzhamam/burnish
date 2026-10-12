@@ -664,3 +664,8 @@ Karara bağlananlar: A1 (Paddle), A2 (tek seferlik + 1 yıl), A4 (GitHub Actions
 | 2026-10-12 | `DeletionPlan` iç içe öğeleri tekilleştirir (`nestedInAnotherItem`) | Katalog örtüşmemeli, ama örtüşürse rakam yanlış çıkmasın diye savunma hattı. Üst öğe silinince alt öğe zaten gider; ikisini de saymak §10.4'ün yasakladığı şişirme olur |
 | 2026-10-12 | `Tools/DryRun` kalıcı geliştirici aracı olarak eklendi | §15 her silme kodunu kuru çalıştırmayla göstermeyi şart koşuyor. Tek seferlik betik yerine kalıcı araç: sonraki her tarayıcı aynı süzgeçten geçecek |
 
+
+| 2026-10-12 | `DeletionService` çalışan sürecin kendi paketini içeren hiçbir öğeyi silmez | §4.5 sahibi bundle ID ile buluyor; ama Xcode derleme klasörü `Burnish-<hash>` adlı, bundle ID içermiyor. Tarama, uygulamanın çalıştığı klasörü önceden seçili olarak öneriyordu — onaylansa uygulama kendi çalışan dosyasını Çöp'e atardı. Yol karşılaştırması bundle ID'den daha sağlam |
+| 2026-10-12 | Güvenlik elemesi **taramadan hemen sonra** uygulanır (`DeletionService.screened`) | Eleme yalnızca plan kurulurken yapılınca inceleme ekranı 7,81 GB, onay sayfası daha az gösterecekti. Ekranın ve sayfanın aynı rakamı göstermesi, kullanıcının onayladığı şeyin yapılan şey olması demek |
+| 2026-10-12 | Onay sayfası her öğenin klasörünü de gösterir | "Adobe" gibi adlar hem Caches'te hem Logs'ta geçiyor; yalnızca ada bakan kullanıcı neyin gittiğini ayırt edemez |
+\n

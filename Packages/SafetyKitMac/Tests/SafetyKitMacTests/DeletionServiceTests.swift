@@ -272,3 +272,68 @@ struct DeletionServiceTests {
         #expect(try history.restorable().isEmpty)
     }
 }
+
+/// Regression cover for the app offering to trash the folder it is running from.
+@Suite("Running process protection")
+struct RunningProcessProtectionTests {
+    private let scanner = ScannerID("test.dev")
+    private let home = URL(fileURLWithPath: "/Users/tester")
+    private var root: URL { home.appendingPathComponent("Library/Developer/Xcode/DerivedData") }
+
+    private func service(runningFrom bundle: URL) -> DeletionService {
+        DeletionService(
+            guards: [scanner: PathGuard(allowedRoots: [root], home: home)],
+            inspector: StaticRunningApplicationInspector(),
+            history: nil,
+            protectedProcessPaths: [bundle],
+            trashItem: { _ in nil },
+            removeItem: { _ in },
+            fileExists: { _ in true }
+        )
+    }
+
+    private func item(_ relative: String) -> ScanItem {
+        ScanItem(scanner: scanner, url: root.appendingPathComponent(relative), size: .megabytes(700))
+    }
+
+    @Test("A folder containing the running app's bundle is refused, however it is named")
+    func buildFolderOfTheRunningAppIsRefused() {
+        let bundle = root.appendingPathComponent("Burnish-abc123/Build/Products/Debug/Burnish.app")
+        let subject = service(runningFrom: bundle)
+
+        let plan = subject.plan(for: [item("Burnish-abc123")], mode: .trash)
+
+        #expect(plan.isEmpty)
+        #expect(plan.skipped.first?.blockedReason == .ownerRunning)
+    }
+
+    @Test("Other build folders beside it are still offered")
+    func siblingsAreStillOffered() {
+        let bundle = root.appendingPathComponent("Burnish-abc123/Build/Products/Debug/Burnish.app")
+        let subject = service(runningFrom: bundle)
+
+        let plan = subject.plan(
+            for: [item("Burnish-abc123"), item("OtherProject-def456")],
+            mode: .trash
+        )
+
+        #expect(plan.itemCount == 1)
+        #expect(plan.items.first?.displayName == "OtherProject-def456")
+    }
+
+    @Test("It is refused again at execution time, not only when planned")
+    func refusedAtExecutionToo() throws {
+        let bundle = root.appendingPathComponent("Burnish-abc123/Build/Products/Debug/Burnish.app")
+        let subject = service(runningFrom: bundle)
+        // Plan against a service that does not know about the running bundle...
+        let permissive = service(runningFrom: URL(fileURLWithPath: "/nowhere"))
+        let plan = permissive.plan(for: [item("Burnish-abc123")], mode: .trash)
+        #expect(plan.itemCount == 1, "fixture should be actionable to the permissive service")
+
+        // ...and execute it with one that does.
+        let report = try subject.execute(plan)
+        #expect(report.reclaimed == .zero)
+        #expect(report.skipped.count == 1)
+    }
+}
+

@@ -1,0 +1,206 @@
+import SwiftUI
+import CoreKit
+import DesignSystem
+import ScanEngine
+import SafetyKit
+
+/// The Cleanup screen — CLAUDE.md §6.3.
+///
+/// The flow is deliberately linear: category cards, then the item list, then a confirmation
+/// sheet that states exactly what will happen, then the result. Nothing is removed before the
+/// sheet is approved (§4.6).
+public struct CleanupView: View {
+    @State private var model: CleanupModel
+
+    private var section: AppSection { .cleanup }
+
+    public init(model: CleanupModel = CleanupModel()) {
+        self._model = State(initialValue: model)
+    }
+
+    public var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.large) {
+            SectionHeader(
+                title: CleanupStrings.title,
+                subtitle: CleanupStrings.subtitle,
+                palette: section.palette
+            )
+
+            switch model.phase {
+            case .idle:
+                idleState
+            case .scanning(let progress):
+                scanningState(progress)
+            case .reviewing:
+                reviewState
+            case .deleting(let completed, let total):
+                deletingState(completed: completed, total: total)
+            case .finished(let report):
+                CleanupResultView(report: report) { model.reset() }
+            }
+        }
+        .padding(Spacing.large)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(.background)
+        .motion(Motion.smooth, value: model.openCategory)
+        .sheet(item: Binding(
+            get: { model.pendingPlan.map(IdentifiedPlan.init) },
+            set: { if $0 == nil { model.dismissConfirmation() } }
+        )) { wrapper in
+            ConfirmationSheet(
+                plan: wrapper.plan,
+                onCancel: model.dismissConfirmation,
+                onConfirm: { model.confirm(wrapper.plan) }
+            )
+        }
+    }
+
+    // MARK: States
+
+    private var idleState: some View {
+        VStack(spacing: Spacing.large) {
+            Spacer()
+            EmptyState(
+                symbol: "sparkle.magnifyingglass",
+                title: CleanupStrings.title,
+                message: CleanupStrings.subtitle
+            )
+            ScanButton(
+                title: CleanupStrings.scanAction,
+                palette: section.textSafePalette,
+                action: model.scan
+            )
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private func scanningState(_ progress: ScanProgress) -> some View {
+        VStack(spacing: Spacing.large) {
+            Spacer()
+            GradientRing(
+                progress: progress.fraction ?? 0,
+                palette: section.palette,
+                lineWidth: 14,
+                isIndeterminate: progress.fraction == nil
+            )
+            .frame(width: 180, height: 180)
+            .overlay {
+                AnimatedCounter(progress.discovered.formatted(), font: Typography.metric)
+                    .frame(maxWidth: 130)
+            }
+
+            Text(progress.currentPath ?? "")
+                .font(Typography.path)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+                .truncationMode(.middle)
+                .frame(maxWidth: 520, minHeight: 20)
+
+            Button(role: .cancel, action: model.cancel) {
+                Text(CleanupStrings.cancel).frame(minWidth: 110)
+            }
+            .controlSize(.large)
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    @ViewBuilder
+    private var reviewState: some View {
+        if model.categories.isEmpty {
+            VStack {
+                Spacer()
+                EmptyState(
+                    symbol: "checkmark.circle",
+                    title: CleanupStrings.nothingFound,
+                    message: CleanupStrings.nothingFoundDetail
+                )
+                Spacer()
+            }
+        } else {
+            ScrollView {
+                LazyVStack(spacing: Spacing.medium) {
+                    ForEach(model.categories) { category in
+                        CategoryCard(
+                            category: category,
+                            isExpanded: model.openCategory == category.id,
+                            model: model,
+                            onToggleExpanded: {
+                                model.openCategory = model.openCategory == category.id
+                                    ? nil
+                                    : category.id
+                            }
+                        )
+                    }
+                }
+                .padding(.bottom, Spacing.xl)
+            }
+            reviewFooter
+        }
+    }
+
+    private var reviewFooter: some View {
+        HStack(spacing: Spacing.medium) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(
+                    CleanupStrings.selected(
+                        count: model.selectedItems.count,
+                        size: model.selectedSize.formatted()
+                    )
+                )
+                .numericStyle(Typography.cardTitle)
+
+                if model.blockedCount > 0 {
+                    // Say what was left out and why, rather than quietly dropping it (§4.8).
+                    Text(CleanupStrings.skipped(count: model.blockedCount))
+                        .font(Typography.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            Spacer()
+
+            Button(action: model.reset) {
+                Text(CleanupStrings.cancel)
+            }
+            .controlSize(.large)
+
+            Button(action: model.prepareConfirmation) {
+                Text(CleanupStrings.reviewAction).frame(minWidth: 140)
+            }
+            .controlSize(.large)
+            .buttonStyle(.borderedProminent)
+            .disabled(model.selectedItems.isEmpty)
+        }
+        .padding(.top, Spacing.xs)
+    }
+
+    private func deletingState(completed: Int, total: Int) -> some View {
+        VStack(spacing: Spacing.large) {
+            Spacer()
+            GradientRing(
+                progress: total > 0 ? Double(completed) / Double(total) : 0,
+                palette: section.palette,
+                lineWidth: 14,
+                isIndeterminate: true
+            )
+            .frame(width: 140, height: 140)
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
+
+/// Wraps a plan so it can drive a `sheet(item:)`.
+private struct IdentifiedPlan: Identifiable {
+    let plan: DeletionPlan
+    var id: Int { plan.hashValue }
+
+    init(_ plan: DeletionPlan) { self.plan = plan }
+}
+
+#Preview("Cleanup — idle") {
+    CleanupView()
+        .frame(width: 900, height: 700)
+}

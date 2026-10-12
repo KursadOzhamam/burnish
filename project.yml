@@ -53,6 +53,10 @@ packages:
     path: Packages/Licensing
   SystemMonitor:
     path: Packages/SystemMonitor
+  CoreKitMac:
+    path: Packages/CoreKitMac
+  Cleanup:
+    path: Packages/Features/Cleanup
   Dashboard:
     path: Packages/Features/Dashboard
   SmartScan:
@@ -105,6 +109,10 @@ targets:
         product: Dashboard
       - package: SmartScan
         product: SmartScan
+      - package: CoreKitMac
+        product: CoreKitMac
+      - package: Cleanup
+        product: Cleanup
 
 schemes:
   Burnish:

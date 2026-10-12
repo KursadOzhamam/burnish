@@ -25,8 +25,8 @@ extension AppSection {
     /// Whether Phase 1 has a real screen for this section.
     var isImplemented: Bool {
         switch self {
-        case .dashboard, .smartScan: true
-        case .cleanup, .protection, .performance, .applications, .files, .privacy: false
+        case .dashboard, .smartScan, .cleanup: true
+        case .protection, .performance, .applications, .files, .privacy: false
         }
     }
 }
