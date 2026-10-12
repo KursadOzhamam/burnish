@@ -79,6 +79,11 @@ extension ScanItem {
         case protectedPath
         /// Outside the scanner's declared root, so this scanner has no business touching it (§4.2).
         case outsideScope
+        /// Already covered by a parent item in the same plan.
+        ///
+        /// Not a refusal — removing the parent removes this too. It is surfaced so the totals
+        /// add up and the user is not told something was skipped for a reason that is not true.
+        case nestedInAnotherItem
         /// The owning application is running (§4.5).
         case ownerRunning
         /// Reading or removing it needs Full Disk Access (§7).
@@ -100,6 +105,22 @@ extension ScanItem {
     /// Size of this item plus everything nested under it.
     public var totalSize: ByteCount {
         children.reduce(size) { $0 + $1.totalSize }
+    }
+}
+
+extension ScanItem {
+    /// A copy marked as blocked, keeping the same identity so a UI selection survives.
+    public func blocking(_ reason: BlockedReason) -> ScanItem {
+        ScanItem(
+            id: id,
+            scanner: scanner,
+            url: url,
+            displayName: displayName,
+            size: size,
+            confidence: confidence,
+            children: children,
+            blockedReason: reason
+        )
     }
 }
 

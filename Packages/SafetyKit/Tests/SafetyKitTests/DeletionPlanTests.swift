@@ -116,3 +116,75 @@ struct DeletionReportTests {
         #expect(report.hasFailures)
     }
 }
+
+/// Guards the total against double counting — CLAUDE.md §10.4.
+@Suite("Plan de-duplication")
+struct PlanNestingTests {
+    private let scanner = ScannerID("test")
+
+    private func item(_ path: String, size: Int64 = 1_000) -> ScanItem {
+        ScanItem(scanner: scanner, url: URL(fileURLWithPath: path), size: ByteCount(size))
+    }
+
+    @Test("An item inside another item is counted once, not twice")
+    func nestedItemIsCountedOnce() {
+        let plan = DeletionPlan(
+            items: [
+                item("/Users/t/Library/Caches/Brave", size: 1_000),
+                item("/Users/t/Library/Caches/Brave/Default", size: 1_000)
+            ],
+            mode: .trash
+        )
+        #expect(plan.itemCount == 1)
+        #expect(plan.totalSize.bytes == 1_000, "the child's bytes are already inside the parent")
+        #expect(plan.skipped.count == 1)
+    }
+
+    @Test("The parent is kept and the child dropped, whatever order they arrive in")
+    func parentWinsRegardlessOfOrder() {
+        let child = item("/a/b/c")
+        let parent = item("/a/b")
+
+        for ordering in [[child, parent], [parent, child]] {
+            let plan = DeletionPlan(items: ordering, mode: .trash)
+            #expect(plan.items.first?.url.path == "/a/b")
+        }
+    }
+
+    @Test("Siblings are both kept")
+    func siblingsAreUnaffected() {
+        let plan = DeletionPlan(
+            items: [item("/a/b", size: 10), item("/a/c", size: 20)],
+            mode: .trash
+        )
+        #expect(plan.itemCount == 2)
+        #expect(plan.totalSize.bytes == 30)
+    }
+
+    @Test("A name that merely shares a prefix is not treated as nested")
+    func prefixCollisionIsNotNesting() {
+        let plan = DeletionPlan(
+            items: [item("/a/cache"), item("/a/cache-old")],
+            mode: .trash
+        )
+        #expect(plan.itemCount == 2)
+    }
+
+    @Test("Deep nesting collapses to the outermost item")
+    func deepNestingCollapses() {
+        let plan = DeletionPlan(
+            items: [item("/a"), item("/a/b"), item("/a/b/c"), item("/a/b/c/d")],
+            mode: .trash
+        )
+        #expect(plan.itemCount == 1)
+        #expect(plan.items.first?.url.path == "/a")
+        #expect(plan.skipped.count == 3)
+    }
+
+    @Test("Containment is computed by component, not by string prefix")
+    func containmentByComponent() {
+        #expect(DeletionPlan.path(URL(fileURLWithPath: "/a/b/c"), isInside: URL(fileURLWithPath: "/a/b")))
+        #expect(!DeletionPlan.path(URL(fileURLWithPath: "/a/bc"), isInside: URL(fileURLWithPath: "/a/b")))
+        #expect(!DeletionPlan.path(URL(fileURLWithPath: "/a/b"), isInside: URL(fileURLWithPath: "/a/b")))
+    }
+}

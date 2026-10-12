@@ -1,0 +1,408 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "cleanup.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlik"
+          }
+        }
+      }
+    },
+    "cleanup.subtitle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gereksiz dosyaları bulur. Ne silineceğini görmeden hiçbir şey silinmez."
+          }
+        }
+      }
+    },
+    "cleanup.action.scan": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taramayı Başlat"
+          }
+        }
+      }
+    },
+    "cleanup.action.review": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçilenleri İncele"
+          }
+        }
+      }
+    },
+    "cleanup.action.cancel": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İptal"
+          }
+        }
+      }
+    },
+    "cleanup.action.selectAll": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tümünü seç"
+          }
+        }
+      }
+    },
+    "cleanup.action.deselectAll": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçimi kaldır"
+          }
+        }
+      }
+    },
+    "cleanup.empty.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlenecek bir şey yok"
+          }
+        }
+      }
+    },
+    "cleanup.empty.detail": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu Mac'te şu an kayda değer önbellek birikmemiş. Birkaç gün kullandıktan sonra tekrar bak."
+          }
+        }
+      }
+    },
+    "cleanup.blocked.needsHelper": {
+      "comment": "Honest about a capability that does not exist yet.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem izni gerekiyor — bu yetenek henüz eklenmedi"
+          }
+        }
+      }
+    },
+    "cleanup.blocked.ownerRunning": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulama açık, atlandı"
+          }
+        }
+      }
+    },
+    "cleanup.blocked.protectedPath": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Korunan yol — hiçbir koşulda silinmez"
+          }
+        }
+      }
+    },
+    "cleanup.blocked.nested": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Üstteki öğenin içinde, ayrıca sayılmadı"
+          }
+        }
+      }
+    },
+    "cleanup.blocked.other": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu tarayıcının kapsamı dışında"
+          }
+        }
+      }
+    },
+    "cleanup.confirm.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silinecekler"
+          }
+        }
+      }
+    },
+    "cleanup.confirm.note": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öğeler Çöp Kutusu'na taşınır. İstediğin zaman geri alabilirsin."
+          }
+        }
+      }
+    },
+    "cleanup.confirm.permanentWarning": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu öğeler kalıcı olarak silinir. Geri alınamaz."
+          }
+        }
+      }
+    },
+    "cleanup.confirm.moveToTrash": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çöp'e Taşı"
+          }
+        }
+      }
+    },
+    "cleanup.confirm.deletePermanently": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalıcı Olarak Sil"
+          }
+        }
+      }
+    },
+    "cleanup.result.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kazanılan alan"
+          }
+        }
+      }
+    },
+    "cleanup.summary %lld %@": {
+      "comment": "Item count and total size, e.g. '145 öğe · 5,4 GB'.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld öğe · %2$@"
+          }
+        }
+      }
+    },
+    "cleanup.selected %lld %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld öğe seçildi · %2$@"
+          }
+        }
+      }
+    },
+    "cleanup.skipped %lld": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld öğe atlandı"
+          }
+        }
+      }
+    },
+    "cleanup.userCaches.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulama önbellekleri"
+          }
+        }
+      }
+    },
+    "cleanup.userCaches.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulamaların hızlanmak için sakladığı geçici dosyalar. Silinince uygulamalar bunları gerektiğinde yeniden oluşturur."
+          }
+        }
+      }
+    },
+    "cleanup.userLogs.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günlük dosyaları"
+          }
+        }
+      }
+    },
+    "cleanup.userLogs.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulamaların tuttuğu tanı kayıtları. Bir sorunu bildirmeyi planlamıyorsan gerekmez."
+          }
+        }
+      }
+    },
+    "cleanup.developerJunk.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geliştirici artıkları"
+          }
+        }
+      }
+    },
+    "cleanup.developerJunk.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode derleme çıktıları ve paket yöneticisi önbellekleri. Bir sonraki derlemede yeniden üretilir — ama o derleme daha uzun sürer."
+          }
+        }
+      }
+    },
+    "cleanup.browserCaches.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarayıcı önbellekleri"
+          }
+        }
+      }
+    },
+    "cleanup.browserCaches.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Safari, Chrome, Firefox, Edge, Brave ve Arc'ın sakladığı sayfa verileri. Açık olan tarayıcılar atlanır. Geçmişine ve parolalarına dokunulmaz."
+          }
+        }
+      }
+    },
+    "cleanup.mailDownloads.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mail ek indirmeleri"
+          }
+        }
+      }
+    },
+    "cleanup.mailDownloads.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açtığın eklerin yerel kopyaları. Postaların ve posta veritabanın korunur; gerekirse ek yeniden indirilir."
+          }
+        }
+      }
+    },
+    "cleanup.mobileBackups.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone ve iPad yedekleri"
+          }
+        }
+      }
+    },
+    "cleanup.mobileBackups.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cihaz yedekleri ve indirilmiş yazılım güncellemeleri. Bir yedek cihazının tek kopyası olabilir — bu yüzden hiçbiri önceden seçilmez."
+          }
+        }
+      }
+    },
+    "cleanup.userTrash.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çöp Kutusu"
+          }
+        }
+      }
+    },
+    "cleanup.userTrash.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çöp'ü boşaltmak tanımı gereği kalıcıdır; bu öğeler Çöp'e taşınmaz, silinir."
+          }
+        }
+      }
+    },
+    "cleanup.systemCaches.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem önbellekleri ve günlükleri"
+          }
+        }
+      }
+    },
+    "cleanup.systemCaches.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yönetici izni gerektiren sistem klasörleri. Ne olduğunu görebilirsin; silme yeteneği henüz eklenmedi."
+          }
+        }
+      }
+    },
+    "cleanup.result.failures %lld": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld öğe silinemedi"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

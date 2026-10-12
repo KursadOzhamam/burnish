@@ -182,22 +182,6 @@ public struct DeletionService: Sendable {
 
 // MARK: - Helpers
 
-extension ScanItem {
-    /// Returns a copy marked as blocked, preserving identity so the UI selection survives.
-    func blocking(_ reason: BlockedReason) -> ScanItem {
-        ScanItem(
-            id: id,
-            scanner: scanner,
-            url: url,
-            displayName: displayName,
-            size: size,
-            confidence: confidence,
-            children: children,
-            blockedReason: reason
-        )
-    }
-}
-
 extension SafetyError {
     /// How this refusal is shown to the user in a result list.
     var blockedReason: ScanItem.BlockedReason {
