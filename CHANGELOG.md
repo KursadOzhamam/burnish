@@ -31,6 +31,8 @@ Bu dosya [Keep a Changelog](https://keepachangelog.com/) biçimini ve
   - `IOKitReaders` — pil şarjı/sağlığı/döngü sayısı, IORegistry'den model adı
   - `LiveSystemMonitor` — aktör tabanlı önceki örnek durumu, 1 sn akış
   - Genel Bakış artık canlı: gerçek disk, bellek, işlemci, pil, ağ
+- `scripts/run.sh` — derleyip çalıştırır; uygulama `/Applications`'a kurulmaz, derleme
+  çıktısından çalışır ki açılan sürüm daima depodaki kod olsun
 
 ### Performans
 - Genel Bakış boşta: CPU tek çekirdeğin %74'ünden **%18'ine**, RSS 203 MB'tan **110 MB**'a indi
