@@ -70,6 +70,7 @@ public struct CleanupScanner: Scanning {
 
         // A browser that is open keeps its cache mapped; skip the whole scanner rather than
         // racing it (§4.5, §6.3).
+        let running = inspector.runningBundleIdentifiers()
         let runningOwners = Set(
             rule.ownerBundlePrefixes.filter { prefix in
                 inspector.runningBundleIdentifiers().contains { $0.hasPrefix(prefix) }
@@ -88,7 +89,12 @@ public struct CleanupScanner: Scanning {
             // Ownership is a property of the root, not of the files inside it: Safari's cache
             // root is named for its bundle identifier, while its children are named
             // "WebKitCache" and the like. Deciding per child silently failed to block anything.
-            let blocked = blockedReason(forRoot: url, runningOwners: runningOwners)
+            let blocked = blockedReason(
+                forRoot: url,
+                rootOwner: root.owner,
+                running: running,
+                runningOwners: runningOwners
+            )
 
             if root.listsChildren {
                 do {
@@ -194,9 +200,16 @@ public struct CleanupScanner: Scanning {
     /// application's bundle identifier appears.
     private func blockedReason(
         forRoot url: URL,
+        rootOwner: String?,
+        running: Set<String>,
         runningOwners: Set<String>
     ) -> ScanItem.BlockedReason? {
         if rule.requiresHelper { return .needsHelper }
+
+        // Explicit ownership first: it does not depend on the path naming the application.
+        if let rootOwner, running.contains(where: { $0.hasPrefix(rootOwner) }) {
+            return .ownerRunning
+        }
 
         let components = url.pathComponents
         let isOwnedByRunningApp = runningOwners.contains { owner in

@@ -90,18 +90,35 @@ public struct CleanupRoot: Sendable, Hashable {
     /// contents are meaningless individually.
     public let listsChildren: Bool
 
-    public init(base: Base, path: String, listsChildren: Bool = true) {
+    /// Bundle identifier prefix of the application that owns this root.
+    ///
+    /// While a running process matches, everything under the root is skipped (CLAUDE.md §4.5).
+    /// Declared explicitly because the identifier is often *not* in the path: Chrome keeps its
+    /// cache under `Caches/Google/Chrome`, which names no bundle id at all, so a check that only
+    /// looks at path components never saw it was running.
+    public let owner: String?
+
+    public init(base: Base, path: String, listsChildren: Bool = true, owner: String? = nil) {
         self.base = base
         self.path = path
         self.listsChildren = listsChildren
+        self.owner = owner
     }
 
-    public static func home(_ path: String, listsChildren: Bool = true) -> CleanupRoot {
-        CleanupRoot(base: .home, path: path, listsChildren: listsChildren)
+    public static func home(
+        _ path: String,
+        listsChildren: Bool = true,
+        owner: String? = nil
+    ) -> CleanupRoot {
+        CleanupRoot(base: .home, path: path, listsChildren: listsChildren, owner: owner)
     }
 
-    public static func absolute(_ path: String, listsChildren: Bool = true) -> CleanupRoot {
-        CleanupRoot(base: .absolute, path: path, listsChildren: listsChildren)
+    public static func absolute(
+        _ path: String,
+        listsChildren: Bool = true,
+        owner: String? = nil
+    ) -> CleanupRoot {
+        CleanupRoot(base: .absolute, path: path, listsChildren: listsChildren, owner: owner)
     }
 
     /// Resolves against a home directory.

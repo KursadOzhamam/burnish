@@ -453,6 +453,46 @@
           }
         }
       }
+    },
+    "cleanup.xcodeDeviceSupport.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode cihaz desteği"
+          }
+        }
+      }
+    },
+    "cleanup.xcodeDeviceSupport.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode'un bağladığın iPhone, iPad ve diğer cihazlar için sakladığı hata ayıklama sembolleri. Cihaz tekrar bağlanınca yeniden oluşturulur, ama ilk bağlanışta birkaç dakika sürer. Bu yüzden hiçbiri önceden seçilmez."
+          }
+        }
+      }
+    },
+    "cleanup.xcodeArchives.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode arşivleri"
+          }
+        }
+      }
+    },
+    "cleanup.xcodeArchives.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yayınladığın sürümlerin arşivleri. Eski bir sürümün çökme raporunu çözmek için gereken semboller yalnızca burada olabilir, bu yüzden hiçbiri önceden seçilmez."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

@@ -90,16 +90,19 @@ let service = DeletionService(
     guards: guards,
     inspector: RunningApplicationInspector()
 )
-let plan = service.plan(for: allItems, mode: .trash)
+let everything = service.plan(for: allItems, mode: .trash)
+let plan = service.plan(for: allItems.defaultSelection(), mode: .trash)
 
 print("")
 print(String(repeating: "─", count: 78))
-print("Plan that would be presented for approval:")
+print("Plan from the PRESELECTED items (what the screen starts with):")
 print("  mode               \(plan.mode) (reversible: \(!plan.mode.isIrreversible))")
 print("  would move         \(plan.itemCount) items, \(plan.totalSize.formatted())")
-print("  would skip         \(plan.skipped.count) items")
-if !plan.skipped.isEmpty {
-    let grouped = Dictionary(grouping: plan.skipped) { $0.blockedReason ?? .outsideScope }
+print("  available by hand  \(everything.itemCount) items, \(everything.totalSize.formatted())"
+      + "  (adds the low-confidence ones, never preselected)")
+print("  would skip         \(everything.skipped.count) items")
+if !everything.skipped.isEmpty {
+    let grouped = Dictionary(grouping: everything.skipped) { $0.blockedReason ?? .outsideScope }
     for (reason, items) in grouped.sorted(by: { $0.value.count > $1.value.count }) {
         print("      \(reasonLabel(reason).padding(toLength: 18, withPad: " ", startingAt: 0))"
               + "\(items.count) items, \(items.totalSize().formatted())")

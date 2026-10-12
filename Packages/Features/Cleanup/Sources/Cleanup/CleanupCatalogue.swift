@@ -61,6 +61,8 @@ public enum CleanupCatalogue {
         userCaches,
         userLogs,
         developerJunk,
+        xcodeDeviceSupport,
+        xcodeArchives,
         browserCaches,
         mailDownloads,
         mobileBackups,
@@ -111,18 +113,47 @@ public enum CleanupCatalogue {
         confidence: .high
     )
 
+    /// Debug symbols Xcode keeps for every device and OS version it has connected to.
+    ///
+    /// Often the largest single item on a developer's Mac (12 GB here). Xcode rebuilds a folder
+    /// the next time that device is plugged in, but that first sync takes minutes, so nothing
+    /// is preselected: the user decides which versions they will not need again.
+    public static let xcodeDeviceSupport = CleanupRule(
+        id: ScannerID("cleanup.xcodeDeviceSupport"),
+        titleKey: "cleanup.xcodeDeviceSupport.title",
+        explanationKey: "cleanup.xcodeDeviceSupport.explanation",
+        roots: [
+            .home("Library/Developer/Xcode/iOS DeviceSupport", owner: "com.apple.dt.Xcode"),
+            .home("Library/Developer/Xcode/watchOS DeviceSupport", owner: "com.apple.dt.Xcode"),
+            .home("Library/Developer/Xcode/tvOS DeviceSupport", owner: "com.apple.dt.Xcode")
+        ],
+        confidence: .low
+    )
+
+    /// Archives of builds the user has shipped.
+    ///
+    /// The symbols needed to read a crash report from a released version may exist only here, so
+    /// losing one silently would be a real loss. Listed, never preselected.
+    public static let xcodeArchives = CleanupRule(
+        id: ScannerID("cleanup.xcodeArchives"),
+        titleKey: "cleanup.xcodeArchives.title",
+        explanationKey: "cleanup.xcodeArchives.explanation",
+        roots: [.home("Library/Developer/Xcode/Archives", owner: "com.apple.dt.Xcode")],
+        confidence: .low
+    )
+
     /// Browser caches. Each browser is skipped while it is running (§4.5, §6.3).
     public static let browserCaches = CleanupRule(
         id: ScannerID("cleanup.browserCaches"),
         titleKey: "cleanup.browserCaches.title",
         explanationKey: "cleanup.browserCaches.explanation",
         roots: [
-            .home("Library/Caches/com.apple.Safari"),
-            .home("Library/Caches/Google/Chrome"),
-            .home("Library/Caches/Firefox"),
-            .home("Library/Caches/com.microsoft.edgemac"),
-            .home("Library/Caches/BraveSoftware"),
-            .home("Library/Caches/company.thebrowser.Browser")
+            .home("Library/Caches/com.apple.Safari", owner: "com.apple.Safari"),
+            .home("Library/Caches/Google/Chrome", owner: "com.google.Chrome"),
+            .home("Library/Caches/Firefox", owner: "org.mozilla.firefox"),
+            .home("Library/Caches/com.microsoft.edgemac", owner: "com.microsoft.edgemac"),
+            .home("Library/Caches/BraveSoftware", owner: "com.brave.Browser"),
+            .home("Library/Caches/company.thebrowser.Browser", owner: "company.thebrowser.Browser")
         ],
         ownerBundlePrefixes: [
             "com.apple.Safari",
