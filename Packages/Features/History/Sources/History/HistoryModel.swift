@@ -5,16 +5,12 @@ import SafetyKit
 import SafetyKitMac
 
 /// Anything that can put a trashed item back. A protocol so the model can be tested without
-/// touching the filesystem (CLAUDE.md §9).
+/// touching the filesystem (CLAUDE.md §9). `RestoreService` already has the matching method.
 public protocol RestoringItems: Sendable {
     func restore(recordID: Int64) throws -> URL
 }
 
-extension RestoreService: RestoringItems {
-    public func restore(recordID: Int64) throws -> URL {
-        try self.restore(recordID: recordID) as URL
-    }
-}
+extension RestoreService: RestoringItems {}
 
 /// State behind the history screen — CLAUDE.md §4.7 and §6.9.
 @Observable
@@ -31,7 +27,7 @@ public final class HistoryModel {
     public private(set) var totalReclaimed: ByteCount = .zero
     public private(set) var notice: Notice?
 
-    /// False when the log could not be opened, so the screen can say so rather than look empty.
+    /// False when the log could not be opened, so the screen says so instead of looking empty.
     public let isAvailable: Bool
 
     private let store: HistoryStore?
@@ -49,7 +45,7 @@ public final class HistoryModel {
         totalReclaimed = (try? store.totalReclaimed()) ?? .zero
     }
 
-    /// Restores one item and reports exactly what happened.
+    /// Restores one item and reports exactly what happened, success or refusal.
     public func restore(_ record: OperationRecord) {
         guard let id = record.id, let restorer else { return }
 

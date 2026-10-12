@@ -71,6 +71,16 @@
         }
       }
     },
+    "history.notice.dismiss": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamam"
+          }
+        }
+      }
+    },
     "history.reclaimed %@": {
       "localizations": {
         "tr": {

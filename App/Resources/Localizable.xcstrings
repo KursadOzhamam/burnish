@@ -1,37 +1,117 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "sidebar.dashboard" : {
-      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Genel Bakış" } } }
+  "sourceLanguage": "en",
+  "strings": {
+    "sidebar.dashboard": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Genel Bakış"
+          }
+        }
+      }
     },
-    "sidebar.smartScan" : {
-      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Akıllı Tarama" } } }
+    "sidebar.smartScan": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akıllı Tarama"
+          }
+        }
+      }
     },
-    "sidebar.cleanup" : {
-      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Temizlik" } } }
+    "sidebar.cleanup": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlik"
+          }
+        }
+      }
     },
-    "sidebar.protection" : {
-      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Koruma" } } }
+    "sidebar.protection": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koruma"
+          }
+        }
+      }
     },
-    "sidebar.performance" : {
-      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hız" } } }
+    "sidebar.performance": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hız"
+          }
+        }
+      }
     },
-    "sidebar.applications" : {
-      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Uygulamalar" } } }
+    "sidebar.applications": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulamalar"
+          }
+        }
+      }
     },
-    "sidebar.files" : {
-      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Dosyalar" } } }
+    "sidebar.files": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosyalar"
+          }
+        }
+      }
     },
-    "sidebar.privacy" : {
-      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Gizlilik" } } }
+    "sidebar.privacy": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gizlilik"
+          }
+        }
+      }
     },
-    "placeholder.title" : {
-      "comment" : "Shown for sections that arrive in a later phase.",
-      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu bölüm henüz hazır değil" } } }
+    "placeholder.title": {
+      "comment": "Shown for sections that arrive in a later phase.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu bölüm henüz hazır değil"
+          }
+        }
+      }
     },
-    "placeholder.message" : {
-      "localizations" : { "tr" : { "stringUnit" : { "state" : "translated", "value" : "Phase 1 temel yapıyı kuruyor. Bu ekran sırası gelen aşamada gerçek hale gelecek." } } }
+    "placeholder.message": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phase 1 temel yapıyı kuruyor. Bu ekran sırası gelen aşamada gerçek hale gelecek."
+          }
+        }
+      }
+    },
+    "toolbar.history": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçmiş"
+          }
+        }
+      }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

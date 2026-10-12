@@ -186,8 +186,8 @@
 <script>
 /* Güncelleme için: yalnızca META, DEC, PH ve LOG değişir. Durum kodları:
    d tamamlandı · t bekliyor · u sende · k karar bekliyor · o opsiyonel */
-const META={updated:"2026-10-12",rev:4,
-  focus:"Faz 4 kapanışı: (1) geçmiş ekranı ve geri yükleme (4.11), (2) Akıllı Tarama'yı gerçek tarayıcılara bağlama (4.24), (3) uygulamaya özel konumlar (4.14) ve kalan temizlik tarayıcıları. Ardından Faz 5 (İndirilenler dahil). Senden bekleyenler: D1–D9 kararları, Faz 0 maddeleri ve CleanMyMac kopyasının kapatılması (0.14)."};
+const META={updated:"2026-10-12",rev:5,
+  focus:"Faz 4 kapanışı: (1) Akıllı Tarama'yı gerçek tarayıcılara bağlama (4.24), (2) uygulamaya özel konumlar, örn. Adobe Media Cache (4.14), (3) kalan temizlik tarayıcıları (4.13, 4.15–4.23). Ardından Faz 5 (İndirilenler dahil). Senden bekleyenler: D1–D9 kararları, Faz 0 maddeleri ve CleanMyMac kopyasının kapatılması (0.14)."};
 
 const ST={d:["done","tamamlandı","tdone"],t:["","bekliyor","tmig"],u:["user","sende","tuser"],k:["dec","karar bekliyor","tdec"],o:["opt","opsiyonel","topt"]};
 const TC={Mac:"tapi",iOS:"tws",Direct:"tapi",MAS:"tui",Çekirdek:"tmig",Güvenlik:"tsec",Ticari:"tadmin",Hukuki:"tdb",Tasarım:"tui",Altyapı:"tai",Hesap:"tuser",Helper:"tadmin",AI:"tai",Karar:"tdec"};
@@ -260,7 +260,7 @@ const PH=[
  ["4.25","d","Sahiplik kökte bildirilir (§4.5 açığı)","Chrome, Firefox, Brave önbelleklerinin yolunda bundle ID yoktu; tarayıcı açıkken engellenmiyordu. Her köke açık 'owner' bağlandı. Çalışan Chrome gerçek makinede doğrulandı.","Güvenlik"],
  ["4.9","d","'İzin gerekli' durumu","Okunamayan klasör artık 'boş' sayılmaz: yürüteç hata verir, tarayıcı ayrı raporlar, ekran 'izin gerekli' gösterir. Gerçek makinede 4 gizli kök çıktı: Çöp, Safari önbelleği, Mail ekleri, iPhone yedekleri.","Mac,Güvenlik"],
  ["4.10","d","Tam Disk Erişimi algılama","Korumalı klasörü listeleyerek sınar (nil = bilinmiyor); uyarı bandı ve Sistem Ayarları bağlantısı hazır. Adım adım rehber ekranı 10.2'de (ilk açılış).","Mac"],
- ["4.11","t","Geçmiş ekranı + geri yükleme arayüzü","HistoryStore ve RestoreService hazır, arayüz yok (§4.7, §6.9).","Mac"],
+ ["4.11","d","Geçmiş ekranı + geri yükleme arayüzü","Araç çubuğunda Geçmiş: kayıtlar, toplam kazanç (yalnızca gerçekten kaldırılanlar), Geri Yükle. Hedefte dosya varsa reddeder ve nedenini söyler. Gerçek Çöp'e gidiş-dönüş testi geçti; geri yükleme Tam Disk Erişimi gerektirmiyor.","Mac"],
  ["4.12","d","Xcode: iOS DeviceSupport ve Archives","Cihaz/sürüm başına satır; gerçek makinede 12,81 GB (CleanMyMac ile aynı). İkisi de .low güven: hiçbiri önceden seçilmez; Xcode açıkken engellenir.","Mac"],
  ["4.13","t","Xcode: kullanılamaz simülatör cihazları","simctl delete unavailable; kullanıcı düzeyi.","Mac"],
  ["4.14","t","Bilinen uygulama konumları listesi","~/Library/Caches dışındaki uygulama önbellekleri: Adobe Media Cache (~9,8 GB), Claude, Spotify vb. Her girdi tek tek doğrulanır.","Mac"],
@@ -443,7 +443,8 @@ const PH=[
 ];
 
 const LOG=[
-[["2026-10-12","rev 4: 4.12 ve 4.25 tamamlandı. Chrome/Firefox/Brave açıkken önbellekleri engellenmiyordu (§4.5 açığı), kapatıldı; Xcode cihaz desteği ve arşiv tarayıcıları eklendi."],
+[["2026-10-12","rev 5: 4.11 tamamlandı. Geçmiş ekranı ve geri yükleme arayüze bağlandı; gerçek Çöp gidiş-dönüşü doğrulandı."],
+ ["2026-10-12","rev 4: 4.12 ve 4.25 tamamlandı. Chrome/Firefox/Brave açıkken önbellekleri engellenmiyordu (§4.5 açığı), kapatıldı; Xcode cihaz desteği ve arşiv tarayıcıları eklendi."],
  "2026-10-12","rev 3: 4.9 ve 4.10 tamamlandı. Okunamayan klasörler artık sessizce 0 dönmüyor; gerçek makinede Çöp, Safari önbelleği, Mail ekleri ve iPhone yedekleri gizleniyormuş."],
   ["2026-10-12","rev 2: CLAUDE.md hafifletildi (karar günlüğü docs/DECISIONS.md), devam noktası ve 0.12–0.14 eklendi."],
  ["2026-10-12","rev 1: İlk sürüm. Faz 0–3 tamamlandı, Faz 4 kısmen. CleanMyMac incelemesinden çıkan işler (izin gerekli durumu, Xcode, İndirilenler, bilinen konumlar), ticari altyapı ve hesaplar (Faz 11), doğrudan dağıtım (12), Mac App Store (14), iOS/iPadOS (15) ve iOS ticari/App Store (16) fazları ile 9 açık karar eklendi."]

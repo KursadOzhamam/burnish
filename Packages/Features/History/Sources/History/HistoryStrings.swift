@@ -17,6 +17,7 @@ enum HistoryStrings {
     static let restore = key("history.restore")
     static let close = key("history.close")
     static let restoredBadge = key("history.badge.restored")
+    static let dismiss = key("history.notice.dismiss")
 
     static func reclaimed(_ size: String) -> LocalizedStringResource {
         key("history.reclaimed \(size)")

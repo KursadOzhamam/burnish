@@ -4,6 +4,7 @@ import SafetyKit
 import DesignSystem
 import Cleanup
 import Dashboard
+import History
 import SmartScan
 
 /// Main window — sidebar plus detail, per CLAUDE.md §5.1.
@@ -12,7 +13,11 @@ struct RootView: View {
     @State private var scanCoordinator = ScanCoordinator()
 
     /// Held here rather than inside the view so findings survive navigating away and back.
-    @State private var cleanupModel = CleanupModel(history: Self.makeHistory())
+    @State private var cleanupModel = CleanupModel(history: Self.history)
+
+    /// Same log as Cleanup writes to, so what was just removed is what the sheet lists.
+    @State private var historyModel = HistoryModel(store: Self.history)
+    @State private var showHistory = false
 
     var body: some View {
         NavigationSplitView {
@@ -22,6 +27,18 @@ struct RootView: View {
                 .navigationSplitViewColumnWidth(min: 640, ideal: 820)
         }
         .navigationSplitViewStyle(.balanced)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    showHistory = true
+                } label: {
+                    Label("toolbar.history", systemImage: "clock.arrow.circlepath")
+                }
+            }
+        }
+        .sheet(isPresented: $showHistory) {
+            HistoryView(model: historyModel)
+        }
     }
 
     private var sidebar: some View {
@@ -69,6 +86,9 @@ struct RootView: View {
 }
 
 extension RootView {
+    /// One log for the whole window, opened once.
+    static let history: HistoryStore? = makeHistory()
+
     /// The operation log at `~/Library/Application Support/<App>/history.sqlite` (§4.7).
     ///
     /// A log that cannot be opened must not stop the app from running; cleanup still works,
