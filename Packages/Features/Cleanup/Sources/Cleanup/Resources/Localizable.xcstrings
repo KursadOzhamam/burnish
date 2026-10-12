@@ -413,6 +413,46 @@
           }
         }
       }
+    },
+    "cleanup.permission.required": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İzin gerekli"
+          }
+        }
+      }
+    },
+    "cleanup.permission.banner": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bazı klasörler okunamadı, çünkü Burnish'in Tam Disk Erişimi yok. İzin vermeden de çalışır, ama bu klasörler taranamaz ve sonuçlara dahil değildir."
+          }
+        }
+      }
+    },
+    "cleanup.permission.open": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem Ayarları'nı Aç"
+          }
+        }
+      }
+    },
+    "cleanup.permission.unreadable": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Okunamadı (Tam Disk Erişimi gerekli)"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

@@ -54,7 +54,11 @@ struct CategoryCard: View {
             Spacer(minLength: Spacing.small)
 
             VStack(alignment: .trailing, spacing: 2) {
-                if category.actionable.isEmpty {
+                if category.items.isEmpty && category.needsPermission {
+                    Text(CleanupStrings.permissionRequired)
+                        .font(Typography.cardTitle)
+                        .foregroundStyle(.secondary)
+                } else if category.actionable.isEmpty {
                     // Everything here was found but cannot be acted on. Showing "0 kB" would
                     // claim nothing was found; show what exists and say it is being skipped.
                     Text(category.items.totalSize().formatted())
@@ -95,6 +99,20 @@ struct CategoryCard: View {
 
     private var itemList: some View {
         VStack(spacing: 0) {
+            ForEach(category.unreadableRoots, id: \.self) { root in
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(CleanupStrings.unreadableFolder)
+                        .font(Typography.caption)
+                        .foregroundStyle(.secondary)
+                    Text(root.path)
+                        .font(Typography.path)
+                        .foregroundStyle(.tertiary)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, Spacing.xxs)
+            }
             ForEach(sortedItems) { item in
                 ItemRow(item: item, model: model)
                 if item.id != sortedItems.last?.id {

@@ -1,8 +1,8 @@
 # Proje Spesifikasyonu: Burnish — macOS Bakım ve Optimizasyon Uygulaması
 
 > Bu dosya projenin tek doğruluk kaynağıdır. Claude Code her oturumda bu dosyayı otomatik olarak context'e alır.
-> Bir karar bu dosyayla çelişiyorsa önce bana sor. Yaptığın her mimari kararı §14 "Karar Günlüğü"ne, henüz
-> karara bağlanmamış her konuyu §15 "Risk Kaydı ve Açık Sorular"a ekle.
+> Bir karar bu dosyayla çelişiyorsa önce bana sor. Yaptığın her mimari kararı `docs/DECISIONS.md`'ye, henüz
+> karara bağlanmamış her konuyu §16 "Risk Kaydı ve Açık Sorular"a ekle.
 
 **Platform sırası:** Önce macOS sürümü tamamlanır. Mobil (iOS) sürümü ancak macOS sürümü Phase 10'u geçtikten
 sonra başlar — ayrıntılar için §12 Platform Stratejisi.

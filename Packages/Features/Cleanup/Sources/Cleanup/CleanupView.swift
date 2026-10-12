@@ -120,6 +120,9 @@ public struct CleanupView: View {
                 Spacer()
             }
         } else {
+            if model.needsPermission {
+                permissionBanner
+            }
             ScrollView {
                 LazyVStack(spacing: Spacing.medium) {
                     ForEach(model.categories) { category in
@@ -139,6 +142,24 @@ public struct CleanupView: View {
             }
             reviewFooter
         }
+    }
+
+    /// Says plainly that some folders could not be read, instead of letting them look empty.
+    private var permissionBanner: some View {
+        HStack(spacing: Spacing.small) {
+            Image(systemName: "lock.shield")
+                .foregroundStyle(.secondary)
+            Text(CleanupStrings.permissionBanner)
+                .font(Typography.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: Spacing.small)
+            Button(action: model.openFullDiskAccessSettings) {
+                Text(CleanupStrings.permissionOpen)
+            }
+        }
+        .padding(Spacing.small)
+        .background(.quaternary, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
     }
 
     private var reviewFooter: some View {

@@ -13,6 +13,13 @@ import CoreKit
 /// the saving (§10.4).
 public struct FileTreeWalker: Sendable {
 
+    /// Why a walk could not read what it was pointed at.
+    public enum Failure: Error, Sendable, Equatable {
+        /// The folder exists but its contents cannot be listed, typically for want of Full Disk
+        /// Access (CLAUDE.md §7).
+        case unreadable(URL)
+    }
+
     /// One file found during a walk.
     public struct Entry: Sendable, Hashable {
         public let url: URL
@@ -132,11 +139,20 @@ public struct FileTreeWalker: Sendable {
         isCancelled: () -> Bool = { false },
         onProgress: ((URL, ByteCount) -> Void)? = nil
     ) throws -> [Entry] {
-        guard let children = try? fileManager.contentsOfDirectory(
-            at: url,
-            includingPropertiesForKeys: Self.resourceKeys,
-            options: [.skipsHiddenFiles]
-        ) else { return [] }
+        let children: [URL]
+        do {
+            children = try fileManager.contentsOfDirectory(
+                at: url,
+                includingPropertiesForKeys: Self.resourceKeys,
+                options: [.skipsHiddenFiles]
+            )
+        } catch {
+            // A folder that is not there holds nothing. One that is there but cannot be read
+            // holds something we cannot see, and reporting it as empty is what made the Trash
+            // read "0 items" while it held 624 MB.
+            guard exists(url) else { return [] }
+            throw Failure.unreadable(url)
+        }
 
         var entries: [Entry] = []
         var running = ByteCount.zero

@@ -1,6 +1,8 @@
+import AppKit
 import Foundation
 import Observation
 import CoreKit
+import CoreKitMac
 import ScanEngine
 import SafetyKit
 import SafetyKitMac
@@ -34,8 +36,18 @@ public final class CleanupModel {
     public struct Category: Identifiable, Sendable {
         public let rule: CleanupRule
         public let items: [ScanItem]
+        /// Roots that exist but could not be read (Full Disk Access). Shown to the user rather
+        /// than folded into an empty result.
+        public let unreadableRoots: [URL]
+
+        public init(rule: CleanupRule, items: [ScanItem], unreadableRoots: [URL] = []) {
+            self.rule = rule
+            self.items = items
+            self.unreadableRoots = unreadableRoots
+        }
 
         public var id: ScannerID { rule.id }
+        public var needsPermission: Bool { !unreadableRoots.isEmpty }
 
         /// Items that could be acted on.
         public var actionable: [ScanItem] { items.filter(\.isActionable) }
@@ -46,6 +58,12 @@ public final class CleanupModel {
 
     public private(set) var phase: Phase = .idle
     public private(set) var categories: [Category] = []
+
+    /// Whether the app can read protected folders. Nil when it cannot be determined.
+    public private(set) var fullDiskAccess: Bool?
+
+    /// True when any scanner could not read something it was pointed at.
+    public var needsPermission: Bool { categories.contains { $0.needsPermission } }
 
     /// Items the user has ticked. Seeded from each scanner's default selection (§6.6).
     public var selection: Set<UUID> = []
@@ -87,6 +105,7 @@ public final class CleanupModel {
         phase = .scanning(.starting)
         categories = []
         selection = []
+        fullDiskAccess = FullDiskAccess.isGranted()
 
         task = Task { [weak self, scanners] in
             var found: [Category] = []
@@ -102,8 +121,9 @@ public final class CleanupModel {
                 let scannerCount = scanners.count
 
                 let items: [ScanItem]
+                var unreadable: [URL] = []
                 do {
-                    items = try await scanner.scan { progress in
+                    let outcome = try await scanner.scanDetailed { progress in
                         let combined = ScanProgress(
                             fraction: (Double(step) + (progress.fraction ?? 0))
                                 / Double(scannerCount),
@@ -115,6 +135,8 @@ public final class CleanupModel {
                             self?.phase = .scanning(combined)
                         }
                     }
+                    items = outcome.items
+                    unreadable = outcome.unreadableRoots
                 } catch {
                     // A scanner that cannot read its root is reported as empty rather than
                     // failing the run: the other scanners' findings are still useful (§4.8).
@@ -122,8 +144,10 @@ public final class CleanupModel {
                 }
 
                 discovered += items.totalSize()
-                if !items.isEmpty {
-                    found.append(Category(rule: scanner.rule, items: items))
+                if !items.isEmpty || !unreadable.isEmpty {
+                    found.append(
+                        Category(rule: scanner.rule, items: items, unreadableRoots: unreadable)
+                    )
                 }
             }
 
@@ -139,12 +163,22 @@ public final class CleanupModel {
         // Apply the safety layer's refusals now, so the list the user reviews, its totals and
         // the preselection already match what can really be removed.
         let screened = found.map { category in
-            Category(rule: category.rule, items: service.screened(category.items))
+            Category(
+                rule: category.rule,
+                items: service.screened(category.items),
+                unreadableRoots: category.unreadableRoots
+            )
         }
         categories = screened
         let found = screened
         selection = Set(found.flatMap { $0.items.defaultSelection() }.map(\.id))
         phase = .reviewing
+    }
+
+    /// Opens the Full Disk Access pane of System Settings.
+    public func openFullDiskAccessSettings() {
+        guard let url = URL(string: FullDiskAccess.settingsURLString) else { return }
+        NSWorkspace.shared.open(url)
     }
 
     public func cancel() {

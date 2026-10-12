@@ -41,8 +41,11 @@ print(String(repeating: "─", count: 78))
 
 for scanner in scanners {
     let items: [ScanItem]
+    var unreadable: [URL] = []
     do {
-        items = try await scanner.scan { _ in }
+        let outcome = try await scanner.scanDetailed { _ in }
+        items = outcome.items
+        unreadable = outcome.unreadableRoots
     } catch {
         print("\n\(scanner.rule.id)  — failed: \(error)")
         continue
@@ -62,6 +65,10 @@ for scanner in scanners {
     print("  roots      \(scanner.allowedRoots.count) declared, "
           + "\(scanner.allowedRoots.filter { FileManager.default.fileExists(atPath: $0.path) }.count) present")
     print("  found      \(items.count) items, \(total.formatted())")
+    if !unreadable.isEmpty {
+        print("  UNREADABLE \(unreadable.count) root(s), needs Full Disk Access: "
+              + unreadable.map(\.path).joined(separator: ", "))
+    }
     if !blocked.isEmpty {
         let reasons = Set(blocked.compactMap(\.blockedReason)).map(reasonLabel).sorted()
         print("  blocked    \(blocked.count) items, \(blocked.totalSize().formatted())"

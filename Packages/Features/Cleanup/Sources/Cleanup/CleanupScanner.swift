@@ -41,8 +41,31 @@ public struct CleanupScanner: Scanning {
         rule.roots.map { $0.url(home: home) }
     }
 
+    /// What a scan found, and what it could not look at.
+    public struct Outcome: Sendable {
+        public let items: [ScanItem]
+        /// Roots that exist but could not be listed, typically for want of Full Disk Access.
+        public let unreadableRoots: [URL]
+
+        public init(items: [ScanItem], unreadableRoots: [URL] = []) {
+            self.items = items
+            self.unreadableRoots = unreadableRoots
+        }
+    }
+
     public func scan(progress: @Sendable (ScanProgress) -> Void) async throws -> [ScanItem] {
+        let outcome = try await scanDetailed(progress: progress)
+        // Nothing found *and* something unreadable is not "nothing to clean": say so.
+        if outcome.items.isEmpty, !outcome.unreadableRoots.isEmpty {
+            throw ScanError.fullDiskAccessRequired
+        }
+        return outcome.items
+    }
+
+    /// Like `scan`, but reports unreadable roots instead of folding them into an empty result.
+    public func scanDetailed(progress: @Sendable (ScanProgress) -> Void) async throws -> Outcome {
         var items: [ScanItem] = []
+        var unreadable: [URL] = []
         var discovered = ByteCount.zero
 
         // A browser that is open keeps its cache mapped; skip the whole scanner rather than
@@ -68,13 +91,17 @@ public struct CleanupScanner: Scanning {
             let blocked = blockedReason(forRoot: url, runningOwners: runningOwners)
 
             if root.listsChildren {
-                items += try scanChildren(
-                    of: url,
-                    blocked: blocked,
-                    discovered: &discovered,
-                    fraction: fraction,
-                    progress: progress
-                )
+                do {
+                    items += try scanChildren(
+                        of: url,
+                        blocked: blocked,
+                        discovered: &discovered,
+                        fraction: fraction,
+                        progress: progress
+                    )
+                } catch FileTreeWalker.Failure.unreadable(let failed) {
+                    unreadable.append(failed)
+                }
             } else if let item = try scanWhole(
                 url,
                 blocked: blocked,
@@ -86,7 +113,7 @@ public struct CleanupScanner: Scanning {
             }
         }
 
-        return items
+        return Outcome(items: items, unreadableRoots: unreadable)
     }
 
     private func scanChildren(
