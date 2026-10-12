@@ -186,7 +186,7 @@
 <script>
 /* Güncelleme için: yalnızca META, DEC, PH ve LOG değişir. Durum kodları:
    d tamamlandı · t bekliyor · u sende · k karar bekliyor · o opsiyonel */
-const META={updated:"2026-10-12",rev:10,
+const META={updated:"2026-10-12",rev:11,
   focus:"Faz 4 kapanışı: kalan temizlik tarayıcıları (4.13, 4.15–4.23). Ardından Faz 5 (İndirilenler dahil). UI testleri (10.10) erkene çekilmeye değer. Senden bekleyenler: D1–D9 kararları, Faz 0 maddeleri ve CleanMyMac kopyasının kapatılması (0.14)."};
 
 const ST={d:["done","tamamlandı","tdone"],t:["","bekliyor","tmig"],u:["user","sende","tuser"],k:["dec","karar bekliyor","tdec"],o:["opt","opsiyonel","topt"]};
@@ -279,7 +279,7 @@ const PH=[
  ["5.1","t","Ağır tarayıcı sözleşmesi","İlerleme yüzdesi, kalan süre, her an iptal, kısmî sonuç, devam/önbellek (§8).","Çekirdek"],
  ["5.2","t","Space Lens","Tüm birim, tıklayınca yakınlaştırma, breadcrumb, birim seçici, gizli dosyalar, sert bağlantı bir kez, APFS klon notu. Grafik türü tasarımda belirlenir.","Mac"],
  ["5.3","t","Büyük ve eski dosyalar","Boyut ve son erişime göre filtre, tür gruplama.","Mac"],
- ["5.4","t","İndirilenler tarayıcısı","~/Downloads: kurulum dosyaları (.dmg/.pkg/.iso/.xip) ve N gündür dokunulmayanlar. İndiren uygulama ve indirme zamanı karantina özniteliğinden; yerel, ağ yok. Hiçbir şey önceden seçilmez, yalnızca Çöp.","Mac"],
+ ["5.4","t","İndirilenler tarayıcısı","~/Downloads: kurulum dosyaları (.dmg/.pkg/.iso/.xip) ve N gündür dokunulmayanlar. İndiren uygulama ve indirme zamanı karantina özniteliğinden; yerel, ağ yok. Hiçbir şey önceden seçilmez, yalnızca Çöp. YAPILDI (rev 11): kurulum dosyası ve 30 gün dokunulmayan listeleme, yarım indirme (.crdownload vb.) ve son 24 saatte değişenler asla çıkmaz, hiçbiri önceden seçilmez, klasörün kendisi hedef değil, yalnızca Çöp. Bu Mac'te 156 öğe / 3,84 GB. KALAN: indiren uygulama ve zaman (karantina özniteliği), uygulaması yüklü kurulum dosyası gerekçesi, eşik ayarı.","Mac"],
  ["5.5","t","Kopya bulucu","Boyut, ilk/son 64 KB, tam hash. Her grupta en az bir kopya işaretsiz; 'seçili/toplam' rozeti; en eski/en kısa yol kuralları.","Mac"],
  ["5.6","t","Benzer fotoğraflar","Vision VNFeaturePrint, seri çekim gruplama. Fotoğraflar kütüphanesine yazma yok.","Mac"],
  ["5.7","t","Klasör kapsam seçici","Kullanıcı taranacak klasörü seçer; hariç tutma listesiyle birleşir.","Mac"],

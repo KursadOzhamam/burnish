@@ -84,6 +84,9 @@ public struct CleanupRule: Sendable, Hashable, Identifiable {
         /// be read (permission) is *not* malformed and is never offered; Apple's own preferences
         /// fall in that group, so they are excluded by name as well.
         case malformedPropertyLists
+        /// The user's Downloads: installers, and anything untouched for `days` days. Partial
+        /// downloads and anything changed in the last day are never offered.
+        case staleOrInstallers(days: Int)
     }
 }
 

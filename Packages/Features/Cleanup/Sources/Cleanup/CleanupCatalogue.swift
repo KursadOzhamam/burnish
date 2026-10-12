@@ -67,6 +67,7 @@ public enum CleanupCatalogue {
         appCaches,
         adobeMediaCaches,
         brokenPreferences,
+        downloads,
         mailDownloads,
         mobileBackups,
         userTrash,
@@ -239,6 +240,19 @@ public enum CleanupCatalogue {
         roots: [.home("Library/Preferences")],
         confidence: .low,
         childFilter: .malformedPropertyLists
+    )
+
+    /// The user's Downloads folder (CLAUDE.md §6.7).
+    ///
+    /// This is the user's own content, so: nothing is preselected, the folder itself is never a
+    /// target (only its direct contents), and only the Trash is offered, never permanent removal.
+    public static let downloads = CleanupRule(
+        id: ScannerID("cleanup.downloads"),
+        titleKey: "cleanup.downloads.title",
+        explanationKey: "cleanup.downloads.explanation",
+        roots: [.home("Downloads")],
+        confidence: .low,
+        childFilter: .staleOrInstallers(days: 30)
     )
 
     /// Mail's downloaded attachments. The mailbox database itself is on the protected list

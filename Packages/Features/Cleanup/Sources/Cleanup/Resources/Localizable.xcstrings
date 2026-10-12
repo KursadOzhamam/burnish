@@ -589,6 +589,38 @@
           }
         }
       }
+    },
+    "cleanup.downloads.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İndirilenler"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downloads"
+          }
+        }
+      }
+    },
+    "cleanup.downloads.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kurulum dosyaları (.dmg, .pkg, .iso, .xip) ve 30 günden uzun süredir dokunulmamış öğeler. Burası senin içeriğin: hiçbiri önceden seçilmez, yalnızca Çöp'e taşınır ve indirilmekte olan dosyalar listelenmez."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installers (.dmg, .pkg, .iso, .xip) and items untouched for over 30 days. This is your own content: nothing is preselected, items only go to the Trash, and files still downloading are not listed."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

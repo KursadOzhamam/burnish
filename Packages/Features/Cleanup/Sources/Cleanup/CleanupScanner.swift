@@ -13,15 +13,18 @@ public struct CleanupScanner: Scanning {
     private let home: URL
     private let walker = FileTreeWalker()
     private let inspector: any RunningApplicationInspecting
+    private let clock: @Sendable () -> Date
 
     public init(
         rule: CleanupRule,
         home: URL = FileManager.default.homeDirectoryForCurrentUser,
-        inspector: any RunningApplicationInspecting = RunningApplicationInspector()
+        inspector: any RunningApplicationInspecting = RunningApplicationInspector(),
+        clock: @escaping @Sendable () -> Date = { Date() }
     ) {
         self.rule = rule
         self.home = home
         self.inspector = inspector
+        self.clock = clock
     }
 
     public var id: ScannerID { rule.id }
@@ -148,6 +151,10 @@ public struct CleanupScanner: Scanning {
             switch rule.childFilter {
             case .all:
                 guard entry.size.bytes > 0 else { continue }
+            case .staleOrInstallers(let days):
+                guard entry.size.bytes > 0,
+                      DownloadsFilter.reason(for: entry.url, days: days, now: clock()) != nil
+                else { continue }
             case .malformedPropertyLists:
                 // Apple's own preferences are never offered, and an unreadable file is not a
                 // broken one. An empty file is the typical case, so size zero is expected here.
