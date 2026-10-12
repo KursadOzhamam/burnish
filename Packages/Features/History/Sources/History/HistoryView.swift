@@ -141,7 +141,11 @@ public struct HistoryView: View {
         }
         .font(Typography.caption)
         .padding(Spacing.small)
-        .background(.quaternary, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+        // Same construction as the Cleanup banner, which collapsed the window layout when it
+        // used `background(_:in:)`.
+        .background {
+            RoundedRectangle(cornerRadius: CornerRadius.medium).fill(.quaternary)
+        }
     }
 
     /// The containing folder with the home directory shown as `~`.

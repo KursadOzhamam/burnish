@@ -9,7 +9,17 @@ import ScanEngine
 public enum ScanPhase: Sendable, Hashable {
     case idle
     case scanning(ScanProgress)
-    case finished(found: ByteCount, itemCount: Int)
+    /// - Parameters:
+    ///   - found: what the run would clean, i.e. the preselected, safe set. Not everything it
+    ///     saw: CLAUDE.md §10.4 wants the headline to be what will really happen.
+    ///   - additional: further space that can be chosen by hand but is never preselected.
+    ///   - needsPermission: some folders could not be read for want of Full Disk Access.
+    case finished(
+        found: ByteCount,
+        itemCount: Int,
+        additional: ByteCount = .zero,
+        needsPermission: Bool = false
+    )
     case cancelled
 
     public var isScanning: Bool {

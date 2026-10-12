@@ -16,7 +16,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Temizlik, koruma ve hız tarayıcıları birlikte çalışır. Hiçbir şey silinmez — sadece ne bulunduğunu gösterir."
+            "value": "Hafif tarayıcıları birlikte çalıştırır. Hiçbir şey silinmez — sadece ne bulunduğunu gösterir."
           }
         }
       }
@@ -100,6 +100,56 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld öğe"
+          }
+        }
+      }
+    },
+    "smartscan.ready": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlenmeye hazır"
+          }
+        }
+      }
+    },
+    "smartscan.review": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonuçları İncele"
+          }
+        }
+      }
+    },
+    "smartscan.rescan": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeniden Tara"
+          }
+        }
+      }
+    },
+    "smartscan.permission": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bazı klasörler okunamadı (Tam Disk Erişimi gerekli); onlar dahil değil."
+          }
+        }
+      }
+    },
+    "smartscan.additional %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayrıca elle seçebileceğin %@ daha var."
           }
         }
       }

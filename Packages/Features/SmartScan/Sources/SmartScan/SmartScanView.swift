@@ -8,20 +8,23 @@ import ScanEngine
 /// Phase 1 drives this from a simulated run so the animation can be judged before real scanners
 /// exist (Phase 4). The view takes a `ScanPhase` and knows nothing about where it came from.
 public struct SmartScanView: View {
-    @Binding private var phase: ScanPhase
+    private let phase: ScanPhase
     private let onStart: () -> Void
     private let onCancel: () -> Void
+    private let onReview: (() -> Void)?
 
     private var section: AppSection { .smartScan }
 
     public init(
-        phase: Binding<ScanPhase>,
+        phase: ScanPhase,
         onStart: @escaping () -> Void,
-        onCancel: @escaping () -> Void
+        onCancel: @escaping () -> Void,
+        onReview: (() -> Void)? = nil
     ) {
-        self._phase = phase
+        self.phase = phase
         self.onStart = onStart
         self.onCancel = onCancel
+        self.onReview = onReview
     }
 
     public var body: some View {
@@ -73,7 +76,7 @@ public struct SmartScanView: View {
             .frame(width: 240, height: 240)
 
             VStack(spacing: Spacing.xxs) {
-                Text(SmartScanStrings.found)
+                Text(isComplete ? SmartScanStrings.ready : SmartScanStrings.found)
                     .font(Typography.caption)
                     .foregroundStyle(.secondary)
 
@@ -100,10 +103,22 @@ public struct SmartScanView: View {
                 .truncationMode(.middle)
                 .frame(maxWidth: 520)
 
-        case .finished:
+        case .finished(_, _, let additional, let needsPermission):
             VStack(spacing: Spacing.xxs) {
                 Text(SmartScanStrings.finishedTitle)
                     .font(Typography.cardTitle)
+
+                if !additional.isZero {
+                    // Said plainly, so the headline is not mistaken for everything that was seen.
+                    Text(SmartScanStrings.additional(additional.formatted()))
+                        .font(Typography.caption)
+                        .foregroundStyle(.secondary)
+                }
+                if needsPermission {
+                    Text(SmartScanStrings.permission)
+                        .font(Typography.caption)
+                        .foregroundStyle(.secondary)
+                }
                 // §4.6: say plainly that nothing was removed.
                 Text(SmartScanStrings.finishedNote)
                     .font(Typography.caption)
@@ -133,6 +148,19 @@ public struct SmartScanView: View {
             }
             .controlSize(.large)
             .keyboardShortcut(.cancelAction)
+        } else if isComplete, let onReview {
+            HStack(spacing: Spacing.medium) {
+                Button(action: onReview) {
+                    Text(SmartScanStrings.review).frame(minWidth: 160)
+                }
+                .controlSize(.large)
+                .buttonStyle(.borderedProminent)
+
+                Button(action: onStart) {
+                    Text(SmartScanStrings.rescan)
+                }
+                .controlSize(.large)
+            }
         } else {
             ScanButton(
                 title: SmartScanStrings.idleAction,
@@ -151,7 +179,7 @@ public struct SmartScanView: View {
         switch phase {
         case .idle, .cancelled: ByteCount.zero.formatted()
         case .scanning(let progress): progress.discovered.formatted()
-        case .finished(let found, _): found.formatted()
+        case .finished(let found, _, _, _): found.formatted()
         }
     }
 
@@ -159,32 +187,43 @@ public struct SmartScanView: View {
         switch phase {
         case .idle, .cancelled: 0
         case .scanning(let progress): progress.itemCount
-        case .finished(_, let count): count
+        case .finished(_, let count, _, _): count
         }
     }
 }
 
 #Preview("Idle") {
-    @Previewable @State var phase = ScanPhase.idle
-    return SmartScanView(phase: $phase, onStart: {}, onCancel: {})
+    SmartScanView(phase: .idle, onStart: {}, onCancel: {})
         .frame(width: 860, height: 760)
 }
 
 #Preview("Scanning") {
-    @Previewable @State var phase = ScanPhase.scanning(
-        ScanProgress(
-            fraction: 0.42,
-            currentPath: "~/Library/Caches/com.apple.Safari/WebKitCache/Version 16",
-            discovered: .gigabytes(8),
-            itemCount: 1_284
-        )
+    SmartScanView(
+        phase: .scanning(
+            ScanProgress(
+                fraction: 0.42,
+                currentPath: "~/Library/Caches/com.apple.Safari/WebKitCache/Version 16",
+                discovered: .gigabytes(8),
+                itemCount: 1_284
+            )
+        ),
+        onStart: {},
+        onCancel: {}
     )
-    return SmartScanView(phase: $phase, onStart: {}, onCancel: {})
-        .frame(width: 860, height: 760)
+    .frame(width: 860, height: 760)
 }
 
 #Preview("Finished") {
-    @Previewable @State var phase = ScanPhase.finished(found: .gigabytes(14), itemCount: 3_902)
-    return SmartScanView(phase: $phase, onStart: {}, onCancel: {})
-        .frame(width: 860, height: 760)
+    SmartScanView(
+        phase: .finished(
+            found: .gigabytes(6),
+            itemCount: 157,
+            additional: .gigabytes(13),
+            needsPermission: true
+        ),
+        onStart: {},
+        onCancel: {},
+        onReview: {}
+    )
+    .frame(width: 860, height: 760)
 }

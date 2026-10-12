@@ -120,46 +120,58 @@ public struct CleanupView: View {
                 Spacer()
             }
         } else {
-            if model.needsPermission {
-                permissionBanner
-            }
-            ScrollView {
-                LazyVStack(spacing: Spacing.medium) {
-                    ForEach(model.categories) { category in
-                        CategoryCard(
-                            category: category,
-                            isExpanded: model.openCategory == category.id,
-                            model: model,
-                            onToggleExpanded: {
-                                model.openCategory = model.openCategory == category.id
-                                    ? nil
-                                    : category.id
-                            }
-                        )
-                    }
+            // One self-contained block with a bounded height. As three loose siblings of the
+            // outer stack, a list taller than the window (nine categories) was laid out at its
+            // full height, which pushed the header, sidebar and footer out of the window.
+            VStack(spacing: Spacing.medium) {
+                if model.needsPermission {
+                    permissionBanner
                 }
-                .padding(.bottom, Spacing.xl)
+                ScrollView {
+                    LazyVStack(spacing: Spacing.medium) {
+                        ForEach(model.categories) { category in
+                            CategoryCard(
+                                category: category,
+                                isExpanded: model.openCategory == category.id,
+                                model: model,
+                                onToggleExpanded: {
+                                    model.openCategory = model.openCategory == category.id
+                                        ? nil
+                                        : category.id
+                                }
+                            )
+                        }
+                    }
+                    .padding(.bottom, Spacing.xl)
+                }
+                .frame(maxHeight: .infinity)
+                reviewFooter
             }
-            reviewFooter
+            .frame(maxHeight: .infinity)
         }
     }
 
     /// Says plainly that some folders could not be read, instead of letting them look empty.
     private var permissionBanner: some View {
-        HStack(spacing: Spacing.small) {
+        // Written without `fixedSize` and without `background(_:in:)`. The first version used both
+        // and, with a long localized message, collapsed the layout of the whole window: header,
+        // sidebar and footer disappeared. Found by running the app, bisected by swapping the
+        // cards for plain text and then disabling only this banner.
+        HStack(alignment: .firstTextBaseline, spacing: Spacing.small) {
             Image(systemName: "lock.shield")
                 .foregroundStyle(.secondary)
             Text(CleanupStrings.permissionBanner)
                 .font(Typography.caption)
                 .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-            Spacer(minLength: Spacing.small)
+                .frame(maxWidth: .infinity, alignment: .leading)
             Button(action: model.openFullDiskAccessSettings) {
                 Text(CleanupStrings.permissionOpen)
             }
         }
         .padding(Spacing.small)
-        .background(.quaternary, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+        .background {
+            RoundedRectangle(cornerRadius: CornerRadius.medium).fill(.quaternary)
+        }
     }
 
     private var reviewFooter: some View {

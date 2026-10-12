@@ -108,53 +108,55 @@ public final class CleanupModel {
         fullDiskAccess = FullDiskAccess.isGranted()
 
         task = Task { [weak self, scanners] in
-            var found: [Category] = []
-            var discovered = ByteCount.zero
+            let board = ProgressBoard(count: scanners.count)
 
-            for (index, scanner) in scanners.enumerated() {
-                if Task.isCancelled { return }
-
-                // Snapshot the running total as a constant: the progress closure is @Sendable
-                // and cannot capture the mutable accumulator.
-                let base = discovered
-                let step = index
-                let scannerCount = scanners.count
-
-                let items: [ScanItem]
-                var unreadable: [URL] = []
-                do {
-                    let outcome = try await scanner.scanDetailed { progress in
-                        let combined = ScanProgress(
-                            fraction: (Double(step) + (progress.fraction ?? 0))
-                                / Double(scannerCount),
-                            currentPath: progress.currentPath,
-                            discovered: base + progress.discovered,
-                            itemCount: progress.itemCount
-                        )
-                        Task { @MainActor in
-                            self?.phase = .scanning(combined)
+            // The scanners read different folders and do not depend on each other, so they run
+            // side by side: CLAUDE.md §6.2 asks for a parallel TaskGroup, which bounds the total
+            // by the slowest scanner instead of the sum of all of them.
+            let results = await withTaskGroup(
+                of: (Int, CleanupScanner.Outcome).self,
+                returning: [(Int, CleanupScanner.Outcome)].self
+            ) { group in
+                for (index, scanner) in scanners.enumerated() {
+                    group.addTask {
+                        let outcome: CleanupScanner.Outcome
+                        do {
+                            outcome = try await scanner.scanDetailed { progress in
+                                if let combined = board.update(index: index, progress: progress) {
+                                    Task { @MainActor in
+                                        self?.phase = .scanning(combined)
+                                    }
+                                }
+                            }
+                        } catch {
+                            // A scanner that cannot run is reported as empty rather than failing
+                            // the run: the other scanners' findings are still useful (§4.8).
+                            outcome = CleanupScanner.Outcome(items: [])
                         }
+                        board.finish(index: index)
+                        return (index, outcome)
                     }
-                    items = outcome.items
-                    unreadable = outcome.unreadableRoots
-                } catch {
-                    // A scanner that cannot read its root is reported as empty rather than
-                    // failing the run: the other scanners' findings are still useful (§4.8).
-                    items = []
                 }
 
-                discovered += items.totalSize()
-                if !items.isEmpty || !unreadable.isEmpty {
-                    found.append(
-                        Category(rule: scanner.rule, items: items, unreadableRoots: unreadable)
-                    )
-                }
+                var collected: [(Int, CleanupScanner.Outcome)] = []
+                for await result in group { collected.append(result) }
+                return collected
             }
 
             guard !Task.isCancelled else { return }
-            let result = found
+
+            // Back into catalogue order: completion order depends on which folder was fastest,
+            // and the list must not reshuffle from one scan to the next.
+            let found = results.sorted { $0.0 < $1.0 }.compactMap { index, outcome -> Category? in
+                guard !outcome.items.isEmpty || !outcome.unreadableRoots.isEmpty else { return nil }
+                return Category(
+                    rule: scanners[index].rule,
+                    items: outcome.items,
+                    unreadableRoots: outcome.unreadableRoots
+                )
+            }
             await MainActor.run { [weak self] in
-                self?.finishScan(with: result)
+                self?.finishScan(with: found)
             }
         }
     }
@@ -223,6 +225,14 @@ public final class CleanupModel {
         categories.map(\.totalSize).reduce(ByteCount.zero, +)
     }
 
+    /// What the screen starts with: high and medium confidence items only. Low-confidence ones
+    /// (Xcode device support, backups, anything of the user's own) stay listed but unchecked.
+    public var preselectedItems: [ScanItem] {
+        categories.flatMap { $0.items.defaultSelection() }
+    }
+
+    public var preselectedSize: ByteCount { preselectedItems.totalSize() }
+
     public var blockedCount: Int {
         categories.reduce(0) { $0 + $1.blocked.count }
     }
@@ -282,5 +292,58 @@ public final class CleanupModel {
         selection = []
         pendingPlan = nil
         phase = .idle
+    }
+}
+
+/// Combines the progress of scanners running side by side into one figure for the screen.
+///
+/// Updates arrive from several threads at once, so state sits behind a lock. Publication is
+/// limited to once every 50 ms (CLAUDE.md §8: at most 20 updates a second) so a fast scan cannot
+/// flood the main thread.
+private final class ProgressBoard: @unchecked Sendable {
+    private let lock = NSLock()
+    private var fractions: [Double]
+    private var discovered: [Int64]
+    private var counts: [Int]
+    private var lastPath: String?
+    private var lastPublish = Date.distantPast
+
+    init(count: Int) {
+        fractions = Array(repeating: 0, count: count)
+        discovered = Array(repeating: 0, count: count)
+        counts = Array(repeating: 0, count: count)
+    }
+
+    /// Records one scanner's progress. Returns a combined figure to publish, or nil when one
+    /// went out less than 50 ms ago.
+    func update(index: Int, progress: ScanProgress) -> ScanProgress? {
+        lock.lock()
+        defer { lock.unlock() }
+
+        // Monotonic per scanner, so the total never steps backwards when updates arrive out of order.
+        fractions[index] = max(fractions[index], progress.fraction ?? 0)
+        discovered[index] = max(discovered[index], progress.discovered.bytes)
+        counts[index] = max(counts[index], progress.itemCount)
+        if let path = progress.currentPath { lastPath = path }
+
+        let now = Date()
+        guard now.timeIntervalSince(lastPublish) >= 0.05 else { return nil }
+        lastPublish = now
+        return combined()
+    }
+
+    func finish(index: Int) {
+        lock.lock()
+        defer { lock.unlock() }
+        fractions[index] = 1
+    }
+
+    private func combined() -> ScanProgress {
+        ScanProgress(
+            fraction: fractions.reduce(0, +) / Double(max(1, fractions.count)),
+            currentPath: lastPath,
+            discovered: ByteCount(discovered.reduce(0, +)),
+            itemCount: counts.reduce(0, +)
+        )
     }
 }

@@ -237,3 +237,120 @@ struct CleanupModelTests {
         }
     }
 }
+
+/// CLAUDE.md §6.2: scanners run side by side, and the screen must still be deterministic.
+@Suite("Parallel scanning", .serialized)
+@MainActor
+struct ParallelScanningTests {
+
+    private func withHome(_ body: (URL) async throws -> Void) async throws {
+        let home = URL(fileURLWithPath: "/private/tmp")
+            .appendingPathComponent("BurnishParallel-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: home, withIntermediateDirectories: true)
+        defer {
+            // Fixture teardown, not product code.
+            // swiftlint:disable:next no_direct_remove_item
+            try? FileManager.default.removeItem(at: home)
+        }
+        try await body(home)
+    }
+
+    private func write(_ relative: String, in home: URL, bytes: Int = 4_096) throws {
+        let url = home.appendingPathComponent(relative)
+        try FileManager.default.createDirectory(
+            at: url.deletingLastPathComponent(), withIntermediateDirectories: true
+        )
+        try Data(repeating: 0x42, count: bytes).write(to: url)
+    }
+
+    private func model(home: URL, rules: [CleanupRule]) -> CleanupModel {
+        CleanupModel(
+            scanners: rules.map {
+                CleanupScanner(rule: $0, home: home, inspector: StaticRunningApplicationInspector())
+            }
+        )
+    }
+
+    private func settle(_ model: CleanupModel) async throws {
+        for _ in 0..<300 where model.phase.isBusy {
+            try await Task.sleep(for: .milliseconds(10))
+        }
+    }
+
+    @Test("Categories come back in catalogue order, whichever scanner finishes first")
+    func orderIsStable() async throws {
+        try await withHome { home in
+            // The logs scanner has far less to read than the caches scanner, so it finishes first.
+            for index in 0..<40 {
+                try write("Library/Caches/com.example.\(index)/data", in: home)
+            }
+            try write("Library/Logs/app.log", in: home)
+
+            let rules = [CleanupCatalogue.userCaches, CleanupCatalogue.userLogs]
+            let subject = model(home: home, rules: rules)
+            subject.scan()
+            try await settle(subject)
+
+            #expect(subject.categories.map(\.rule.id) == rules.map(\.id))
+        }
+    }
+
+    @Test("Several scanners' findings are all kept")
+    func allFindingsAreKept() async throws {
+        try await withHome { home in
+            try write("Library/Caches/com.example/data", in: home)
+            try write("Library/Logs/app.log", in: home)
+            try write("Library/Developer/Xcode/iOS DeviceSupport/iPhone 26.6/a", in: home)
+
+            let subject = model(
+                home: home,
+                rules: [
+                    CleanupCatalogue.userCaches,
+                    CleanupCatalogue.userLogs,
+                    CleanupCatalogue.xcodeDeviceSupport
+                ]
+            )
+            subject.scan()
+            try await settle(subject)
+
+            #expect(subject.categories.count == 3)
+        }
+    }
+
+    @Test("The preselected total leaves out low-confidence findings; the available total keeps them")
+    func preselectedExcludesLowConfidence() async throws {
+        try await withHome { home in
+            try write("Library/Caches/com.example/data", in: home, bytes: 8_192)
+            try write("Library/Developer/Xcode/iOS DeviceSupport/iPhone 26.6/a", in: home, bytes: 65_536)
+
+            let subject = model(
+                home: home,
+                rules: [CleanupCatalogue.userCaches, CleanupCatalogue.xcodeDeviceSupport]
+            )
+            subject.scan()
+            try await settle(subject)
+
+            #expect(subject.preselectedSize.bytes > 0)
+            #expect(subject.discoveredSize.bytes > subject.preselectedSize.bytes,
+                    "device support is available by hand but never preselected")
+            #expect(subject.preselectedItems.allSatisfy { $0.scanner == CleanupCatalogue.userCaches.id })
+        }
+    }
+
+    @Test("Cancelling mid-scan stops every scanner and returns to idle")
+    func cancellationStopsAll() async throws {
+        try await withHome { home in
+            for index in 0..<60 {
+                try write("Library/Caches/com.example.\(index)/data", in: home)
+                try write("Library/Logs/log\(index).log", in: home)
+            }
+            let subject = model(home: home, rules: [CleanupCatalogue.userCaches, CleanupCatalogue.userLogs])
+            subject.scan()
+            subject.cancel()
+            try await Task.sleep(for: .milliseconds(150))
+
+            #expect(!subject.phase.isBusy)
+            #expect(subject.categories.isEmpty, "a cancelled scan leaves no half-finished results")
+        }
+    }
+}

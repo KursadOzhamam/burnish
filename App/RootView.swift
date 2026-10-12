@@ -10,10 +10,7 @@ import SmartScan
 /// Main window — sidebar plus detail, per CLAUDE.md §5.1.
 struct RootView: View {
     @State private var selection: AppSection = .dashboard
-    @State private var scanCoordinator = ScanCoordinator()
-
-    /// Held here rather than inside the view so findings survive navigating away and back.
-    @State private var cleanupModel = CleanupModel(history: Self.history)
+    @State private var scanCoordinator = ScanCoordinator(history: Self.history)
 
     /// Same log as Cleanup writes to, so what was just removed is what the sheet lists.
     @State private var historyModel = HistoryModel(store: Self.history)
@@ -71,13 +68,14 @@ struct RootView: View {
 
         case .smartScan:
             SmartScanView(
-                phase: $scanCoordinator.phase,
+                phase: scanCoordinator.phase,
                 onStart: scanCoordinator.start,
-                onCancel: scanCoordinator.cancel
+                onCancel: scanCoordinator.cancel,
+                onReview: { selection = .cleanup }
             )
 
         case .cleanup:
-            CleanupView(model: cleanupModel)
+            CleanupView(model: scanCoordinator.cleanup)
 
         default:
             PlaceholderView(section: selection)

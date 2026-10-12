@@ -186,8 +186,8 @@
 <script>
 /* Güncelleme için: yalnızca META, DEC, PH ve LOG değişir. Durum kodları:
    d tamamlandı · t bekliyor · u sende · k karar bekliyor · o opsiyonel */
-const META={updated:"2026-10-12",rev:5,
-  focus:"Faz 4 kapanışı: (1) Akıllı Tarama'yı gerçek tarayıcılara bağlama (4.24), (2) uygulamaya özel konumlar, örn. Adobe Media Cache (4.14), (3) kalan temizlik tarayıcıları (4.13, 4.15–4.23). Ardından Faz 5 (İndirilenler dahil). Senden bekleyenler: D1–D9 kararları, Faz 0 maddeleri ve CleanMyMac kopyasının kapatılması (0.14)."};
+const META={updated:"2026-10-12",rev:6,
+  focus:"Faz 4 kapanışı: (1) uygulamaya özel konumlar, örn. Adobe Media Cache (4.14), (2) kalan temizlik tarayıcıları (4.13, 4.15–4.23). Ardından Faz 5 (İndirilenler dahil). UI testleri (10.10) erkene çekilmeye değer. Senden bekleyenler: D1–D9 kararları, Faz 0 maddeleri ve CleanMyMac kopyasının kapatılması (0.14)."};
 
 const ST={d:["done","tamamlandı","tdone"],t:["","bekliyor","tmig"],u:["user","sende","tuser"],k:["dec","karar bekliyor","tdec"],o:["opt","opsiyonel","topt"]};
 const TC={Mac:"tapi",iOS:"tws",Direct:"tapi",MAS:"tui",Çekirdek:"tmig",Güvenlik:"tsec",Ticari:"tadmin",Hukuki:"tdb",Tasarım:"tui",Altyapı:"tai",Hesap:"tuser",Helper:"tadmin",AI:"tai",Karar:"tdec"};
@@ -273,7 +273,7 @@ const PH=[
  ["4.21","t","Birim başına Çöp kutuları","Harici disk .Trashes, Google Drive çöpü; Çöp boşaltma kalıcıdır, ek onay.","Mac"],
  ["4.22","t","Time Machine yerel anlık görüntüleri","tmutil ile listele; silme helper gerektirebilir.","Mac,Helper"],
  ["4.23","t","Yaş tabanlı kısmî seçim","Önbellekler için 'N günden eski' ölçütü; ScanItem'a son kullanım tarihi. Kullanıcı içeriğine uygulanmaz.","Mac"],
- ["4.24","t","Akıllı Tarama'yı gerçek hafif tarayıcılara bağlama","Şimdi simülasyon. TaskGroup ile paralel, parça parça sonuç.","Mac"]
+ ["4.24","d","Akıllı Tarama gerçek tarayıcılara bağlandı","Temizlik modelini sürer: paralel TaskGroup (§6.2), aynı eleme ve rakam, 'Sonuçları İncele' yeniden taramadan geçer. Başlık yalnızca seçili güvenli set (5,88 GB); elle seçilebilir ve izin gerektiren kısım ayrı yazılır. İlerleme en çok 20 güncelleme/sn.","Mac"],
 ]},
 {id:"f5",c:"pg",l:"Faz 5",t:"Dosyalar",n:"Ağır tarayıcılar",items:[
  ["5.1","t","Ağır tarayıcı sözleşmesi","İlerleme yüzdesi, kalan süre, her an iptal, kısmî sonuç, devam/önbellek (§8).","Çekirdek"],
@@ -319,7 +319,7 @@ const PH=[
  ["8.9","t","Dürüst konumlandırma","Gerçek zamanlı koruma yok (Endpoint Security entitlement'ı yok); arayüzde 'antivirüs' izlenimi verilmez (§6.4).","Hukuki"]
 ]},
 {id:"f9",c:"ps",l:"Faz 9",t:"Akıllı Tarama, menü çubuğu, öneriler",n:"",items:[
- ["9.1","t","Akıllı Tarama orkestrasyonu","Hafif tarayıcılar paralel (TaskGroup), parça parça sonuç, hedef <60 sn. Ağır tarayıcılar dahil değil, öneri olarak sunulur.","Mac"],
+ ["9.1","t","Akıllı Tarama orkestrasyonu","Temizlik tarayıcıları için paralel çalışma hazır (4.24). Koruma ve Hız tarayıcıları geldikçe aynı koşuya eklenir. Ağır tarayıcılar dahil değil, öneri olarak sunulur.","Mac"],
  ["9.2","t","Tek tuşla 'Çalıştır' yolu","Yalnızca Çöp'e giden, geri alınabilir, yüksek güvenli öğeler seçili gelir. Güncelleme kurma ve kopya silme ayrı onay ister. Kullanıcı içeriği asla önceden seçilmez.","Mac,Güvenlik"],
  ["9.3","t","Öneri motoru","Yalnızca kullanıcının Mac'ine dair ('Xcode artıkları 14 GB'). Ürün tanıtımı yok.","Mac"],
  ["9.4","t","Sağlık skoru gerçek girdilerle","Tehdit, bekleyen güncelleme, başlangıç yükü taramalardan beslenir (D8).","Mac"],
@@ -339,6 +339,7 @@ const PH=[
  ["10.7","t","Gerçek macOS 14 doğrulaması (R11)","Geliştirme macOS 27'de; aşama sonunda 14'te çalıştırma.","Mac"],
  ["10.8","k","Smart Insights","Öğe başına cihaz-içi açıklama (D5).","AI"],
  ["10.9","t","Tanılama paketi","Kullanıcı onaylı, yol ve dosya adı içermez.","Güvenlik"]
+ ["10.10","t","Kritik akışlar için UI testleri (XCUITest)","§9 şart koşuyor, henüz yok. Akıllı Tarama, Sonuçları İncele ve onay sayfası: başlık, kenar çubuğu ve alt çubuk görünür olmalı. Bu oturumdaki yerleşim çöküşünü yalnızca elle çalıştırınca fark ettik.","Mac,Çekirdek"],
 ]},
 {id:"fD",c:"pm",l:"Faz D",t:"Tasarım giydirme",n:"Genel hatlar bitince",items:[
  ["D.1","u","Tasarımın verilmesi","Figma, PDF veya görsel. Yol haritası burada güncellenir.","Tasarım"],
@@ -443,7 +444,8 @@ const PH=[
 ];
 
 const LOG=[
-[["2026-10-12","rev 5: 4.11 tamamlandı. Geçmiş ekranı ve geri yükleme arayüze bağlandı; gerçek Çöp gidiş-dönüşü doğrulandı."],
+[["2026-10-12","rev 6: 4.24 tamamlandı. Akıllı Tarama gerçek ve paralel; Temizlik ekranında uyarı bandının tüm pencere yerleşimini çökerttiği hata bulunup düzeltildi. UI testleri (10.10) eklendi."],
+ ["2026-10-12","rev 5: 4.11 tamamlandı. Geçmiş ekranı ve geri yükleme arayüze bağlandı; gerçek Çöp gidiş-dönüşü doğrulandı."],
  ["2026-10-12","rev 4: 4.12 ve 4.25 tamamlandı. Chrome/Firefox/Brave açıkken önbellekleri engellenmiyordu (§4.5 açığı), kapatıldı; Xcode cihaz desteği ve arşiv tarayıcıları eklendi."],
  "2026-10-12","rev 3: 4.9 ve 4.10 tamamlandı. Okunamayan klasörler artık sessizce 0 dönmüyor; gerçek makinede Çöp, Safari önbelleği, Mail ekleri ve iPhone yedekleri gizleniyormuş."],
   ["2026-10-12","rev 2: CLAUDE.md hafifletildi (karar günlüğü docs/DECISIONS.md), devam noktası ve 0.12–0.14 eklendi."],
