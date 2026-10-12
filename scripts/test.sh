@@ -28,6 +28,7 @@ PACKAGES=(
     Packages/Features/Cleanup
     Packages/Features/History
     Packages/Features/Files
+    Packages/DeletionUI
 )
 
 total=0

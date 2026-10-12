@@ -8,16 +8,21 @@ import SafetyKit
 /// The figure shown is space genuinely reclaimed: items that failed or were skipped are
 /// excluded from it and listed separately, because inflating this number is exactly what
 /// §10.4 forbids.
-struct CleanupResultView: View {
+public struct DeletionResultView: View {
     let report: DeletionReport
+    let section: AppSection
     let onDone: () -> Void
+
+    public init(report: DeletionReport, section: AppSection, onDone: @escaping () -> Void) {
+        self.report = report
+        self.section = section
+        self.onDone = onDone
+    }
 
     @Environment(\.allowsDecorativeMotion) private var allowsDecorativeMotion
     @State private var hasAppeared = false
 
-    private var section: AppSection { .cleanup }
-
-    var body: some View {
+    public var body: some View {
         VStack(spacing: Spacing.large) {
             Spacer()
 
@@ -27,7 +32,7 @@ struct CleanupResultView: View {
                 .symbolEffect(.bounce, value: hasAppeared)
 
             VStack(spacing: Spacing.xxs) {
-                Text(CleanupStrings.resultTitle)
+                Text(DeletionStrings.resultTitle)
                     .font(Typography.caption)
                     .foregroundStyle(.secondary)
 
@@ -36,14 +41,14 @@ struct CleanupResultView: View {
             }
 
             if report.hasFailures {
-                Text(CleanupStrings.failures(count: report.failures.count))
+                Text(DeletionStrings.failures(count: report.failures.count))
                     .font(Typography.caption)
                     .foregroundStyle(Semantic.warning.color)
             }
 
             if !report.restorable.isEmpty {
                 Label {
-                    Text(CleanupStrings.dryRunNote)
+                    Text(DeletionStrings.note)
                 } icon: {
                     Image(systemName: "arrow.uturn.backward.circle")
                 }
@@ -52,7 +57,7 @@ struct CleanupResultView: View {
             }
 
             Button(action: onDone) {
-                Text(CleanupStrings.scanAction).frame(minWidth: 160)
+                Text(DeletionStrings.done).frame(minWidth: 160)
             }
             .controlSize(.large)
             .buttonStyle(.borderedProminent)

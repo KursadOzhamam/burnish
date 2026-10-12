@@ -11,6 +11,8 @@ let package = Package(
     dependencies: [
         .package(path: "../../CoreKit"),
         .package(path: "../../CoreKitMac"),
+        .package(path: "../../DesignSystem"),
+        .package(path: "../../DeletionUI"),
         .package(path: "../../ScanEngine"),
         .package(path: "../../SafetyKit"),
         .package(path: "../../SafetyKitMac")
@@ -18,7 +20,11 @@ let package = Package(
     targets: [
         .target(
             name: "Files",
-            dependencies: ["CoreKit", "CoreKitMac", "ScanEngine", "SafetyKit", "SafetyKitMac"]
+            dependencies: [
+                "CoreKit", "CoreKitMac", "DesignSystem", "DeletionUI",
+                "ScanEngine", "SafetyKit", "SafetyKitMac"
+            ],
+            resources: [.process("Resources")]
         ),
         .testTarget(name: "FilesTests", dependencies: ["Files"])
     ]

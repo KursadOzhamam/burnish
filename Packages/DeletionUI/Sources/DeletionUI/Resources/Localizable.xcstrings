@@ -1,0 +1,175 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.0",
+  "strings": {
+    "deletion.confirm.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silinecekler"
+          }
+        }
+      }
+    },
+    "deletion.confirm.note": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öğeler Çöp Kutusu'na taşınır. İstediğin zaman geri alabilirsin."
+          }
+        }
+      }
+    },
+    "deletion.confirm.permanentWarning": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu öğeler kalıcı olarak silinir. Geri alınamaz."
+          }
+        }
+      }
+    },
+    "deletion.confirm.moveToTrash": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çöp'e Taşı"
+          }
+        }
+      }
+    },
+    "deletion.confirm.deletePermanently": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalıcı Olarak Sil"
+          }
+        }
+      }
+    },
+    "deletion.confirm.noHistory": {
+      "comment": "Warns that this run will not be recorded, so it cannot be restored from the app.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geri yükleme kaydı tutulamıyor. Öğeler Çöp'e gider ama buradan geri yüklenemez; Finder'daki Çöp'ten alabilirsin."
+          }
+        }
+      }
+    },
+    "deletion.result.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kazanılan alan"
+          }
+        }
+      }
+    },
+    "deletion.result.failures %lld": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld öğe silinemedi"
+          }
+        }
+      }
+    },
+    "deletion.summary %lld %@": {
+      "comment": "Item count and total size, e.g. '145 öğe · 5,4 GB'.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld öğe · %2$@"
+          }
+        }
+      }
+    },
+    "deletion.cancel": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İptal"
+          }
+        }
+      }
+    },
+    "deletion.blocked.needsHelper": {
+      "comment": "Honest about a capability that does not exist yet.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem izni gerekiyor — bu yetenek henüz eklenmedi"
+          }
+        }
+      }
+    },
+    "deletion.blocked.ownerRunning": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulama açık, atlandı"
+          }
+        }
+      }
+    },
+    "deletion.blocked.protectedPath": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Korunan yol — hiçbir koşulda silinmez"
+          }
+        }
+      }
+    },
+    "deletion.blocked.nested": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Üstteki öğenin içinde, ayrıca sayılmadı"
+          }
+        }
+      }
+    },
+    "deletion.blocked.other": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu tarayıcının kapsamı dışında"
+          }
+        }
+      }
+    },
+    "deletion.result.done": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamam"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        }
+      }
+    }
+  }
+}

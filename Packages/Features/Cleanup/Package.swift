@@ -14,12 +14,13 @@ let package = Package(
         .package(path: "../../DesignSystem"),
         .package(path: "../../ScanEngine"),
         .package(path: "../../SafetyKit"),
+        .package(path: "../../DeletionUI"),
         .package(path: "../../SafetyKitMac")
     ],
     targets: [
         .target(
             name: "Cleanup",
-            dependencies: [
+            dependencies: ["DeletionUI", 
                 "CoreKit", "CoreKitMac", "DesignSystem",
                 "ScanEngine", "SafetyKit", "SafetyKitMac"
             ],

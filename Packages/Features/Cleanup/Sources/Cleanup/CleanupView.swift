@@ -3,6 +3,7 @@ import CoreKit
 import DesignSystem
 import ScanEngine
 import SafetyKit
+import DeletionUI
 
 /// The Cleanup screen — CLAUDE.md §6.3.
 ///
@@ -36,7 +37,7 @@ public struct CleanupView: View {
             case .deleting(let completed, let total):
                 deletingState(completed: completed, total: total)
             case .finished(let report):
-                CleanupResultView(report: report) { model.reset() }
+                DeletionResultView(report: report, section: .cleanup) { model.reset() }
             }
         }
         .padding(Spacing.large)
@@ -49,6 +50,7 @@ public struct CleanupView: View {
         )) { wrapper in
             ConfirmationSheet(
                 plan: wrapper.plan,
+                section: .cleanup,
                 canRecordHistory: model.canRecordHistory,
                 onCancel: model.dismissConfirmation,
                 onConfirm: { model.confirm(wrapper.plan) }

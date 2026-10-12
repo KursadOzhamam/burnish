@@ -59,6 +59,10 @@ packages:
     path: Packages/Features/Cleanup
   History:
     path: Packages/Features/History
+  Files:
+    path: Packages/Features/Files
+  DeletionUI:
+    path: Packages/DeletionUI
   Dashboard:
     path: Packages/Features/Dashboard
   SmartScan:
@@ -117,6 +121,10 @@ targets:
         product: Cleanup
       - package: History
         product: History
+      - package: Files
+        product: Files
+      - package: DeletionUI
+        product: DeletionUI
 
 schemes:
   Burnish:

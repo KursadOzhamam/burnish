@@ -9,17 +9,30 @@ import SafetyKit
 /// It must be impossible to leave this sheet uncertain about three things: how much is going,
 /// how many items that is, and whether it can be undone. Items skipped by the safety layer are
 /// shown here too, with their reason, rather than disappearing silently.
-struct ConfirmationSheet: View {
+public struct ConfirmationSheet: View {
     let plan: DeletionPlan
+    let section: AppSection
     let canRecordHistory: Bool
     let onCancel: () -> Void
     let onConfirm: () -> Void
 
-    private var section: AppSection { .cleanup }
+    public init(
+        plan: DeletionPlan,
+        section: AppSection,
+        canRecordHistory: Bool,
+        onCancel: @escaping () -> Void,
+        onConfirm: @escaping () -> Void
+    ) {
+        self.plan = plan
+        self.section = section
+        self.canRecordHistory = canRecordHistory
+        self.onCancel = onCancel
+        self.onConfirm = onConfirm
+    }
 
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading, spacing: Spacing.medium) {
-            SectionHeader(title: CleanupStrings.dryRunTitle, palette: section.palette)
+            SectionHeader(title: DeletionStrings.title, palette: section.palette)
 
             headline
 
@@ -27,7 +40,7 @@ struct ConfirmationSheet: View {
 
             if !canRecordHistory {
                 Label {
-                    Text(CleanupStrings.noHistory)
+                    Text(DeletionStrings.noHistory)
                 } icon: {
                     Image(systemName: "exclamationmark.circle")
                         .foregroundStyle(Semantic.warning.color)
@@ -59,7 +72,7 @@ struct ConfirmationSheet: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
 
-            Text(CleanupStrings.summary(count: plan.itemCount, size: plan.totalSize.formatted()))
+            Text(DeletionStrings.summary(count: plan.itemCount, size: plan.totalSize.formatted()))
                 .font(Typography.caption)
                 .foregroundStyle(.secondary)
         }
@@ -69,7 +82,7 @@ struct ConfirmationSheet: View {
     private var reversibilityNote: some View {
         if plan.mode.isIrreversible {
             Label {
-                Text(CleanupStrings.permanentWarning)
+                Text(DeletionStrings.permanentWarning)
             } icon: {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .foregroundStyle(Semantic.danger.color)
@@ -77,7 +90,7 @@ struct ConfirmationSheet: View {
             .font(Typography.body)
         } else {
             Label {
-                Text(CleanupStrings.dryRunNote)
+                Text(DeletionStrings.note)
             } icon: {
                 Image(systemName: "arrow.uturn.backward.circle")
                     .foregroundStyle(.secondary)
@@ -93,7 +106,7 @@ struct ConfirmationSheet: View {
                 Text("\(group.count) · ")
                     .font(Typography.caption)
                     .foregroundStyle(.tertiary)
-                + Text(CleanupStrings.reason(for: group.reason))
+                + Text(DeletionStrings.reason(for: group.reason))
                     .font(Typography.caption)
                     .foregroundStyle(.tertiary)
             }
@@ -130,7 +143,7 @@ struct ConfirmationSheet: View {
         HStack {
             Spacer()
             Button(action: onCancel) {
-                Text(CleanupStrings.cancel)
+                Text(DeletionStrings.cancel)
             }
             .keyboardShortcut(.cancelAction)
             .controlSize(.large)
@@ -138,8 +151,8 @@ struct ConfirmationSheet: View {
             Button(role: plan.mode.isIrreversible ? .destructive : nil, action: onConfirm) {
                 Text(
                     plan.mode.isIrreversible
-                        ? CleanupStrings.deletePermanently
-                        : CleanupStrings.moveToTrash
+                        ? DeletionStrings.deletePermanently
+                        : DeletionStrings.moveToTrash
                 )
                 .frame(minWidth: 140)
             }

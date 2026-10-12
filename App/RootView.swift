@@ -4,6 +4,7 @@ import SafetyKit
 import DesignSystem
 import Cleanup
 import Dashboard
+import Files
 import History
 import SmartScan
 
@@ -15,6 +16,7 @@ struct RootView: View {
     /// Same log as Cleanup writes to, so what was just removed is what the sheet lists.
     @State private var historyModel = HistoryModel(store: Self.history)
     @State private var showHistory = false
+    @State private var filesModel = LargeFilesModel(history: Self.history)
 
     var body: some View {
         NavigationSplitView {
@@ -76,6 +78,9 @@ struct RootView: View {
 
         case .cleanup:
             CleanupView(model: scanCoordinator.cleanup)
+
+        case .files:
+            LargeFilesView(model: filesModel)
 
         default:
             PlaceholderView(section: selection)

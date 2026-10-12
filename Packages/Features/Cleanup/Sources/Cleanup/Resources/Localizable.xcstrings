@@ -142,66 +142,6 @@
         }
       }
     },
-    "cleanup.confirm.title": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Silinecekler"
-          }
-        }
-      }
-    },
-    "cleanup.confirm.note": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Öğeler Çöp Kutusu'na taşınır. İstediğin zaman geri alabilirsin."
-          }
-        }
-      }
-    },
-    "cleanup.confirm.permanentWarning": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bu öğeler kalıcı olarak silinir. Geri alınamaz."
-          }
-        }
-      }
-    },
-    "cleanup.confirm.moveToTrash": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Çöp'e Taşı"
-          }
-        }
-      }
-    },
-    "cleanup.confirm.deletePermanently": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kalıcı Olarak Sil"
-          }
-        }
-      }
-    },
-    "cleanup.result.title": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kazanılan alan"
-          }
-        }
-      }
-    },
     "cleanup.summary %lld %@": {
       "comment": "Item count and total size, e.g. '145 öğe · 5,4 GB'.",
       "localizations": {
@@ -389,27 +329,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yönetici izni gerektiren sistem klasörleri. Ne olduğunu görebilirsin; silme yeteneği henüz eklenmedi."
-          }
-        }
-      }
-    },
-    "cleanup.result.failures %lld": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld öğe silinemedi"
-          }
-        }
-      }
-    },
-    "cleanup.confirm.noHistory": {
-      "comment": "Warns that this run will not be recorded, so it cannot be restored from the app.",
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geri yükleme kaydı tutulamıyor. Öğeler Çöp'e gider ama buradan geri yüklenemez; Finder'daki Çöp'ten alabilirsin."
           }
         }
       }
