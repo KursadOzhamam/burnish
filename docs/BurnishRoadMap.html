@@ -186,8 +186,8 @@
 <script>
 /* Güncelleme için: yalnızca META, DEC, PH ve LOG değişir. Durum kodları:
    d tamamlandı · t bekliyor · u sende · k karar bekliyor · o opsiyonel */
-const META={updated:"2026-10-12",rev:1,
-  focus:"Faz 4 (Temizlik) kapanışı: (1) okunamayan klasörler için 'izin gerekli' durumu + Tam Disk Erişimi rehberi, (2) Xcode iOS DeviceSupport ve Archives, (3) geçmiş ekranı ve geri yükleme, (4) Akıllı Tarama'yı gerçek tarayıcılara bağlama. Ardından Faz 5 (İndirilenler dahil)."};
+const META={updated:"2026-10-12",rev:2,
+  focus:"Kota molası sonrası devam noktası. Faz 4 (Temizlik) kapanışı: (1) okunamayan klasörler için 'izin gerekli' durumu + Tam Disk Erişimi rehberi, (2) Xcode iOS DeviceSupport ve Archives, (3) geçmiş ekranı ve geri yükleme, (4) Akıllı Tarama'yı gerçek tarayıcılara bağlama. Ardından Faz 5 (İndirilenler dahil). Senden bekleyenler: D1–D9 kararları, Faz 0 maddeleri ve CleanMyMac kopyasının kapatılması (0.14)."};
 
 const ST={d:["done","tamamlandı","tdone"],t:["","bekliyor","tmig"],u:["user","sende","tuser"],k:["dec","karar bekliyor","tdec"],o:["opt","opsiyonel","topt"]};
 const TC={Mac:"tapi",iOS:"tws",Direct:"tapi",MAS:"tui",Çekirdek:"tmig",Güvenlik:"tsec",Ticari:"tadmin",Hukuki:"tdb",Tasarım:"tui",Altyapı:"tai",Hesap:"tuser",Helper:"tadmin",AI:"tai",Karar:"tdec"};
@@ -209,7 +209,7 @@ const PH=[
 {id:"f0",c:"ph_",l:"Faz 0",t:"Kuruluş",n:"Kısmen tamamlandı",items:[
  ["0.1","d","Git deposu, .gitignore, GitHub Actions CI","Lint, paket derleme/test, uygulama derlemesi. İmzalı derleme yalnızca v* etiketinde.","Altyapı"],
  ["0.2","d","SwiftLint özel güvenlik kuralları","Doğrudan removeItem ve kabuk komutu hata; sabit kullanıcı metni ve print uyarı.","Güvenlik,Altyapı"],
- ["0.3","d","CLAUDE.md spesifikasyonu ve karar günlüğü","Tek doğruluk kaynağı; her mimari karar §17'ye yazılır.","Çekirdek"],
+ ["0.3","d","CLAUDE.md spesifikasyonu ve karar günlüğü","Tek doğruluk kaynağı. Her mimari karar docs/DECISIONS.md'ye yazılır.","Çekirdek"],
  ["0.4","d","Ürün adı: Burnish","Dokuz aday tarandı. 'Mac' içeren adlar Apple kuralı (g) nedeniyle elendi. Pazarlama adı: Burnish for Mac.","Hukuki"],
  ["0.5","u","Marka araştırması + domain","TÜRKPATENT, USPTO, EUIPO (Sınıf 9 ve 42); burnish.com/.app; GitHub org ve sosyal kullanıcı adları. App Store'da ad çakışması da burada kontrol edilir (R15).","Hukuki"],
  ["0.6","u","Apple Developer Program + Developer ID Application sertifikası","Makinede yalnızca Apple Development kimliği var. İmza, notarizasyon ve App Store için tek kapı.","Ticari"],
@@ -217,6 +217,9 @@ const PH=[
  ["0.8","u","Sparkle EdDSA anahtar çifti + iki ayrı şifreli yedek","Kaybolursa güncelleme zinciri ölür; projenin telafisi olmayan sırrı (R1).","Güvenlik"],
  ["0.9","u","Paddle satıcı hesabı başvurusu","Onay günler sürebilir, erken başvur. Lemon Squeezy durumu güncel doğrulanmalı.","Ticari,Direct"],
  ["0.10","t","Cloudflare R2 + alan adı","Appcast, DMG ve imza veritabanı barındırma.","Altyapı"],
+ ["0.12","d","CLAUDE.md hafifletme","Karar günlüğü docs/DECISIONS.md'ye taşındı; her oturumda otomatik yüklenen boyut ~20 bin token'dan ~14 bine indi.","Altyapı"],
+ ["0.13","d","CleanMyMac incelemesi","Kapsam, akış ve ilkeler çıkarıldı; bulgular 4.9, 4.12, 4.14, 5.4, 9.2 ve D6–D8 maddelerine işlendi.","Çekirdek"],
+ ["0.14","u","CleanMyMac kopyasını kapat ve izinlerini geri al","Yeniden imzalı ('Nebula') kopya Tam Disk Erişimi'ne sahip: Sistem Ayarları → Gizlilik ve Güvenlik → Tam Disk Erişimi'nden kapat; Oturum Açma Öğeleri'nden 'CleanMyMac Health Monitor'u kapat.","Güvenlik"],
  ["0.11","u","GitHub deposu, branch koruma, CI secret'ları","Developer ID .p12, App Store Connect API anahtarı, Sparkle özel anahtarı CI secret olarak.","Altyapı"]
 ]},
 {id:"f1",c:"pe",l:"Faz 1",t:"Temel",n:"Tamamlandı",items:[
@@ -439,6 +442,7 @@ const PH=[
 ];
 
 const LOG=[
+ ["2026-10-12","rev 2: CLAUDE.md hafifletildi (karar günlüğü docs/DECISIONS.md), devam noktası ve 0.12–0.14 eklendi."],
  ["2026-10-12","rev 1: İlk sürüm. Faz 0–3 tamamlandı, Faz 4 kısmen. CleanMyMac incelemesinden çıkan işler (izin gerekli durumu, Xcode, İndirilenler, bilinen konumlar), ticari altyapı ve hesaplar (Faz 11), doğrudan dağıtım (12), Mac App Store (14), iOS/iPadOS (15) ve iOS ticari/App Store (16) fazları ile 9 açık karar eklendi."]
 ];
 
