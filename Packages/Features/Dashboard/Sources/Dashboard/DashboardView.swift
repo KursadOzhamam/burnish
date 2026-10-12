@@ -202,7 +202,12 @@ struct HealthScoreBreakdownView: View {
 }
 
 #Preview("Dashboard") {
-    DashboardView(model: DashboardModel(lastScanDate: .now.addingTimeInterval(-7_200)))
+    DashboardView(
+        model: DashboardModel(
+            monitor: MockSystemMonitor(),
+            lastScanDate: .now.addingTimeInterval(-7_200)
+        )
+    )
         .frame(width: 900, height: 700)
 }
 

@@ -48,8 +48,13 @@ public struct ScanButton: View {
             Capsule().strokeBorder(.white.opacity(0.18), lineWidth: 1)
         }
         .clipShape(Capsule())
-        .shadow(color: palette.start.color.opacity(0.45), radius: isPulsing ? 22 : 12, y: 6)
-        .scaleEffect(isPulsing ? 1.015 : 1)
+        // The glow is a static shadow and the breathing is a scale change only.
+        //
+        // Animating `shadow(radius:)` re-runs the blur every frame, which on a 120 Hz display
+        // costs more than everything else on the dashboard put together. `scaleEffect` is a
+        // compositor transform and is effectively free.
+        .shadow(color: palette.start.color.opacity(0.45), radius: 14, y: 6)
+        .scaleEffect(isPulsing ? 1.02 : 1)
         .onAppear {
             guard allowsDecorativeMotion, !isBusy else { return }
             withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) {

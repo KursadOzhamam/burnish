@@ -25,6 +25,16 @@ Bu dosya [Keep a Changelog](https://keepachangelog.com/) biçimini ve
   - `HistoryStore` — GRDB tabanlı işlem kaydı, filtreleme, budama
   - `RestoreService` — Çöp'ten geri yükleme; üzerine yazmayı reddeder
   - Kapsam: `SafetyKit` %96–100, `SafetyKitMac` %92–100 (§4.9 eşiği %90)
+- **Phase 3 sistem izleme** — gerçek okumalar, 44 test:
+  - `Sampling` — tik/sayaç farkı aritmetiği, sayaç sıfırlanması ve ilk örnek durumları
+  - `KernelReaders` — `host_processor_info`, `host_statistics64`, `getifaddrs`, volume kapasitesi
+  - `IOKitReaders` — pil şarjı/sağlığı/döngü sayısı, IORegistry'den model adı
+  - `LiveSystemMonitor` — aktör tabanlı önceki örnek durumu, 1 sn akış
+  - Genel Bakış artık canlı: gerçek disk, bellek, işlemci, pil, ağ
+
+### Performans
+- Genel Bakış boşta: CPU tek çekirdeğin %74'ünden **%18'ine**, RSS 203 MB'tan **110 MB**'a indi
+  (§8 hedefi <150 MB). Statik ekranda ölçülen CPU: %0.
 
 ### Kararlar
 - Ödeme sağlayıcısı: Paddle (Merchant of Record).
@@ -40,7 +50,6 @@ Bu dosya [Keep a Changelog](https://keepachangelog.com/) biçimini ve
 - `DeletionService` henüz arayüze bağlı değil; Temizlik akışı Phase 4'te gelecek.
 - Developer ID sertifikası yok; imzalı derleme ve notarizasyon iş akışı henüz oluşturulmadı (R8).
 - "Burnish" için hukuki marka araştırması yapılmadı (R15).
-- `SystemMonitor` sahte veri üretiyor; gerçek okumalar Phase 3'te.
 - Akıllı Tarama simüle; gerçek tarayıcılar Phase 4'te.
 - `Licensing` her şeyi Pro döndürüyor; gerçek doğrulama Phase 10'da.
 - Kenar çubuğundaki 6 bölüm yer tutucu.

@@ -20,8 +20,13 @@ public final class DashboardModel {
     private let monitor: any SystemMonitoring
     private var streamTask: Task<Void, Never>?
 
+    /// - Parameters:
+    ///   - monitor: defaults to live readings. Previews and tests pass `MockSystemMonitor`.
+    ///   - initial: shown for the first frame, before the first real reading arrives. Using the
+    ///     sample here keeps the launch under the one-second budget in §8 without blocking on a
+    ///     syscall; the real numbers replace it within a second.
     public init(
-        monitor: any SystemMonitoring = MockSystemMonitor(),
+        monitor: any SystemMonitoring = LiveSystemMonitor(),
         initial: SystemSnapshot = .sample,
         lastScanDate: Date? = nil
     ) {

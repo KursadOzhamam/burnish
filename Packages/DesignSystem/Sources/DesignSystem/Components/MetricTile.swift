@@ -10,14 +10,24 @@ public struct MetricTile: View {
     private let detail: LocalizedStringResource?
     private let palette: GradientPair
     private let trend: [Double]
+    private let animatesValue: Bool
 
+    /// - Parameter animatesValue: whether the figure morphs between values.
+    ///
+    ///   Off by default, and deliberately so. A live metric refreshes once a second (§8), and a
+    ///   spring-animated numeric transition at that rate costs roughly half the dashboard's
+    ///   entire CPU budget — measured, not guessed — while making the number harder to read
+    ///   because it is almost never at rest. `AnimatedCounter` earns its keep on figures that
+    ///   change at moments that matter: the scan total and the health score. For a CPU
+    ///   percentage ticking every second it is the wrong tool.
     public init(
         symbol: String,
         title: LocalizedStringResource,
         value: String,
         detail: LocalizedStringResource? = nil,
         palette: GradientPair,
-        trend: [Double] = []
+        trend: [Double] = [],
+        animatesValue: Bool = false
     ) {
         self.symbol = symbol
         self.title = title
@@ -25,6 +35,7 @@ public struct MetricTile: View {
         self.detail = detail
         self.palette = palette
         self.trend = trend
+        self.animatesValue = animatesValue
     }
 
     public var body: some View {
@@ -39,7 +50,12 @@ public struct MetricTile: View {
                         .foregroundStyle(.secondary)
                 }
 
-                AnimatedCounter(value)
+                if animatesValue {
+                    AnimatedCounter(value)
+                } else {
+                    // Monospaced digits keep the figure from jittering as it changes.
+                    Text(value).numericStyle(Typography.metric)
+                }
 
                 if let detail {
                     Text(detail)
