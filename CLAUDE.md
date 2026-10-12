@@ -9,6 +9,13 @@ sonra başlar — ayrıntılar için §12 Platform Stratejisi.
 
 ---
 
+> **Yol haritası:** [BurnishRoadMap](https://claude.ai/artifact/GjYRfiRYuy8U5wh8KqVEvJ) — kaynak dosya `docs/BurnishRoadMap.html`.
+> Kapsam, sıra veya durum değişirse **yalnızca BurnishRoadMap güncellenir** (aynı dosya yolu yeniden yayınlanır, adres değişmez);
+> başka yerde ayrı liste tutulmaz. Açık kararlar (D1–D9: Mac App Store, hesap modeli, iOS fiyatı, Cloud/E-posta, vb.) orada izlenir.
+> Bu §14 fazları roadmap'in Faz 0–10 çekirdeğidir; ticari altyapı, App Store ve iOS fazları (11–17) yalnızca roadmap'te.
+
+---
+
 ## 1. Vizyon
 
 macOS için CleanMyMac sınıfında, hatta onu aşan bir sistem bakım uygulaması geliştiriyoruz. Uygulama şunları tek çatı altında yapmalı: gereksiz dosya temizliği, kötü amaçlı yazılım taraması, performans optimizasyonu, uygulama yönetimi, disk alanı analizi ve gizlilik temizliği.
@@ -582,6 +589,7 @@ Her aşamanın sonunda proje derlenir, testler geçer, ben ekranları kontrol ed
   kaynak kodda hard-coded kullanıcı metni bulunmaz.
 - Kullanımdan kalkmış API'ler kullanma; macOS 14+ API'lerini tercih et.
 - `[cross-platform]` işaretli paketlere macOS'a özgü kod ekleme (§3).
+- **Yol haritası kuralı:** Kapsam/sıra/durum değiştiren her iş sonunda `docs/BurnishRoadMap.html` içindeki ilgili satırı güncelle ve aynı dosya yoluyla yeniden yayınla (Artifact aracı). Yeni karar çıkarsa roadmap'in 'Açık kararlar' bölümüne ve §17'ye yaz.
 - Her aşama sonunda kısa bir özet yaz: ne yapıldı, ne test edildi, bilinen eksikler.
 - Yeni bir bağımlılık, yeni bir ayrıcalıklı işlem veya yeni bir ağ çağrısı eklemek her zaman ayrı onay gerektirir.
 
@@ -672,4 +680,5 @@ Karara bağlananlar: A1 (Paddle), A2 (tek seferlik + 1 yıl), A4 (GitHub Actions
 \n
 | 2026-10-12 | `AppIdentity.supportDirectory` destek klasörünü **oluşturur**; kayıt tutulamıyorsa onay sayfası bunu söyler | `FileManager.url(for:create: true)` yalnızca `Application Support`'un kendisini oluşturuyor, altındaki `Burnish` klasörünü değil. Klasör olmadığı için SQLite açılamadı, `HistoryStore` başlamadı ve uygulama ilk gerçek temizlikte hiçbir kayıt tutmadan sildi — §4.7'nin geri yükleme dayanağı yoktu. Kullanıcı bunu çalıştırınca ortaya çıktı; testim yalnızca klasör adına bakıyordu |
 | 2026-10-12 | **İndirilenler tarayıcısı** §6.7'ye ve Phase 5'e eklendi; hiçbir öğe önceden seçilmez, yalnızca Çöp | CleanMyMac incelemesinde (kapsam karşılaştırması) bizde olmayan tek gerçek işlev boşluğu buydu. `~/Downloads` kullanıcının kendi içeriği olduğu için varsayılanı "hiçbir şeyi seçme". Hesap bağlayan Cloud/E-posta temizliği bilinçli olarak kapsam dışı: §10.7 hesap bilgisi tutmayı ve verinin dışarı çıkmasını yasaklıyor |
+| 2026-10-12 | **BurnishRoadMap** tek yol haritası olarak kuruldu; Mac App Store, hesap modeli, iOS fiyatı, Cloud/E-posta temizliği gibi çelişen noktalar D1–D9 açık karar olarak işaretlendi | Kullanıcı "CleanMyMac'in yaptığı her şey + kendi eklemeleri, mobil ve App Store satışı" istedi. §2 (App Store dışı, sandbox kapalı) ve §10.7 (hesap/veri) ile çelişen kısımlar sessizce karara bağlanmadı; öneriyle birlikte kullanıcıya bırakıldı |
 

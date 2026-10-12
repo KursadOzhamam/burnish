@@ -1,0 +1,516 @@
+<title>BurnishRoadMap</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Yerleşim: tek sütun, faz başına açılır blok; durum rengi satırda, faz rengi başlıkta. */
+  :root{
+    --bg:#F1F5F9;--surface:#FFF;--border:#E2E8F0;--text:#0F172A;--text2:#475569;--muted:#94A3B8;
+    --navy:#1C274C;--green:#22C55E;--gbg:#F0FDF4;--gborder:#BBF7D0;--done:#15803D;
+    --amber:#F59E0B;--abg:#FFFBEB;--aborder:#FDE68A;
+    --blue:#3B82F6;--bbg:#EFF6FF;--bborder:#BFDBFE;
+    --purple:#8B5CF6;--pbg:#F5F3FF;--pborder:#DDD6FE;
+    --slate:#64748B;--sbg:#F8FAFC;
+    --red:#EF4444;--rbg:#FEF2F2;--rborder:#FECACA;
+    --orange:#F97316;--obg:#FFF7ED;--oborder:#FED7AA;
+    --teal:#14B8A6;--tbg:#F0FDFA;--tborder:#99F6E4;
+    --pink:#EC4899;--pkbg:#FDF2F8;--pkborder:#FBCFE8;
+    --sky:#0EA5E9;--skybg:#F0F9FF;--skyborder:#BAE6FD;
+    --zinc:#52525B;--zincbg:#F4F4F5;--zincborder:#D4D4D8;
+    --indigo:#6366F1;--ibg:#EEF2FF;--mark:#FDE68A;
+  }
+  @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0F172A;--surface:#1E293B;--border:#334155;--text:#F1F5F9;--text2:#94A3B8;--muted:#64748B;
+    --navy:#3B4F87;--gbg:#052e16;--gborder:#166534;--done:#4ade80;
+    --abg:#1c1100;--aborder:#78350f;--bbg:#0c1a35;--bborder:#1e3a5f;
+    --pbg:#1a0f35;--pborder:#4c1d95;--sbg:#1E293B;--rbg:#1a0505;--rborder:#7f1d1d;
+    --obg:#1a0d00;--oborder:#7c2d12;--tbg:#042f2e;--tborder:#134e4a;
+    --pkbg:#1a0510;--pkborder:#831843;--skybg:#082f49;--skyborder:#075985;--sky:#38BDF8;
+    --zincbg:#18181B;--zincborder:#3F3F46;--zinc:#A1A1AA;--ibg:#16173a;--indigo:#A5B4FC;--mark:#854d0e;
+    color-scheme:dark}}
+  :root[data-theme="dark"]{
+    --bg:#0F172A;--surface:#1E293B;--border:#334155;--text:#F1F5F9;--text2:#94A3B8;--muted:#64748B;
+    --navy:#3B4F87;--gbg:#052e16;--gborder:#166534;--done:#4ade80;
+    --abg:#1c1100;--aborder:#78350f;--bbg:#0c1a35;--bborder:#1e3a5f;
+    --pbg:#1a0f35;--pborder:#4c1d95;--sbg:#1E293B;--rbg:#1a0505;--rborder:#7f1d1d;
+    --obg:#1a0d00;--oborder:#7c2d12;--tbg:#042f2e;--tborder:#134e4a;
+    --pkbg:#1a0510;--pkborder:#831843;--skybg:#082f49;--skyborder:#075985;--sky:#38BDF8;
+    --zincbg:#18181B;--zincborder:#3F3F46;--zinc:#A1A1AA;--ibg:#16173a;--indigo:#A5B4FC;--mark:#854d0e;
+    color-scheme:dark}
+  body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',system-ui,sans-serif;font-size:14px;line-height:1.6;
+    margin:0 auto;padding-inline:16px;padding-block:32px;max-width:920px}
+  .ph{display:flex;align-items:flex-start;gap:16px;margin-bottom:24px;padding-bottom:20px;border-bottom:2px solid var(--border)}
+  .logo{width:48px;height:48px;background:var(--navy);border-radius:12px;display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;color:#fff;font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace}
+  .ph h1{margin:0 0 4px;font-size:21px;font-weight:700;color:var(--navy);letter-spacing:-.3px;text-wrap:balance}
+  .ph p{margin:0;color:var(--text2);font-size:13px}
+  :root[data-theme="dark"] .ph h1{color:var(--text)}
+  @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .ph h1{color:var(--text)}}
+  .note{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--navy);border-radius:8px;
+    padding:10px 14px;font-size:12.5px;color:var(--text2);margin-bottom:14px;line-height:1.6}
+  .note strong{color:var(--text)}
+  .rules{background:var(--abg);border:1px solid var(--aborder);border-radius:8px;padding:8px 13px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:1.55}
+  .rules strong{color:var(--text)}
+  .rules ul{margin:4px 0 0;padding-left:18px}
+  .stats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--text2)}
+  .stat b{font-family:'IBM Plex Mono',monospace;font-size:15px;color:var(--text);margin-right:4px;font-variant-numeric:tabular-nums}
+  .tools{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:8px 0 10px;margin-bottom:6px;
+    display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-bottom:1px solid var(--border)}
+  .tools input[type=search]{flex:1 1 220px;min-width:0;font:inherit;font-size:13px;padding:8px 12px;border:1px solid var(--border);
+    border-radius:8px;background:var(--surface);color:var(--text)}
+  .tools input[type=search]:focus-visible,.tools button:focus-visible,.tools label:focus-within{outline:2px solid var(--navy);outline-offset:1px}
+  .tools button,.tools label{font:inherit;font-size:12px;font-weight:600;padding:7px 11px;border:1px solid var(--border);border-radius:8px;
+    background:var(--surface);color:var(--text2);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .tools button:hover,.tools label:hover{border-color:var(--muted)}
+  #rescount{font-size:11.5px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+  .leg{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0 18px}
+  .li{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2);font-weight:500}
+  .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  h3.sec{margin:22px 0 8px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-family:'IBM Plex Mono',monospace;color:var(--text2)}
+  details.phase{margin-bottom:10px}
+  summary.phead{display:flex;align-items:center;gap:10px;padding:9px 13px;border-radius:8px;border-left:4px solid;cursor:pointer;
+    list-style:none;flex-wrap:wrap;user-select:none}
+  summary.phead::-webkit-details-marker{display:none}
+  summary.phead:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+  details.phase[open]>summary.phead{margin-bottom:9px}
+  .plabel{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-family:'IBM Plex Mono',monospace;flex-shrink:0}
+  summary.phead h2{margin:0;font-size:14px;font-weight:700;text-wrap:balance}
+  .pnote{margin-left:auto;font-size:11px;font-weight:500;opacity:.85}
+  .pcount{font-size:11px;font-weight:600;font-family:'IBM Plex Mono',monospace;white-space:nowrap;display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+  .pbar{display:inline-block;width:64px;height:6px;border-radius:99px;background:rgba(127,127,127,.25);overflow:hidden}
+  .pbar i{display:block;height:100%;background:currentColor;border-radius:99px}
+  .chev{font-size:14px;transition:transform .15s}
+  details.phase[open]>summary .chev{transform:rotate(180deg)}
+  .pa{background:var(--rbg);border-color:var(--red);color:var(--red)}
+  .pb{background:var(--pbg);border-color:var(--purple);color:var(--purple)}
+  .pc{background:var(--bbg);border-color:var(--blue);color:var(--blue)}
+  .pd{background:var(--tbg);border-color:var(--teal);color:var(--teal)}
+  .pe{background:var(--gbg);border-color:var(--green);color:var(--done)}
+  .pf{background:var(--abg);border-color:var(--amber);color:var(--amber)}
+  .pg{background:var(--pkbg);border-color:var(--pink);color:var(--pink)}
+  .ph_{background:var(--sbg);border-color:var(--slate);color:var(--slate)}
+  .pi{background:var(--obg);border-color:var(--orange);color:var(--orange)}
+  .pj{background:var(--sbg);border-color:#CBD5E1;color:var(--muted)}
+  .pk{background:var(--navy);border-color:#3B4F87;color:#E0E7FF}
+  .pn{background:var(--skybg);border-color:var(--sky);color:var(--sky)}
+  .po{background:var(--zincbg);border-color:var(--zinc);color:var(--zinc)}
+  .ps{background:var(--ibg);border-color:var(--indigo);color:var(--indigo)}
+  .items{display:flex;flex-direction:column;gap:5px}
+  .item{display:flex;gap:11px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 13px}
+  .item:hover{border-color:var(--muted)}
+  .item.done{opacity:.62;background:var(--gbg);border-color:var(--gborder)}
+  .item.done .inum{color:var(--done)}
+  .item.done .ititle{text-decoration:line-through;color:var(--done)}
+  .item.user{background:var(--obg);border-color:var(--oborder)}
+  .item.dec{background:var(--skybg);border-color:var(--skyborder)}
+  .item.opt{border-style:dashed}
+  .inum{font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:600;color:var(--muted);min-width:30px;padding-top:1px;flex-shrink:0}
+  .ibody{flex:1;min-width:0}
+  .ititle{font-weight:600;font-size:13px;color:var(--text);margin-bottom:2px;overflow-wrap:anywhere}
+  .idesc{font-size:11.5px;color:var(--text2);line-height:1.5;overflow-wrap:anywhere}
+  .tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+  .tag{font-size:10px;font-weight:600;padding:1px 7px;border-radius:99px;font-family:'IBM Plex Mono',monospace;letter-spacing:.02em;border:1px solid}
+  .tdb{background:var(--rbg);color:var(--red);border-color:var(--rborder)}
+  .tapi{background:var(--bbg);color:var(--blue);border-color:var(--bborder)}
+  .tui{background:var(--abg);color:var(--amber);border-color:var(--aborder)}
+  .tadmin{background:var(--pbg);color:var(--purple);border-color:var(--pborder)}
+  .tsec{background:var(--pbg);color:var(--purple);border-color:var(--pborder);font-style:italic}
+  .tai{background:var(--tbg);color:var(--teal);border-color:var(--tborder)}
+  .tws{background:var(--pkbg);color:var(--pink);border-color:var(--pkborder)}
+  .tdone{background:var(--gbg);color:var(--done);border-color:var(--gborder)}
+  .topt{background:var(--sbg);color:var(--slate);border-color:var(--border)}
+  .tmig{background:var(--zincbg);color:var(--zinc);border-color:var(--zincborder)}
+  .tuser{background:var(--obg);color:var(--orange);border-color:var(--oborder)}
+  .tdec{background:var(--skybg);color:var(--sky);border-color:var(--skyborder)}
+  .log{font-size:12px;color:var(--text2)}
+  .log div{padding:4px 0;border-bottom:1px solid var(--border)}
+  .log b{font-family:'IBM Plex Mono',monospace;color:var(--text);margin-right:8px}
+  footer{margin-top:28px;padding-top:14px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  footer span{font-family:'IBM Plex Mono',monospace}
+  mark{background:var(--mark);color:inherit;border-radius:2px;padding:0 1px}
+  @media(max-width:560px){.pnote{display:none}.pbar{width:40px}}
+  @media(prefers-reduced-motion:reduce){.chev{transition:none}}
+</style>
+
+<div class="ph">
+  <div class="logo">B</div>
+  <div>
+    <h1>Burnish — Geliştirme Yol Haritası</h1>
+    <p>macOS önce, iOS/iPadOS sonra · Doğrudan satış + App Store · <span id="upd"></span></p>
+  </div>
+</div>
+
+<div class="note"><strong>Şu anki odak:</strong> <span id="focus"></span></div>
+
+<div class="rules"><strong>Değişmez kurallar:</strong>
+  <ul>
+    <li>Bu sayfa tek yol haritasıdır. Kapsam, sıra veya durum değişirse burada güncellenir; başka yerde ayrı liste tutulmaz.</li>
+    <li>Güvenlik kuralları (CLAUDE.md §4) hiçbir özellik için esnetilmez: varsayılan Çöp'e taşıma, önce kuru çalıştırma, kullanıcı içeriği asla önceden seçilmez.</li>
+    <li>Silme yapan her yeni kod önce <code>Tools/DryRun</code> çıktısıyla gösterilir, onaydan sonra çalıştırılır.</li>
+    <li>Dosya adı, yol ve disk içeriği hiçbir koşulda sunucuya gitmez (§10.7). Hesap ve lisans verisi dosya verisinden ayrı tutulur.</li>
+    <li>Genel hatlar tamamlanınca tasarım kullanıcıdan gelir (Faz D). O zamana kadar arayüz işlevsel ve sadedir.</li>
+    <li>iOS kodu macOS Cila fazı (10) onaylanmadan yazılmaz; paketler ise baştan çapraz platform tutulur.</li>
+  </ul>
+</div>
+
+<div class="stats" id="stats" aria-label="Genel durum"></div>
+
+<div class="tools">
+  <input type="search" id="q" placeholder="Maddelerde ara (ör. Xcode, StoreKit, iOS, lisans)…" autocomplete="off" aria-label="Yol haritasında ara">
+  <label for="pend"><input type="checkbox" id="pend"> Yalnızca bekleyenler</label>
+  <button type="button" id="openall">Hepsini aç</button>
+  <button type="button" id="closeall">Hepsini kapat</button>
+  <span id="rescount"></span>
+</div>
+
+<div class="leg">
+  <div class="li"><span class="dot" style="background:var(--done)"></span>Tamamlandı</div>
+  <div class="li"><span class="dot" style="background:var(--orange)"></span>Sende (senin yapman gereken)</div>
+  <div class="li"><span class="dot" style="background:var(--sky)"></span>Karar bekliyor</div>
+  <div class="li"><span class="dot" style="background:var(--muted)"></span>Bekliyor / opsiyonel (kesikli)</div>
+  <div class="li"><span class="tag tapi">Direct</span> Developer ID + Paddle</div>
+  <div class="li"><span class="tag tui">MAS</span> Mac App Store</div>
+  <div class="li"><span class="tag tws">iOS</span> iPhone / iPad</div>
+</div>
+
+<h3 class="sec">Açık kararlar</h3>
+<div id="decisions"></div>
+
+<h3 class="sec">Fazlar</h3>
+<div id="phases"></div>
+
+<h3 class="sec">Güncelleme geçmişi</h3>
+<div class="log" id="log"></div>
+
+<footer><span>BurnishRoadMap · tek kaynak</span><span id="foot"></span></footer>
+
+<script>
+/* Güncelleme için: yalnızca META, DEC, PH ve LOG değişir. Durum kodları:
+   d tamamlandı · t bekliyor · u sende · k karar bekliyor · o opsiyonel */
+const META={updated:"2026-10-12",rev:1,
+  focus:"Faz 4 (Temizlik) kapanışı: (1) okunamayan klasörler için 'izin gerekli' durumu + Tam Disk Erişimi rehberi, (2) Xcode iOS DeviceSupport ve Archives, (3) geçmiş ekranı ve geri yükleme, (4) Akıllı Tarama'yı gerçek tarayıcılara bağlama. Ardından Faz 5 (İndirilenler dahil)."};
+
+const ST={d:["done","tamamlandı","tdone"],t:["","bekliyor","tmig"],u:["user","sende","tuser"],k:["dec","karar bekliyor","tdec"],o:["opt","opsiyonel","topt"]};
+const TC={Mac:"tapi",iOS:"tws",Direct:"tapi",MAS:"tui",Çekirdek:"tmig",Güvenlik:"tsec",Ticari:"tadmin",Hukuki:"tdb",Tasarım:"tui",Altyapı:"tai",Hesap:"tuser",Helper:"tadmin",AI:"tai",Karar:"tdec"};
+
+/* [id, durum, başlık, açıklama, etiketler] */
+const DEC=[
+ ["D1","k","Mac App Store'da satış","Öneri: ana kanal doğrudan satış (Developer ID + Paddle). MAS için ayrı, sandbox'lı 'Burnish Lite' hedefi Faz 14'te. Gerekçe: MAS'ta sandbox zorunlu; başka uygulamaların önbelleği, sistem klasörleri ve ayrıcalıklı helper mümkün değil, bunlar Burnish'in çekirdek işi. CLAUDE.md §2 ('App Store dışı') bu karara bağlıdır.","Karar,MAS,Direct"],
+ ["D2","k","Kullanıcı hesabı modeli","Öneri: doğrudan satışta hesapsız lisans (anahtar e-postayla gelir). Hesap yalnızca Pro'yu kanallar arası birleştirmek istenirse eklenir; şifresiz giriş (Sign in with Apple + e-posta bağlantısı). Hesap yalnızca lisans ve satın alma içindir, dosya verisi hesaba bağlanmaz.","Karar,Hesap"],
+ ["D3","k","iOS fiyat modeli","Seçenekler: tek seferlik (non-consumable) / yıllık abonelik / ikisi. §10.6 sürpriz yenilemeyi yasaklar. Öneri: evrensel satın alma + tek seferlik Pro; abonelik yalnızca eşlikçi senkron sunucu maliyeti doğarsa.","Karar,iOS,Ticari"],
+ ["D4","k","Cloud Cleanup ve e-posta temizliği","Hesap bağlamayı gerektirir, §10.7 ile çelişir. 'Her şeyi yapsın' talebi gereği Faz 13'te opt-in olarak planlandı. Öneri: önce iCloud Drive yerel kopya yönetimi (hesap bağlamadan); Google/OneDrive/Dropbox için cihaz-içi OAuth, belirteç Keychain'de, salt okunur başla, sunucu yok. E-posta temizliği önerilmez. §10.7'ye yazılı istisna gerekir.","Karar,Güvenlik"],
+ ["D5","k","Smart Insights (öğe başına açıklama)","Yalnızca cihaz-içi model (Foundation Models, uyumlu cihazlar); veri dışarı çıkmaz; 'yanlış olabilir' uyarısı; uyumsuz cihazda statik açıklama.","Karar,AI"],
+ ["D6","k","Uygulama izinlerini geri alma (TCC Revoke)","CleanMyMac sunuyor; bizim §10.2 TCC'ye yazmayı yasaklıyor. Öneri: hayır, yalnızca okuyup Sistem Ayarları'na yönlendir.","Karar,Güvenlik"],
+ ["D7","k","Universal Binaries ve dil dosyaları","Uygulama paketini değiştirir, imzayı bozma riski. Öneri: dil dosyaları varsayılan kapalı ve uyarılı (§6.3); Universal Binaries şimdilik yapılmaz.","Karar,Güvenlik"],
+ ["D8","k","Sağlık skoru gösterimi","Sayı (0–100) + 5 kademeli etiket + 'Nasıl hesaplandı?' dökümü. Etiket ilk bakış, sayı ve döküm arkada. Tasarım aşamasında netleşir.","Karar,Tasarım"],
+ ["D9","k","iOS'un başlama zamanı","CLAUDE.md §12: macOS Faz 10 onayı sonrası. Mobil 'ileride' denildiği için varsayılan bu. Daha erken istenirse §12 güncellenir.","Karar,iOS"]
+];
+
+const PH=[
+{id:"f0",c:"ph_",l:"Faz 0",t:"Kuruluş",n:"Kısmen tamamlandı",items:[
+ ["0.1","d","Git deposu, .gitignore, GitHub Actions CI","Lint, paket derleme/test, uygulama derlemesi. İmzalı derleme yalnızca v* etiketinde.","Altyapı"],
+ ["0.2","d","SwiftLint özel güvenlik kuralları","Doğrudan removeItem ve kabuk komutu hata; sabit kullanıcı metni ve print uyarı.","Güvenlik,Altyapı"],
+ ["0.3","d","CLAUDE.md spesifikasyonu ve karar günlüğü","Tek doğruluk kaynağı; her mimari karar §17'ye yazılır.","Çekirdek"],
+ ["0.4","d","Ürün adı: Burnish","Dokuz aday tarandı. 'Mac' içeren adlar Apple kuralı (g) nedeniyle elendi. Pazarlama adı: Burnish for Mac.","Hukuki"],
+ ["0.5","u","Marka araştırması + domain","TÜRKPATENT, USPTO, EUIPO (Sınıf 9 ve 42); burnish.com/.app; GitHub org ve sosyal kullanıcı adları. App Store'da ad çakışması da burada kontrol edilir (R15).","Hukuki"],
+ ["0.6","u","Apple Developer Program + Developer ID Application sertifikası","Makinede yalnızca Apple Development kimliği var. İmza, notarizasyon ve App Store için tek kapı.","Ticari"],
+ ["0.7","t","R8: notarizasyon ön testi","Sandbox kapalı + helper iskeletiyle uçtan uca. 0.6'ya bağlı. Phase 7'de öğrenmek çok pahalı olur.","Güvenlik,Mac"],
+ ["0.8","u","Sparkle EdDSA anahtar çifti + iki ayrı şifreli yedek","Kaybolursa güncelleme zinciri ölür; projenin telafisi olmayan sırrı (R1).","Güvenlik"],
+ ["0.9","u","Paddle satıcı hesabı başvurusu","Onay günler sürebilir, erken başvur. Lemon Squeezy durumu güncel doğrulanmalı.","Ticari,Direct"],
+ ["0.10","t","Cloudflare R2 + alan adı","Appcast, DMG ve imza veritabanı barındırma.","Altyapı"],
+ ["0.11","u","GitHub deposu, branch koruma, CI secret'ları","Developer ID .p12, App Store Connect API anahtarı, Sparkle özel anahtarı CI secret olarak.","Altyapı"]
+]},
+{id:"f1",c:"pe",l:"Faz 1",t:"Temel",n:"Tamamlandı",items:[
+ ["1.1","d","Yerel Swift paketleri","CoreKit, ScanEngine, SafetyKit, Licensing, DesignSystem çapraz platform; SystemMonitor ve Features macOS.","Çekirdek"],
+ ["1.2","d","XcodeGen ile uygulama hedefi, kenar çubuklu ana pencere","project.yml kaynak, .xcodeproj üretilir.","Mac"],
+ ["1.3","d","DesignSystem: token'lar, 7 ortak bileşen","Sekiz bölüm paletinin altısı WCAG AA'yı geçmediği için ayrı, doğrulanmış textSafePalette.","Tasarım"],
+ ["1.4","d","Scanning protokolü","Foundation.Scanner çakışması nedeniyle yeniden adlandırıldı.","Çekirdek"],
+ ["1.5","d","Licensing iskeleti","Free/Pro ayrımı ve 'ücretsiz özellikler her durumda açık' değişmezi testle sabit.","Ticari"],
+ ["1.6","d","Genel Bakış + açıklanabilir sağlık skoru","Skor bileşenlerin toplamı; ölçülmemiş etken tam puan alır.","Mac"],
+ ["1.7","d","Tarama animasyonu prototipi","Parçacık alanı, gradyan halka, canlı sayaç; Hareketi Azalt'ta sadeleşir.","Tasarım"],
+ ["1.8","d","TR/EN String Catalog düzeni","Kullanıcıya görünen her metin katalogdan.","Çekirdek"]
+]},
+{id:"f2",c:"pb",l:"Faz 2",t:"Güvenlik çekirdeği",n:"Tamamlandı",items:[
+ ["2.1","d","ProtectedPaths (§4.3)","Her girdi için ayrı 'silinemez' testi.","Güvenlik"],
+ ["2.2","d","PathGuard","İzin listesi, symlink çözümü her kontrolden önce, /private firmlink kanonikleştirme (gerçek hata yakalandı).","Güvenlik"],
+ ["2.3","d","DeletionService","Kuru çalıştırma, onay, uygulama; tek silme kapısı. Planlarken ve silerken yeniden doğrular.","Güvenlik"],
+ ["2.4","d","Kalıcı silme için ikinci onay","Tip düzeyinde zorunlu; unutulursa atar.","Güvenlik"],
+ ["2.5","d","HistoryStore (GRDB) + RestoreService","Geri yükleme hedefte dosya varsa reddeder.","Güvenlik"],
+ ["2.6","d","Çalışan sürecin kendi paketini silmeyi reddetme","Tarama, uygulamanın çalıştığı derleme klasörünü önermişti; düzeltildi.","Güvenlik"],
+ ["2.7","d","Test kapsamı eşiği","SafetyKit %96–100, SafetyKitMac %92–100 (hedef ≥%90).","Güvenlik"]
+]},
+{id:"f3",c:"pd",l:"Faz 3",t:"Sistem izleme",n:"Tamamlandı",items:[
+ ["3.1","d","Sampling aritmetiği","Sayaç sıfırlanması, ilk örnek ve sıfır süre 'bilinmiyor' döner; sıçrama veya yanıltıcı sıfır yok.","Mac"],
+ ["3.2","d","Çekirdek ve IOKit okuyucuları","CPU, bellek, ağ, disk, pil; model adı IODeviceTree:/product'tan.","Mac"],
+ ["3.3","d","LiveSystemMonitor","Aktör, 1 sn akış, yalnızca görünüm ekrandayken.","Mac"],
+ ["3.4","d","Performans bütçesi","Boşta %18 CPU ve 110 MB (hedef <150 MB). Statik ekranda %0.","Mac"],
+ ["3.5","d","Bellek baskısı = wired + compressed","Kullanılan/toplam sağlık skorunu kalıcı kötümser yapardı (§10.4).","Mac"]
+]},
+{id:"f4",c:"pf",l:"Faz 4",t:"Temizlik",n:"Devam ediyor",items:[
+ ["4.1","d","FileTreeWalker (CoreKitMac)","Sert bağlantı bir kez sayılır, symlink izlenmez, iptal edilebilir.","Mac"],
+ ["4.2","d","Tarayıcı kataloğu: 8 kural","Kullanıcı önbellekleri, günlükler, geliştirici artıkları, tarayıcı önbellekleri, Mail, iOS yedekleri, Çöp, sistem.","Mac"],
+ ["4.3","d","CleanupScanner + çalışan uygulama engeli","Her yol tek tarayıcıya ait; çift sayım ve §4.5 baypası düzeltildi.","Güvenlik"],
+ ["4.4","d","Tools/DryRun","Hiçbir şey silmeden ne önerileceğini yazdırır; her yeni tarayıcı bundan geçer.","Altyapı"],
+ ["4.5","d","Temizlik ekranı","Kategori kartları, öğe listesi, onay sayfası (öğe klasörüyle), sonuç ekranı. §4.6 sırası modelde zorunlu.","Mac"],
+ ["4.6","d","Elemenin taramadan hemen sonra uygulanması","İnceleme ekranı ve onay sayfası aynı rakamı gösterir.","Güvenlik"],
+ ["4.7","d","Gerçek 'Çöp'e taşı' uçtan uca doğrulandı","Kullanıcı çalıştırdı; CleanMyMac'in Çöp listesinde taşınanlar göründü.","Mac"],
+ ["4.8","d","İşlem kaydı klasörü oluşturma hatası","Application Support/Burnish oluşmadığı için geçmiş yazılmıyordu; düzeltildi, kayıt yoksa onay sayfası söyler.","Güvenlik"],
+ ["4.9","t","'İzin gerekli' durumu","Okunamayan klasör sessizce 0 dönüyor (Çöp: CleanMyMac 624 MB buldu, biz 0). Tarayıcı 'izin gerekli' işaretlemeli (§7). Öncelik 1.","Mac,Güvenlik"],
+ ["4.10","t","Tam Disk Erişimi algılama + adım adım rehber","Korumalı yolu okumayı dene; yoksa rehber ve Sistem Ayarları bağlantısı. İzinsiz de çalışır.","Mac"],
+ ["4.11","t","Geçmiş ekranı + geri yükleme arayüzü","HistoryStore ve RestoreService hazır, arayüz yok (§4.7, §6.9).","Mac"],
+ ["4.12","t","Xcode: iOS DeviceSupport (~12 GB) ve Archives","Cihaz/sürüm başına satır. Archives önceden seçilmez (tek sembol kopyası olabilir).","Mac"],
+ ["4.13","t","Xcode: kullanılamaz simülatör cihazları","simctl delete unavailable; kullanıcı düzeyi.","Mac"],
+ ["4.14","t","Bilinen uygulama konumları listesi","~/Library/Caches dışındaki uygulama önbellekleri: Adobe Media Cache (~9,8 GB), Claude, Spotify vb. Her girdi tek tek doğrulanır.","Mac"],
+ ["4.15","t","Containers / Group Containers önbellekleri","Tam Disk Erişimi gerektirir; 530 klasör şu an okunamıyor.","Mac"],
+ ["4.16","t","Sistem önbellekleri ve günlükleri","Listelenir, silme Faz 7'deki helper ile.","Helper"],
+ ["4.17","t","Dil dosyaları (.lproj)","Varsayılan kapalı, imza uyarısı, Apple uygulamalarına asla dokunulmaz (D7).","Mac,Güvenlik"],
+ ["4.18","t","Bozuk oturum açılışı öğeleri","Hedefi olmayan LaunchAgent/oturum öğeleri.","Mac"],
+ ["4.19","t","Bozuk tercih dosyaları (.plist)","Okunamayan plist'ler.","Mac"],
+ ["4.20","t","Document Versions, iOS aygıt yedekleri, .ipsw","Hiçbiri önceden seçilmez.","Mac"],
+ ["4.21","t","Birim başına Çöp kutuları","Harici disk .Trashes, Google Drive çöpü; Çöp boşaltma kalıcıdır, ek onay.","Mac"],
+ ["4.22","t","Time Machine yerel anlık görüntüleri","tmutil ile listele; silme helper gerektirebilir.","Mac,Helper"],
+ ["4.23","t","Yaş tabanlı kısmî seçim","Önbellekler için 'N günden eski' ölçütü; ScanItem'a son kullanım tarihi. Kullanıcı içeriğine uygulanmaz.","Mac"],
+ ["4.24","t","Akıllı Tarama'yı gerçek hafif tarayıcılara bağlama","Şimdi simülasyon. TaskGroup ile paralel, parça parça sonuç.","Mac"]
+]},
+{id:"f5",c:"pg",l:"Faz 5",t:"Dosyalar",n:"Ağır tarayıcılar",items:[
+ ["5.1","t","Ağır tarayıcı sözleşmesi","İlerleme yüzdesi, kalan süre, her an iptal, kısmî sonuç, devam/önbellek (§8).","Çekirdek"],
+ ["5.2","t","Space Lens","Tüm birim, tıklayınca yakınlaştırma, breadcrumb, birim seçici, gizli dosyalar, sert bağlantı bir kez, APFS klon notu. Grafik türü tasarımda belirlenir.","Mac"],
+ ["5.3","t","Büyük ve eski dosyalar","Boyut ve son erişime göre filtre, tür gruplama.","Mac"],
+ ["5.4","t","İndirilenler tarayıcısı","~/Downloads: kurulum dosyaları (.dmg/.pkg/.iso/.xip) ve N gündür dokunulmayanlar. İndiren uygulama ve indirme zamanı karantina özniteliğinden; yerel, ağ yok. Hiçbir şey önceden seçilmez, yalnızca Çöp.","Mac"],
+ ["5.5","t","Kopya bulucu","Boyut, ilk/son 64 KB, tam hash. Her grupta en az bir kopya işaretsiz; 'seçili/toplam' rozeti; en eski/en kısa yol kuralları.","Mac"],
+ ["5.6","t","Benzer fotoğraflar","Vision VNFeaturePrint, seri çekim gruplama. Fotoğraflar kütüphanesine yazma yok.","Mac"],
+ ["5.7","t","Klasör kapsam seçici","Kullanıcı taranacak klasörü seçer; hariç tutma listesiyle birleşir.","Mac"],
+ ["5.8","t","Parçalayıcı","Kalıcı silme. SSD/APFS'te güvenli üzerine yazmanın garanti edilemeyeceği açıkça yazılır.","Mac,Güvenlik"]
+]},
+{id:"f6",c:"pc",l:"Faz 6",t:"Uygulamalar",n:"",items:[
+ ["6.1","t","Uygulama ızgarası","İkon, ad, boyut, son kullanım; sıralama ve filtre.","Mac"],
+ ["6.2","t","Kaldırıcı","Bundle ID ile ilişkili artıklar: Application Support, Caches, Preferences, Containers, Group Containers, Saved State, LaunchAgents, HTTPStorages, WebKit.","Mac"],
+ ["6.3","t","Artık dosyalar","Yüklü olmayan uygulamalardan kalanlar; düşük güvenli eşleşmeler seçili gelmez.","Mac"],
+ ["6.4","t","Kullanılmayan uygulamalar","Uzun süredir açılmayanlar (ör. Flash Player gibi eski paketler).","Mac"],
+ ["6.5","t","Sıfırlama","Uygulamayı silmeden ayar ve önbelleğini temizle.","Mac"],
+ ["6.6","t","Güncelleyici","Sparkle akışlı uygulamaları kontrol et, App Store uygulamalarını Mac App Store'a yönlendir; güncellemeyi uygulamaya bırak. Önceden seçili kurulum yok.","Mac"],
+ ["6.7","t","Uzantılar","Safari uzantıları, tercih panelleri, QuickLook eklentileri, giriş öğeleri.","Mac"],
+ ["6.8","t","Çalışan uygulamayı kapatma isteği","Kaldırmadan önce; zorla kapatma ayrı onay.","Mac"]
+]},
+{id:"f7",c:"pi",l:"Faz 7",t:"Helper ve Hız",n:"",items:[
+ ["7.1","t","Privileged helper","SMAppService.daemon, XPC, audit_token imza doğrulama, kapalı komut kümesi, kendi içinde SafetyKit (§4.10, ENTITLEMENTS.md).","Helper,Güvenlik"],
+ ["7.2","t","Sistem önbellekleri/günlükleri silme","/Library/Caches ve /Library/Logs; yol helper içinde yeniden doğrulanır.","Helper"],
+ ["7.3","t","Bakım görevleri","DNS önbelleği, Spotlight yeniden indeksleme, Launch Services, Mail hızlandırma, diskutil verify. Her görev sade dille. 'Repair Disk Permissions' alınmaz (modern macOS'ta karşılığı yok); RAM boşaltma ölçülebilir fayda iddiası olmadan.","Mac,Helper"],
+ ["7.4","t","Başlangıç (oturum açılışı) öğeleri","launchctl ile devre dışı bırakma, geri alınabilir; kaldırma değil.","Mac"],
+ ["7.5","t","Arka plan öğeleri","LaunchAgent/Daemon'ları sahibine çözüp okunur ad göster (ham plist adı yok).","Mac"],
+ ["7.6","t","Yoğun kaynak tüketenler","CPU/RAM en çok kullananlar, kapatma (sistem süreçleri hariç).","Mac"],
+ ["7.7","t","Bellek baskısı bildirimi","Ayarlanabilir eşik.","Mac"],
+ ["7.8","t","Simülatör runtime (~16–19 GB)","/Library/Developer/CoreSimulator; xcrun simctl runtime delete, yönetici izni.","Mac,Helper"],
+ ["7.9","t","Burnish'ı tamamen kaldır","Helper'ı SMAppService.unregister ile söker, giriş öğesini ve veri klasörünü temizler.","Güvenlik"],
+ ["7.10","t","Helper kurulum başarısızlığı durumları","Net hata ekranı, helper'sız çalışma, yeniden kurma (R6).","Mac"]
+]},
+{id:"f8",c:"pa",l:"Faz 8",t:"Koruma ve Gizlilik",n:"On-demand tarayıcı",items:[
+ ["8.1","t","YARA motoru","BSD-3; ClamAV GPL nedeniyle kullanılmaz. Her kural kaynağı THIRD_PARTY_LICENSES.md'ye lisansıyla.","Güvenlik"],
+ ["8.2","t","Kendi kural seti + SHA-256 blocklist","İmzalı güncelleme kanalı (Sparkle'dan ayrı), manifest ve sürüm.","Güvenlik,Altyapı"],
+ ["8.3","t","Kalıcılık noktaları","LaunchAgents/Daemons, oturum öğeleri, tarayıcı uzantıları, profiller.","Güvenlik"],
+ ["8.4","t","İmza, notarizasyon, karantina kontrolleri","SecStaticCodeCheckValidity, quarantine özniteliği, XProtect/Gatekeeper sürümü. Uygulama paketi yardımcıları ve arşivler taranır.","Güvenlik"],
+ ["8.5","t","Karantina klasörü + geri alma","Şüpheli bulgu silinmez, taşınır. 'Neden işaretlendi' açıklaması ve 'bir daha sorma'.","Güvenlik"],
+ ["8.6","t","Gizlilik temizliği","Tarayıcı bazında geçmiş, çerez, form verisi, indirme geçmişi, arama sorguları; Recent Items; Wi-Fi geçmişi (helper). Parolalar seçilebilir değil. Açık tarayıcıda işlem yok.","Mac,Güvenlik"],
+ ["8.7","t","Uygulama izinleri görünümü","Kamera, mikrofon, ekran kaydı, Tam Disk Erişimi, Erişilebilirlik, Input Monitoring: okuma ve Sistem Ayarları yönlendirmesi. TCC'ye yazma yok (D6).","Mac,Güvenlik"],
+ ["8.8","t","Güvenlik Kontrolü özeti","'Tehdit yok' sakin boş durum; kırmızı yalnızca gerçek bulgu (§10.3).","Mac"],
+ ["8.9","t","Dürüst konumlandırma","Gerçek zamanlı koruma yok (Endpoint Security entitlement'ı yok); arayüzde 'antivirüs' izlenimi verilmez (§6.4).","Hukuki"]
+]},
+{id:"f9",c:"ps",l:"Faz 9",t:"Akıllı Tarama, menü çubuğu, öneriler",n:"",items:[
+ ["9.1","t","Akıllı Tarama orkestrasyonu","Hafif tarayıcılar paralel (TaskGroup), parça parça sonuç, hedef <60 sn. Ağır tarayıcılar dahil değil, öneri olarak sunulur.","Mac"],
+ ["9.2","t","Tek tuşla 'Çalıştır' yolu","Yalnızca Çöp'e giden, geri alınabilir, yüksek güvenli öğeler seçili gelir. Güncelleme kurma ve kopya silme ayrı onay ister. Kullanıcı içeriği asla önceden seçilmez.","Mac,Güvenlik"],
+ ["9.3","t","Öneri motoru","Yalnızca kullanıcının Mac'ine dair ('Xcode artıkları 14 GB'). Ürün tanıtımı yok.","Mac"],
+ ["9.4","t","Sağlık skoru gerçek girdilerle","Tehdit, bekleyen güncelleme, başlangıç yükü taramalardan beslenir (D8).","Mac"],
+ ["9.5","t","Menü çubuğu mini paneli","MenuBarExtra; CPU/RAM/disk/ağ/pil, hızlı eylemler; ayrı MenuBarAgent hedefi.","Mac"],
+ ["9.6","t","Sağlık izleyici (arka plan)","Ayrı hafif süreç; bildirimler.","Mac"],
+ ["9.7","t","Araçlar sayfası","Her tarayıcı tek başına çalıştırılabilir kart + arama.","Mac"],
+ ["9.8","t","Etkinlik panosu","Gerçek, doğrulanabilir kazanılan alan geçmişi. 'Kazanılan zaman' gibi ölçülemeyen iddia yok (§10.5).","Mac"],
+ ["9.9","t","Zamanlanmış tarama","Yalnızca tarar ve bildirir, asla silmez (§10.10).","Mac"]
+]},
+{id:"f10",c:"pn",l:"Faz 10",t:"Cila",n:"iOS'un başlama eşiği",items:[
+ ["10.1","t","Ayarlar","Genel, tarama (aç/kapat, hariç tutulan klasörler), silme tercihleri, zamanlama, geçmiş, izinler, lisans, gizlilik.","Mac"],
+ ["10.2","t","İlk açılış karşılaması","Ne yapar, ne yapmaz; izin rehberi; 'antivirüs değil' ifadesi.","Mac"],
+ ["10.3","t","Tam yerelleştirme TR/EN","String Catalog denetimi, ham anahtar sızıntısı taraması.","Çekirdek"],
+ ["10.4","t","Erişilebilirlik","VoiceOver, Hareketi Azalt, kontrast, klavye ile tam kullanım.","Tasarım"],
+ ["10.5","t","Performans profilleme","Instruments: açılış <1 sn, boşta <150 MB, ağır tarama <1 GB.","Mac"],
+ ["10.6","t","Boş ve hata durumları","Her ekran için.","Mac"],
+ ["10.7","t","Gerçek macOS 14 doğrulaması (R11)","Geliştirme macOS 27'de; aşama sonunda 14'te çalıştırma.","Mac"],
+ ["10.8","k","Smart Insights","Öğe başına cihaz-içi açıklama (D5).","AI"],
+ ["10.9","t","Tanılama paketi","Kullanıcı onaylı, yol ve dosya adı içermez.","Güvenlik"]
+]},
+{id:"fD",c:"pm",l:"Faz D",t:"Tasarım giydirme",n:"Genel hatlar bitince",items:[
+ ["D.1","u","Tasarımın verilmesi","Figma, PDF veya görsel. Yol haritası burada güncellenir.","Tasarım"],
+ ["D.2","t","Token eşleme","Renk, tipografi, boşluk, köşe, hareket; WCAG AA tekrar doğrulanır.","Tasarım"],
+ ["D.3","t","Ortak bileşenlerin yeniden giydirilmesi","GlassCard, GradientRing, MetricTile, ScanButton, ConfirmationSheet…","Tasarım"],
+ ["D.4","t","Ekran ekran uygulama","Dashboard, Akıllı Tarama, Temizlik, Dosyalar, Uygulamalar, Hız, Koruma, Gizlilik, Ayarlar.","Tasarım"],
+ ["D.5","t","İkon, DMG arka planı, mağaza görselleri","Marka kesinleştikten sonra (0.5).","Tasarım"],
+ ["D.6","t","Görsel regresyon","macOS 14, 15, 26, 27.","Tasarım"],
+ ["D.7","t","iOS/iPad tasarımı","Faz 15 için ayrı teslim.","Tasarım,iOS"]
+]},
+{id:"f11",c:"pk",l:"Faz 11",t:"Ticari altyapı ve kullanıcı hesapları",n:"Satış için",items:[
+ ["11.1","t","Ürün ve fiyat tasarımı","Free / Pro, 1 yıl güncelleme dahil tek seferlik lisans, %50 yenileme, geçici fiyat 49/79 USD; pazar kontrolü.","Ticari,Direct"],
+ ["11.2","t","Lisans biçimi","Ed25519 imzalı; ürün, e-posta, cihaz limiti, güncelleme bitiş tarihi. Özel anahtar uygulamada olmaz.","Ticari,Güvenlik"],
+ ["11.3","t","Çevrimdışı lisans doğrulama","Licensing paketinde gerçek uygulama; saat manipülasyonu ve bozuk dosya testleri. İnternet yokken kilitlenme yok.","Ticari,Direct"],
+ ["11.4","t","14 günlük deneme","Kart yok. Bitince yalnızca Pro eylemleri kapanır, sonuçlar görünmeye devam eder (§11.3, §10.6).","Ticari"],
+ ["11.5","t","Paddle entegrasyonu","Ürünler, USD ve bölgesel fiyat, vergi (MoR), webhook. Uygulamada Paddle SDK'sı yok.","Ticari,Direct"],
+ ["11.6","t","Lisans servisi (minimal arka uç)","Webhook alıcı, anahtar imzalama, aktivasyon kaydı, iade/chargeback iptali. Cloudflare Workers + D1/KV; yalnızca e-posta ve lisans verisi tutar.","Ticari,Altyapı"],
+ ["11.7","t","Cihaz aktivasyonu","İsteğe bağlı çevrimiçi kayıt, cihaz limiti, deaktivasyon, lisans başka Mac'e taşıma. Başarısızlıkta uygulama çalışmaya devam eder.","Ticari,Direct"],
+ ["11.8","k","Hesap modeli (D2)","Hesapsız lisans mı, şifresiz hesap mı.","Hesap,Karar"],
+ ["11.9","t","Kayıt akışı","E-posta doğrulama, KVKK/GDPR rızası, EULA onayı, ticari e-posta için ayrı izin.","Hesap,Hukuki"],
+ ["11.10","t","Giriş ve çıkış","Sign in with Apple + e-posta bağlantısı (şifre saklamama); oturum yönetimi; çoklu cihaz.","Hesap"],
+ ["11.11","t","Hesap sayfası (web)","Lisanslar, cihazlar, faturalar, indirme bağlantısı, yenileme, lisans anahtarını yeniden gönder.","Hesap,Direct"],
+ ["11.12","t","Hesap silme ve veri dışa aktarma","GDPR/KVKK; App Store için uygulama içi hesap silme zorunlu (Kural 5.1.1(v)).","Hesap,Hukuki"],
+ ["11.13","t","Uygulama içi satın alma arayüzü","ProGate (baskısız tek kart), fiyat, 'Satın al' tarayıcıda açılır, anahtar yapıştırma, durum: Lisanslı / Deneme / Güncelleme bitti.","Ticari,Mac"],
+ ["11.14","t","Yükseltme ve yenileme","İndirimli yenileme, büyük sürüm yükseltmesi, güncelleme süresi bitince özellikler açık kalır.","Ticari"],
+ ["11.15","t","Promosyon, öğrenci, çoklu cihaz, kurumsal","İndirim kodları, eğitim, aile paketi, toplu lisans.","Ticari"],
+ ["11.16","t","İade politikası ve akışı","Paddle kurallarıyla uyumlu; destek formu; iade olunca lisans iptali.","Ticari,Hukuki"],
+ ["11.17","u","Vergi ve fatura","Paddle MoR vergiyi üstlenir; yerel gelir beyanı için muhasebeci.","Ticari"],
+ ["11.18","t","Korsan/yeniden imzalı kopya savunması","Uygulama kendi imzasını doğrular; dürüst kullanıcıyı cezalandırmaz. (Bu oturumda 'Nebula' ile yeniden imzalı bir CleanMyMac kopyası görüldü.)","Güvenlik,Ticari"],
+ ["11.19","t","Çökme raporu ve telemetri politikası","Opt-in, varsayılan kapalı, ham haliyle gösterilir; üçüncü parti SDK yok.","Güvenlik"],
+ ["11.20","t","Hukuki metinler","EULA, Gizlilik Politikası, sorumluluk reddi (Parçalayıcı, kötü amaçlı yazılım taraması), THIRD_PARTY_LICENSES uygulama içinde.","Hukuki"],
+ ["11.21","t","Destek","Yardım merkezi, SSS, e-posta, durum sayfası.","Ticari"]
+]},
+{id:"f12",c:"po",l:"Faz 12",t:"Doğrudan dağıtım (macOS)",n:"Direct",items:[
+ ["12.1","t","İmzalama","İçten dışa (paketler, helper, ajan, uygulama), --deep yok, Hardened Runtime açık, sandbox kapalı.","Direct,Güvenlik"],
+ ["12.2","t","Notarizasyon","notarytool, stapler, başka Mac'te Gatekeeper testi.","Direct"],
+ ["12.3","t","DMG ve sürümleme","SemVer, CHANGELOG TR/EN, özel DMG arka planı.","Direct"],
+ ["12.4","t","Sparkle 2 güncelleme kanalı","Appcast (R2), EdDSA imza, beta/kararlı kanal, delta güncelleme.","Direct"],
+ ["12.5","t","Release CI","v* etiketinde imzalı derleme, notarizasyon, R2'ye yükleme, appcast güncelleme.","Altyapı"],
+ ["12.6","t","Web sitesi ve satış sayfası","Özellikler, fiyat, SSS, sürüm notları, gizlilik, indirme. 'Burnish for Mac'.","Direct"],
+ ["12.7","t","Beta programı","Doğrudan beta kanalı (Sparkle), geri bildirim.","Direct"],
+ ["12.8","t","Lansman kontrol listesi ve geri alma planı","Marka, yasal, destek, kötü sürümü geri çekme.","Direct"]
+]},
+{id:"f13",c:"pj",l:"Faz 13",t:"Parite genişlemesi",n:"CleanMyMac'in yaptığı ve ötesi",items:[
+ ["13.1","o","Finder Sync uzantısı","Sağ tık: seçili öğeyi Burnish'te incele.","Mac"],
+ ["13.2","o","App Intents / Kestirmeler","Taramayı başlat, boş alanı sor.","Mac,iOS"],
+ ["13.3","o","Widget'lar","Disk ve sağlık.","Mac,iOS"],
+ ["13.4","k","Cloud Cleanup","iCloud Drive yerel kopyalar; Google Drive, OneDrive, Dropbox opt-in OAuth (D4).","Mac,Karar"],
+ ["13.5","k","E-posta temizliği","Önerilmez (D4); istenirse yerel OAuth ile opt-in.","Karar"],
+ ["13.6","o","Harici disk temizliği","Birim başına .Trashes, .DS_Store, kopyalar; .Spotlight-V100 korunur.","Mac"],
+ ["13.7","o","Menü çubuğu hızlı eylemleri","RAM, Çöp, tarama başlat.","Mac"]
+]},
+{id:"f14",c:"pi",l:"Faz 14",t:"Mac App Store sürümü",n:"Opsiyonel · D1",items:[
+ ["14.1","k","Karar: ayrı 'Burnish Lite' hedefi","MAS sandbox zorunlu; helper ve rastgele klasör silme yok. Doğrudan sürümle özellik farkı açıkça belirtilir.","MAS,Karar"],
+ ["14.2","t","Kapsam","Kullanıcının seçtiği klasörlerde (security-scoped bookmark) Space Lens, büyük/eski, kopyalar, İndirilenler; PhotoKit ile benzer fotoğraf.","MAS"],
+ ["14.3","t","StoreKit 2","Pro (tek seferlik veya abonelik, D3), deneme, satın almayı geri yükle, Aile Paylaşımı, intro offer.","MAS,Ticari"],
+ ["14.4","t","Sandbox, gizlilik manifesti, App Privacy","Entitlement gerekçeleri, PrivacyInfo.xcprivacy, gizlilik etiketleri.","MAS,Hukuki"],
+ ["14.5","t","İnceleme paketi","Notlar, ekran görüntüleri TR/EN, yaş derecelendirmesi, şifreleme beyanı.","MAS"],
+ ["14.6","t","Ticari ayarlar","Küçük İşletme Programı (%15), bölgesel fiyat, vergi/banka formları, Ücretli Uygulamalar Sözleşmesi.","MAS,Ticari"],
+ ["14.7","t","Evrensel satın alma","iOS + macOS aynı kayıtta tek satın alma. Doğrudan sürüm lisansı bu kapsamda değildir.","MAS,iOS"]
+]},
+{id:"f15",c:"pg",l:"Faz 15",t:"iOS / iPadOS",n:"Faz 10 onayı sonrası",items:[
+ ["15.1","t","Konumlandırma: 'Burnish for iPhone'","Medya temizleyici + Mac eşlikçisi. Uygulama/sistem önbelleği temizleme yok (iOS sandbox'ı imkânsız kılar), 'telefon temizleyici tiyatrosu' yapılmaz (§12.1).","iOS"],
+ ["15.2","t","iOS hedefi (iOS 17+) ve CI","Çapraz platform paketler iOS için derlenir; CI'ya iOS derlemesi eklenir.","iOS,Altyapı"],
+ ["15.3","t","PhotoKit tarayıcıları","Scanning protokolüne uyumlu; kopya, benzer, seri çekim, ekran görüntüleri, büyük videolar, Live Photo.","iOS"],
+ ["15.4","t","iOS silme politikası","Sistem onay penceresi; silinenler 'Son Silinenler'e gider (30 gün); bu arayüzde açıkça yazılır.","iOS,Güvenlik"],
+ ["15.5","t","Rehber kopyaları birleştirme","Contacts framework; önizle ve birleştir, geri alma kaydı.","iOS"],
+ ["15.6","o","Takvim/hatırlatıcı yığınları","EventKit.","iOS"],
+ ["15.7","t","Depolama görünümü ve 'boşaltma' rehberi","Ayarlar'a yönlendirme; zorlayıcı iddia yok.","iOS"],
+ ["15.8","t","iPad düzeni","NavigationSplitView, klavye ve işaretçi.","iOS"],
+ ["15.9","k","Mac eşlikçisi","Mac'i uzaktan izleme ve tarama başlatma. Senkron: CloudKit mi yerel ağ + App Group mu (A6).","iOS,Karar"],
+ ["15.10","t","İzinler","Fotoğraflar (sınırlı erişim dahil), Rehber; yalnızca özellik ilk kullanıldığında.","iOS"],
+ ["15.11","o","Widget, Live Activity, Kestirmeler","Home/Lock Screen widget; tarama için Live Activity opsiyonel.","iOS"],
+ ["15.12","t","Arka plan işleri","BGProcessingTask sınırları; ağır taramalar ön planda ve iptal edilebilir.","iOS"],
+ ["15.13","t","Erişilebilirlik ve yerelleştirme","Dynamic Type, VoiceOver, TR/EN.","iOS,Tasarım"]
+]},
+{id:"f16",c:"pn",l:"Faz 16",t:"iOS ticari ve App Store",n:"Satın alma, kayıt, yayın",items:[
+ ["16.1","u","App Store Connect kaydı","Uygulama kaydı, bundle ID'ler, Capability'ler (Photos, iCloud), Ücretli Uygulamalar Sözleşmesi, vergi ve banka bilgileri.","iOS,Ticari"],
+ ["16.2","t","StoreKit 2 ürünleri","Fiyat basamakları, deneme (intro offer), promosyon/offer code, Aile Paylaşımı (D3).","iOS,Ticari"],
+ ["16.3","t","Satın alma arayüzü","Şeffaf, kapatılabilir paywall; 'Satın almayı geri yükle'; abonelik yönetimi bağlantısı; sürpriz yenileme yok (§10.6).","iOS,Ticari"],
+ ["16.4","t","Sunucu tarafı doğrulama","App Store Server API + Sunucu Bildirimleri V2 (yenileme, iade, ek süre); Faz 11.6'daki servisle ortak. Lisans verisi dosya verisinden ayrı.","iOS,Altyapı"],
+ ["16.5","t","Kullanıcı kaydı","Hesap gerekiyorsa Sign in with Apple (başka giriş sunulursa eşdeğer gizlilik odaklı seçenek zorunlu, Kural 4.8); e-postayı gizleme desteği; uygulama içi hesap silme (5.1.1(v)).","iOS,Hesap"],
+ ["16.6","t","Gizlilik","App Privacy etiketleri, PrivacyInfo.xcprivacy (gerekçeli API'ler), izin açıklamaları, takip yok (ATT gerekmez).","iOS,Hukuki"],
+ ["16.7","t","İnceleme paketi","İnceleme notları (neden fotoğraf erişimi), demo hesabı (hesap varsa), ekran görüntüleri 6,9\" ve iPad, önizleme videosu.","iOS"],
+ ["16.8","t","TestFlight","İç ve dış test, geri bildirim.","iOS"],
+ ["16.9","t","Mağaza metni ve ad kontrolü","TR/EN açıklama, anahtar kelimeler; 'Burnish' adının App Store'da çakışmadığı doğrulanır.","iOS,Hukuki"],
+ ["16.10","t","Yaş derecelendirmesi, şifreleme beyanı, içerik hakları","","iOS,Hukuki"],
+ ["16.11","t","Yayın","Aşamalı yayın, sürüm notları, yalnızca Apple'ın toplu analitiği.","iOS"],
+ ["16.12","t","Ret planı","Sık nedenler: 2.1 (tamamlanmamış), 3.1.1 (satın alma), 5.1.1 (veri/izin), 4.2 (asgari işlev). Dijital içerik için dış ödeme kuralları bölgeye göre değişir, yayın öncesi güncel doğrulanır.","iOS,Hukuki"]
+]},
+{id:"f17",c:"ph_",l:"Faz 17",t:"Lansman sonrası",n:"Sürekli",items:[
+ ["17.1","t","Yeni macOS sürümü regresyonu","Her beta döneminde görsel ve izin taraması (R5).","Mac"],
+ ["17.2","t","Güvenlik veritabanı güncellemeleri","YARA kuralları ve hash listesi; yanlış pozitif geri bildirimi.","Güvenlik"],
+ ["17.3","t","Destek ve sürüm notları döngüsü","","Ticari"],
+ ["17.4","t","Hukuki ve lisans yenilemeleri","THIRD_PARTY_LICENSES, gizlilik metni, ödeme sağlayıcısı değişiklikleri.","Hukuki"]
+]},
+{id:"fE",c:"pe",l:"Faz E",t:"Kullanıcı eklemeleri (Kürşad)",n:"Buraya eklenir",items:[
+ ["E.1","u","Ekleme: ___","Senin istediğin özellik. Bana söylediğinde buraya yazarım, ilgili faza bağlarım ve sırayı birlikte belirleriz.","Karar"],
+ ["E.2","u","Ekleme: ___","","Karar"],
+ ["E.3","u","Ekleme: ___","","Karar"]
+]}
+];
+
+const LOG=[
+ ["2026-10-12","rev 1: İlk sürüm. Faz 0–3 tamamlandı, Faz 4 kısmen. CleanMyMac incelemesinden çıkan işler (izin gerekli durumu, Xcode, İndirilenler, bilinen konumlar), ticari altyapı ve hesaplar (Faz 11), doğrudan dağıtım (12), Mac App Store (14), iOS/iPadOS (15) ve iOS ticari/App Store (16) fazları ile 9 açık karar eklendi."]
+];
+
+function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+
+function mkItem(it,decision){
+  const [id,s,title,desc,tags]=it, st=ST[s];
+  const row=el("div","item"+(st[0]?" "+st[0]:""));
+  row.appendChild(el("span","inum",id));
+  const body=el("div","ibody");
+  body.appendChild(el("div","ititle",title));
+  if(desc)body.appendChild(el("div","idesc",desc));
+  const tg=el("div","tags");
+  tg.appendChild(el("span","tag "+st[2],st[1]));
+  (tags||"").split(",").filter(Boolean).forEach(t=>tg.appendChild(el("span","tag "+(TC[t]||"topt"),t)));
+  body.appendChild(tg);row.appendChild(body);
+  row.dataset.s=s;
+  row.dataset.text=(id+" "+title+" "+(desc||"")+" "+(tags||"")).toLowerCase();
+  return row;
+}
+
+const phasesEl=document.getElementById("phases"),decEl=document.getElementById("decisions");
+const phaseNodes=[];
+
+(function build(){
+  const box=el("div","items");DEC.forEach(d=>box.appendChild(mkItem(d)));decEl.appendChild(box);
+  PH.forEach(p=>{
+    const det=el("details","phase");
+    const sum=el("summary","phead "+p.c);
+    sum.appendChild(el("span","plabel",p.l));
+    sum.appendChild(el("h2",null,p.t));
+    if(p.n)sum.appendChild(el("span","pnote",p.n));
+    const pc=el("span","pcount");sum.appendChild(pc);
+    sum.appendChild(el("span","chev","▾"));
+    det.appendChild(sum);
+    const items=el("div","items");p.items.forEach(it=>items.appendChild(mkItem(it)));
+    det.appendChild(items);phasesEl.appendChild(det);
+    const done=p.items.filter(i=>i[1]==="d").length,tot=p.items.length;
+    pc.appendChild(document.createTextNode(done+"/"+tot));
+    const bar=el("span","pbar"),fill=document.createElement("i");fill.style.width=Math.round(100*done/tot)+"%";
+    bar.appendChild(fill);pc.appendChild(bar);
+    det.open=p.items.some(i=>i[1]!=="d")&&p.items.some(i=>i[1]==="d");
+    phaseNodes.push({det,items});
+  });
+  const all=PH.flatMap(p=>p.items).concat(DEC);
+  const cnt=k=>all.filter(i=>i[1]===k).length;
+  const stats=[["tamamlandı",cnt("d")],["bekliyor",cnt("t")],["sende",cnt("u")],["karar bekliyor",cnt("k")],["opsiyonel",cnt("o")]];
+  const se=document.getElementById("stats");
+  stats.forEach(([l,n])=>{const s=el("div","stat");s.appendChild(el("b",null,String(n)));s.appendChild(document.createTextNode(l));se.appendChild(s)});
+  document.getElementById("focus").textContent=META.focus;
+  document.getElementById("upd").textContent="Son güncelleme "+META.updated+" · rev "+META.rev;
+  document.getElementById("foot").textContent=all.length+" madde · "+PH.length+" faz · "+DEC.length+" karar";
+  const lg=document.getElementById("log");
+  LOG.forEach(([d,t])=>{const r=el("div");r.appendChild(el("b",null,d));r.appendChild(document.createTextNode(t));lg.appendChild(r)});
+})();
+
+const q=document.getElementById("q"),pend=document.getElementById("pend"),rc=document.getElementById("rescount");
+function apply(){
+  const term=q.value.trim().toLowerCase(),onlyPend=pend.checked;let shown=0;
+  const rows=[...document.querySelectorAll(".item")];
+  rows.forEach(r=>{
+    const hit=(!term||r.dataset.text.includes(term))&&(!onlyPend||r.dataset.s!=="d");
+    r.hidden=!hit;if(hit)shown++;
+  });
+  phaseNodes.forEach(p=>{
+    const any=[...p.items.children].some(r=>!r.hidden);
+    p.det.hidden=!any;
+    if(term&&any)p.det.open=true;
+  });
+  rc.textContent=(term||onlyPend)?shown+" sonuç":"";
+}
+q.addEventListener("input",apply);pend.addEventListener("change",apply);
+document.getElementById("openall").addEventListener("click",()=>phaseNodes.forEach(p=>p.det.open=true));
+document.getElementById("closeall").addEventListener("click",()=>phaseNodes.forEach(p=>p.det.open=false));
+</script>
