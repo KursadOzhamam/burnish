@@ -66,6 +66,7 @@ public enum CleanupCatalogue {
         browserCaches,
         appCaches,
         adobeMediaCaches,
+        brokenPreferences,
         mailDownloads,
         mobileBackups,
         userTrash,
@@ -226,6 +227,19 @@ public enum CleanupCatalogue {
         "com.adobe.Character-Animator",
         "com.adobe.Photoshop"
     ]
+
+    /// Preference files that are empty or cannot be parsed.
+    ///
+    /// Nothing is preselected: a preference file is the user's settings, even when it is broken,
+    /// and the application that owns it recreates it. Apple's own files are never offered.
+    public static let brokenPreferences = CleanupRule(
+        id: ScannerID("cleanup.brokenPreferences"),
+        titleKey: "cleanup.brokenPreferences.title",
+        explanationKey: "cleanup.brokenPreferences.explanation",
+        roots: [.home("Library/Preferences")],
+        confidence: .low,
+        childFilter: .malformedPropertyLists
+    )
 
     /// Mail's downloaded attachments. The mailbox database itself is on the protected list
     /// (§4.3) and is never touched.

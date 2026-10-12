@@ -145,7 +145,16 @@ public struct CleanupScanner: Scanning {
             // The exclusion list is absolute: an excluded child is not offered at all, rather
             // than offered-but-unselected, so it cannot be swept up by "select all".
             guard !rule.excludedChildNames.contains(name) else { continue }
-            guard entry.size.bytes > 0 else { continue }
+            switch rule.childFilter {
+            case .all:
+                guard entry.size.bytes > 0 else { continue }
+            case .malformedPropertyLists:
+                // Apple's own preferences are never offered, and an unreadable file is not a
+                // broken one. An empty file is the typical case, so size zero is expected here.
+                guard name.hasSuffix(".plist"), !name.hasPrefix("com.apple."),
+                      PropertyListValidity.verdict(for: entry.url) == .malformed
+                else { continue }
+            }
 
             discovered += entry.size
             progress(

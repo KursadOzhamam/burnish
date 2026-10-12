@@ -186,7 +186,7 @@
 <script>
 /* Güncelleme için: yalnızca META, DEC, PH ve LOG değişir. Durum kodları:
    d tamamlandı · t bekliyor · u sende · k karar bekliyor · o opsiyonel */
-const META={updated:"2026-10-12",rev:8,
+const META={updated:"2026-10-12",rev:9,
   focus:"Faz 4 kapanışı: kalan temizlik tarayıcıları (4.13, 4.15–4.23). Ardından Faz 5 (İndirilenler dahil). UI testleri (10.10) erkene çekilmeye değer. Senden bekleyenler: D1–D9 kararları, Faz 0 maddeleri ve CleanMyMac kopyasının kapatılması (0.14)."};
 
 const ST={d:["done","tamamlandı","tdone"],t:["","bekliyor","tmig"],u:["user","sende","tuser"],k:["dec","karar bekliyor","tdec"],o:["opt","opsiyonel","topt"]};
@@ -268,7 +268,7 @@ const PH=[
  ["4.16","t","Sistem önbellekleri ve günlükleri","Listelenir, silme Faz 7'deki helper ile.","Helper"],
  ["4.17","t","Dil dosyaları (.lproj)","Varsayılan kapalı, imza uyarısı, Apple uygulamalarına asla dokunulmaz (D7).","Mac,Güvenlik"],
  ["4.18","t","Bozuk oturum açılışı öğeleri","Hedefi olmayan LaunchAgent/oturum öğeleri.","Mac"],
- ["4.19","t","Bozuk tercih dosyaları (.plist)","Okunamayan plist'ler.","Mac"],
+ ["4.19","d","Bozuk tercih dosyaları (.plist)","Yalnızca okunup çözümlenemeyen veya boş plist; izin yüzünden açılamayanlar bozuk sayılmaz, com.apple.* hiç listelenmez, hiçbiri önceden seçilmez. Bu Mac'te basit 'okunamıyor' ölçütü 10 dosya işaretlerdi (Mesajlar, Rehber, Home dahil); gerçekte bozuk olan yalnızca 2 boş Adobe dosyası.","Mac"],
  ["4.20","t","Document Versions, iOS aygıt yedekleri, .ipsw","Hiçbiri önceden seçilmez.","Mac"],
  ["4.21","t","Birim başına Çöp kutuları","Harici disk .Trashes, Google Drive çöpü; Çöp boşaltma kalıcıdır, ek onay.","Mac"],
  ["4.22","t","Time Machine yerel anlık görüntüleri","tmutil ile listele; silme helper gerektirebilir.","Mac,Helper"],

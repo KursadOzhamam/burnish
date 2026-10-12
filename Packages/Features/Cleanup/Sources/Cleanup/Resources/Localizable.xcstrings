@@ -557,6 +557,38 @@
           }
         }
       }
+    },
+    "cleanup.brokenPreferences.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bozuk tercih dosyaları"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Broken preference files"
+          }
+        }
+      }
+    },
+    "cleanup.brokenPreferences.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boş olan veya okunup çözümlenemeyen .plist dosyaları. Yalnızca gerçekten bozuk olanlar listelenir; izin yüzünden açılamayanlar ve Apple'ın kendi dosyaları listelenmez. Sahibi uygulama dosyayı yeniden oluşturur; bu yüzden hiçbiri önceden seçilmez."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empty .plist files, or ones that are read but cannot be parsed. Only truly broken files are listed; files that cannot be opened for lack of permission, and Apple's own files, are not. The owning app recreates the file, so nothing is preselected."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

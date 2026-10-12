@@ -46,6 +46,9 @@ public struct CleanupRule: Sendable, Hashable, Identifiable {
 
     public let weight: ScannerWeight
 
+    /// Which children of a listing root are offered.
+    public let childFilter: ChildFilter
+
     public init(
         id: ScannerID,
         titleKey: String,
@@ -57,7 +60,8 @@ public struct CleanupRule: Sendable, Hashable, Identifiable {
         isEnabledByDefault: Bool = true,
         requiresFullDiskAccess: Bool = false,
         requiresHelper: Bool = false,
-        weight: ScannerWeight = .light
+        weight: ScannerWeight = .light,
+        childFilter: ChildFilter = .all
     ) {
         self.id = id
         self.titleKey = titleKey
@@ -70,6 +74,16 @@ public struct CleanupRule: Sendable, Hashable, Identifiable {
         self.requiresFullDiskAccess = requiresFullDiskAccess
         self.requiresHelper = requiresHelper
         self.weight = weight
+        self.childFilter = childFilter
+    }
+
+    /// A rule for choosing among a root's children.
+    public enum ChildFilter: Sendable, Hashable {
+        case all
+        /// Only property lists that are readable yet malformed or empty. A file that merely cannot
+        /// be read (permission) is *not* malformed and is never offered; Apple's own preferences
+        /// fall in that group, so they are excluded by name as well.
+        case malformedPropertyLists
     }
 }
 
