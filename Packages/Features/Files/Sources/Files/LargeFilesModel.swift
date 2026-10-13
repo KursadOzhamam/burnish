@@ -37,15 +37,13 @@ public final class LargeFilesModel {
     public var kindFilter: FileKind?
     public var ageFilter: AgeFilter = .any
     public var selection: Set<UUID> = []
-    public private(set) var pendingPlan: DeletionPlan?
     public let canRecordHistory: Bool
 
-    private var report: DeletionReport?
-    private var isDeleting = false
+    private let approval = ApprovalFlow()
+    public var pendingPlan: DeletionPlan? { approval.pendingPlan }
     private let roots: [URL]
     private let minimumSize: ByteCount
     private let history: HistoryStore?
-    private var service: DeletionService?
     private let clock: @Sendable () -> Date
 
     public init(
@@ -64,8 +62,8 @@ public final class LargeFilesModel {
     // MARK: Phase
 
     public var phase: Phase {
-        if let report { return .finished(report) }
-        if isDeleting { return .deleting }
+        if let report = approval.report { return .finished(report) }
+        if approval.isDeleting { return .deleting }
         guard let session else { return .idle }
         switch session.state {
         case .idle: return .idle
@@ -79,14 +77,14 @@ public final class LargeFilesModel {
 
     public func scan() {
         cancel()
-        report = nil
+        approval.reset()
         selection = []
         let scanner = LargeFilesScanner(roots: roots, minimumSize: minimumSize, clock: clock)
         // The scanner may act only within the folders it searched (§4.2).
-        service = DeletionService(
+        approval.use(DeletionService(
             guards: [scanner.id: PathGuard(allowedRoots: roots)],
             history: history
-        )
+        ))
         let next = HeavyScanSession(scanner: scanner, clock: clock)
         session = next
         next.start()
@@ -126,37 +124,18 @@ public final class LargeFilesModel {
     // MARK: Approval
 
     /// Builds the plan and opens the sheet. Touches nothing (§4.6).
-    public func prepareConfirmation() {
-        guard let service, !selectedItems.isEmpty else { return }
-        pendingPlan = service.plan(for: selectedItems, mode: .trash)
-    }
+    public func prepareConfirmation() { approval.prepare(selectedItems) }
 
-    public func dismissConfirmation() { pendingPlan = nil }
+    public func dismissConfirmation() { approval.dismiss() }
 
     public func confirm(_ plan: DeletionPlan) {
-        guard plan == pendingPlan, let service else { return }
-        pendingPlan = nil
-        isDeleting = true
-        Task { [weak self] in
-            let result: DeletionReport
-            do {
-                result = try service.execute(plan, confirmedIrreversible: false)
-            } catch {
-                result = DeletionReport(outcomes: [], mode: plan.mode)
-            }
-            await MainActor.run { [weak self] in
-                self?.isDeleting = false
-                self?.report = result
-                self?.selection = []
-            }
-        }
+        approval.confirm(plan) { [weak self] in self?.selection = [] }
     }
 
     public func reset() {
         cancel()
         session = nil
-        report = nil
+        approval.reset()
         selection = []
-        pendingPlan = nil
     }
 }

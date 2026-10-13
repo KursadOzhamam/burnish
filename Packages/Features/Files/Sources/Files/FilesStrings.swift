@@ -24,6 +24,27 @@ enum FilesStrings {
     static let cloud = key("files.cloud")
     static let hubLarge = key("files.hub.large")
     static let hubMap = key("files.hub.map")
+    static let hubDuplicates = key("files.hub.duplicates")
+    static let dupTitle = key("files.dup.title")
+    static let dupSubtitle = key("files.dup.subtitle")
+    static let dupEmptyTitle = key("files.dup.empty.title")
+    static let dupEmptyDetail = key("files.dup.empty.detail")
+    static let keepOldest = key("files.dup.keepOldest")
+    static let keepShortest = key("files.dup.keepShortest")
+    static let clearSelection = key("files.dup.clear")
+    static let keepNote = key("files.dup.keepNote")
+
+    static func reclaimable(_ size: String) -> LocalizedStringResource {
+        LocalizedStringResource("files.dup.reclaimable \(size)", bundle: .atURL(bundleURL))
+    }
+
+    static func copies(_ count: Int) -> LocalizedStringResource {
+        LocalizedStringResource("files.dup.copies \(count)", bundle: .atURL(bundleURL))
+    }
+
+    static func wasted(_ size: String) -> LocalizedStringResource {
+        LocalizedStringResource("files.dup.wasted \(size)", bundle: .atURL(bundleURL))
+    }
     static let mapTitle = key("files.map.title")
     static let mapSubtitle = key("files.map.subtitle")
     static let mapOther = key("files.map.other")
