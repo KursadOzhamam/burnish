@@ -817,6 +817,182 @@
           }
         }
       }
+    },
+    "files.hub.shredder": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parçalayıcı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shredder"
+          }
+        }
+      }
+    },
+    "files.shred.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parçalayıcı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shredder"
+          }
+        }
+      }
+    },
+    "files.shred.subtitle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçtiğin dosyaları kalıcı olarak siler. Çöp'e gitmez, geri alınamaz. Yalnızca senin eklediğin dosyalara dokunur."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permanently deletes the files you choose. They do not go to the Trash and cannot be restored. Only files you add are touched."
+          }
+        }
+      }
+    },
+    "files.shred.add": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosya ekle…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add files…"
+          }
+        }
+      }
+    },
+    "files.shred.drop": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosyaları buraya bırak ya da Dosya ekle'ye bas"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drop files here or press Add files"
+          }
+        }
+      }
+    },
+    "files.shred.honest": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dürüst not: SSD'lerde ve APFS'te dosyanın üzerine yazmak, eski verinin gittiğini garanti etmez (kopyala-yaz, aşınma dengeleme, TRIM). Burnish üzerine yazıyormuş gibi davranmaz; dosyayı kalıcı olarak siler. Gerçek güvenlik için FileVault'u aç."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Honest note: on SSDs and APFS, overwriting a file does not guarantee the old data is gone (copy-on-write, wear levelling, TRIM). Burnish does not pretend to overwrite; it deletes the file permanently. For real protection, turn on FileVault."
+          }
+        }
+      }
+    },
+    "files.shred.acknowledge": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bunun geri alınamayacağını anlıyorum"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I understand this cannot be undone"
+          }
+        }
+      }
+    },
+    "files.shred.delete": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalıcı olarak sil…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete permanently…"
+          }
+        }
+      }
+    },
+    "files.shred.blocked": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Korunan yol: silinemez"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protected path: cannot be deleted"
+          }
+        }
+      }
+    },
+    "files.shred.remove": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listeden çıkar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove from list"
+          }
+        }
+      }
+    },
+    "files.shred.clear": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listeyi temizle"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear list"
+          }
+        }
+      }
     }
   }
 }

@@ -11,17 +11,19 @@ public final class FilesModels {
     public let largeFiles: LargeFilesModel
     public let spaceLens: SpaceLensModel
     public let duplicates: DuplicatesModel
+    public let shredder: ShredderModel
 
     public init(history: HistoryStore?) {
         largeFiles = LargeFilesModel(history: history)
         spaceLens = SpaceLensModel(history: history)
         duplicates = DuplicatesModel(history: history)
+        shredder = ShredderModel(history: history)
     }
 }
 
 /// The Files section: one place for the large-files list and the space map.
 public struct FilesHubView: View {
-    private enum Tab: Hashable { case large, map, duplicates }
+    private enum Tab: Hashable { case large, map, duplicates, shredder }
 
     @State private var tab: Tab = .large
     /// Nil when it cannot be determined; the notice shows only when access is known to be missing.
@@ -39,16 +41,18 @@ public struct FilesHubView: View {
                 Text(FilesStrings.hubLarge).tag(Tab.large)
                 Text(FilesStrings.hubMap).tag(Tab.map)
                 Text(FilesStrings.hubDuplicates).tag(Tab.duplicates)
+                Text(FilesStrings.hubShredder).tag(Tab.shredder)
             } label: { EmptyView() }
             .pickerStyle(.segmented)
             .labelsHidden()
-            .frame(maxWidth: 440)
+            .frame(maxWidth: 560)
             .padding(.top, Spacing.medium)
 
             switch tab {
             case .large: LargeFilesView(model: models.largeFiles)
             case .map: SpaceLensView(model: models.spaceLens)
             case .duplicates: DuplicatesView(model: models.duplicates)
+            case .shredder: ShredderView(model: models.shredder)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

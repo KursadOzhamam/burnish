@@ -23,10 +23,16 @@ final class ApprovalFlow {
         report = nil
     }
 
-    /// Builds the plan and opens the sheet. Touches nothing.
-    func prepare(_ items: [ScanItem]) {
+    /// Builds the plan and opens the sheet. Touches nothing. The Trash is the default; only the
+    /// shredder asks for `.permanent`, and its sheet is the second confirmation §4.1 requires.
+    func prepare(_ items: [ScanItem], mode: DeletionMode = .trash) {
         guard let service, !items.isEmpty else { return }
-        pendingPlan = service.plan(for: items, mode: .trash)
+        pendingPlan = service.plan(for: items, mode: mode)
+    }
+
+    /// Items the safety layer would act on, as it sees them now.
+    func screened(_ items: [ScanItem]) -> [ScanItem] {
+        service?.screened(items) ?? items
     }
 
     func dismiss() { pendingPlan = nil }
@@ -38,7 +44,8 @@ final class ApprovalFlow {
         Task { [weak self] in
             let result: DeletionReport
             do {
-                result = try service.execute(plan, confirmedIrreversible: false)
+                // The sheet showed the irreversible warning and the user pressed the destructive button.
+                result = try service.execute(plan, confirmedIrreversible: plan.mode.isIrreversible)
             } catch {
                 result = DeletionReport(outcomes: [], mode: plan.mode)
             }
