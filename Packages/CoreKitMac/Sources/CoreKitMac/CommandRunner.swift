@@ -2,7 +2,7 @@ import Foundation
 
 /// Runs a fixed tool with fixed arguments (CLAUDE.md §10.8).
 ///
-/// The only way Burnish starts another program from the app side. It never builds a shell
+/// The only way Burnish starts another program from the app side. Shared by the features that need it. It never builds a shell
 /// string: an executable path and an argument array go to `Process` directly, and every caller
 /// builds those from a closed set (an enum case plus a validated label), never from free text.
 public protocol CommandRunning: Sendable {

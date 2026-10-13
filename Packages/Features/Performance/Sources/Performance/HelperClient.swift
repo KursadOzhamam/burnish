@@ -1,4 +1,5 @@
 import Foundation
+import CoreKitMac
 import ServiceManagement
 import HelperProtocol
 

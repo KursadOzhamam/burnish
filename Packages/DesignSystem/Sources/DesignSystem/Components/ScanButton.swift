@@ -38,6 +38,10 @@ public struct ScanButton: View {
             .padding(.horizontal, Spacing.large)
             .padding(.vertical, Spacing.small)
             .frame(minWidth: 220)
+            // A plain button only reacts where its label draws something, and the capsule is
+            // painted *outside* the button, so the padding around the text was a dead zone: only a
+            // click exactly on the words worked. The whole capsule is the target.
+            .contentShape(Capsule())
         }
         .buttonStyle(.plain)
         .foregroundStyle(Palette.onColor.color)

@@ -1,4 +1,5 @@
 import Foundation
+import CoreKitMac
 
 /// Switches a per-user launchd job on or off, reversibly (CLAUDE.md §6.5).
 ///

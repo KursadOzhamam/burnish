@@ -1,5 +1,6 @@
 import Testing
 import Foundation
+import CoreKitMac
 @testable import Performance
 
 /// Records what it was asked to run, and answers from a script.
