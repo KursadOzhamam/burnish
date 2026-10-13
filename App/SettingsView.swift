@@ -121,7 +121,24 @@ struct SettingsView: View {
             Toggle(isOn: $crashReports) { Text("settings.crashReports") }
             Text("settings.crashReports.note").font(.caption).foregroundStyle(.secondary)
             Text("settings.noData").font(.caption).foregroundStyle(.secondary)
+            Button { copyDiagnostics() } label: { Text("settings.diagnostics") }
+            Text("settings.diagnostics.note").font(.caption).foregroundStyle(.secondary)
         }
+    }
+
+    /// Version and state only: no file name, path or content (CLAUDE.md §10.7, §13.4). The user
+    /// decides where it goes.
+    private func copyDiagnostics() {
+        let identity = AppIdentity.current
+        let lines = [
+            "\(identity.displayName) \(identity.version) (\(identity.build))",
+            "macOS \(ProcessInfo.processInfo.operatingSystemVersionString)",
+            "Full Disk Access: \(String(describing: FullDiskAccess.isGranted()))",
+            "Helper: \(String(describing: performance.helperStatus))",
+            "Disabled scanners: \(rules.filter { !preferences.isEnabled($0) }.map { $0.id.rawValue }.joined(separator: ", "))"
+        ]
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(lines.joined(separator: "\n"), forType: .string)
     }
 
     // MARK: Remove Burnish

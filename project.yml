@@ -177,6 +177,18 @@ targets:
         copy:
           destination: executables
 
+  BurnishUITests:
+    type: bundle.ui-testing
+    platform: macOS
+    sources:
+      - path: UITests
+    dependencies:
+      - target: Burnish
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.burnish.app.uitests
+        TEST_TARGET_NAME: Burnish
+
 schemes:
   Burnish:
     build:
@@ -184,5 +196,8 @@ schemes:
         Burnish: all
     run:
       config: Debug
+    test:
+      targets:
+        - BurnishUITests
     archive:
       config: Release

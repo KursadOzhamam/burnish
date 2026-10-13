@@ -1153,6 +1153,38 @@
           }
         }
       }
+    },
+    "settings.diagnostics": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tanılama bilgisini panoya kopyala"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy diagnostic info to the clipboard"
+          }
+        }
+      }
+    },
+    "settings.diagnostics.note": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yalnızca sürüm ve durum bilgisi içerir; dosya adı, yol ya da içerik içermez. Nereye göndereceğine sen karar verirsin."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It contains only versions and state: no file name, path or content. You decide where it goes."
+          }
+        }
+      }
     }
   },
   "version": "1.0"
