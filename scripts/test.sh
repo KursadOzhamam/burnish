@@ -30,6 +30,8 @@ PACKAGES=(
     Packages/Features/Files
     Packages/DeletionUI
     Packages/Features/Applications
+    Packages/Features/Performance
+    Packages/HelperProtocol
 )
 
 total=0

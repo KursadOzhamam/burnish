@@ -63,6 +63,10 @@ packages:
     path: Packages/Features/Files
   DeletionUI:
     path: Packages/DeletionUI
+  HelperProtocol:
+    path: Packages/HelperProtocol
+  Performance:
+    path: Packages/Features/Performance
   Applications:
     path: Packages/Features/Applications
   Dashboard:
@@ -71,11 +75,42 @@ packages:
     path: Packages/Features/SmartScan
 
 targets:
+  BurnishHelper:
+    type: tool
+    platform: macOS
+    sources:
+      - path: PrivilegedHelper/Sources/BurnishHelper
+    settings:
+      base:
+        PRODUCT_NAME: BurnishHelper
+        PRODUCT_BUNDLE_IDENTIFIER: com.burnish.app.helper
+        SKIP_INSTALL: YES
+        # An XPC service started by launchd: no Info.plist of its own, identified by the one
+        # embedded in the binary so its signature carries the identifier (CLAUDE.md §7).
+        CREATE_INFOPLIST_SECTION_IN_BINARY: YES
+        INFOPLIST_FILE: PrivilegedHelper/Info.plist
+    dependencies:
+      - package: HelperProtocol
+        product: HelperProtocol
+      - package: ScanEngine
+        product: ScanEngine
+      - package: SafetyKit
+        product: SafetyKit
+      - package: SafetyKitMac
+        product: SafetyKitMac
+      - package: CoreKit
+        product: CoreKit
+
   Burnish:
     type: application
     platform: macOS
     sources:
       - path: App
+      - path: PrivilegedHelper/com.burnish.app.helper.plist
+        buildPhase:
+          copyFiles:
+            destination: wrapper
+            subpath: Contents/Library/LaunchDaemons
     settings:
       base:
         PRODUCT_NAME: Burnish
@@ -129,6 +164,14 @@ targets:
         product: DeletionUI
       - package: Applications
         product: Applications
+      - package: Performance
+        product: Performance
+      - package: HelperProtocol
+        product: HelperProtocol
+      - target: BurnishHelper
+        embed: true
+        copy:
+          destination: executables
 
 schemes:
   Burnish:

@@ -7,6 +7,7 @@ import Cleanup
 import Dashboard
 import Files
 import History
+import Performance
 import SmartScan
 
 /// Main window — sidebar plus detail, per CLAUDE.md §5.1.
@@ -19,6 +20,7 @@ struct RootView: View {
     @State private var showHistory = false
     @State private var filesModels = FilesModels(history: Self.history)
     @State private var applicationsModel = ApplicationsModel(history: Self.history)
+    @State private var performanceModel = PerformanceModel()
 
     var body: some View {
         NavigationSplitView {
@@ -80,6 +82,9 @@ struct RootView: View {
 
         case .cleanup:
             CleanupView(model: scanCoordinator.cleanup)
+
+        case .performance:
+            PerformanceView(model: performanceModel)
 
         case .applications:
             ApplicationsView(model: applicationsModel)

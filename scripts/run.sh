@@ -56,6 +56,11 @@ APP="$PRODUCTS/Burnish.app"
 # grants survive rebuilds. Local development only; release signing is Phase 11.
 IDENTITY=$(security find-identity -v -p codesigning | awk '/Apple Development/{print $2; exit}')
 if [ -n "$IDENTITY" ]; then
+    # Inside out: the helper first, then the app that contains it (no --deep).
+    if [ -f "$APP/Contents/MacOS/BurnishHelper" ]; then
+        codesign --force --sign "$IDENTITY" --timestamp=none --identifier com.burnish.app.helper \
+            "$APP/Contents/MacOS/BurnishHelper" >/dev/null 2>&1 || echo "==> warning: helper signing failed" >&2
+    fi
     codesign --force --sign "$IDENTITY" --timestamp=none "$APP" >/dev/null 2>&1 \
         && echo "==> signed with a stable development identity" \
         || echo "==> warning: signing failed, permissions will be asked again after each build" >&2

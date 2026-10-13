@@ -1,0 +1,694 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.0",
+  "strings": {
+    "performance.pressure.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bellek baskısı yüksek"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memory pressure is high"
+          }
+        }
+      }
+    },
+    "performance.pressure.warning": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS belleğin daralmaya başladığını bildiriyor. Kullanmadığın büyük uygulamaları kapatmak yardımcı olabilir."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS reports that memory is getting tight. Quitting large apps you are not using can help."
+          }
+        }
+      }
+    },
+    "performance.pressure.critical": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bellek kritik düzeyde. Açık uygulamaları kapatmak yardımcı olabilir."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memory is critically low. Quitting open apps can help."
+          }
+        }
+      }
+    },
+    "performance.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hız"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Performance"
+          }
+        }
+      }
+    },
+    "performance.subtitle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bakım görevleri, başlangıç öğeleri ve kaynak tüketenler. Burnish vaat verdiği kadarını yapar: ölçülemeyen bir hızlanma iddia etmez."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maintenance tasks, startup items and resource use. Burnish does what it says and makes no claim of speed-ups it cannot measure."
+          }
+        }
+      }
+    },
+    "performance.tab.maintenance": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bakım"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maintenance"
+          }
+        }
+      }
+    },
+    "performance.tab.startup": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başlangıç öğeleri"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Startup items"
+          }
+        }
+      }
+    },
+    "performance.tab.processes": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaynak tüketenler"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resource use"
+          }
+        }
+      }
+    },
+    "performance.helper.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yardımcı (yönetici işlemleri)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Helper (administrator tasks)"
+          }
+        }
+      }
+    },
+    "performance.helper.notRegistered": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yardımcı kurulu değil. Bazı bakım görevleri yönetici yetkisi ister; bunlar yalnızca yardımcı kurulunca çalışır. Yardımcı sabit, küçük bir komut kümesiyle sınırlıdır."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The helper is not installed. Some maintenance tasks need administrator rights and run only once it is installed. It is limited to a small fixed set of commands."
+          }
+        }
+      }
+    },
+    "performance.helper.requiresApproval": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kuruldu, onayını bekliyor: Sistem Ayarları > Genel > Oturum Açma Öğeleri'nde Burnish'a izin ver."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installed, waiting for approval: allow Burnish in System Settings > General > Login Items."
+          }
+        }
+      }
+    },
+    "performance.helper.enabled": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yardımcı etkin."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The helper is active."
+          }
+        }
+      }
+    },
+    "performance.helper.notFound": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yardımcı uygulama paketinde bulunamadı. Uygulamayı yeniden yüklemen gerekebilir."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The helper was not found in the app bundle. You may need to reinstall the app."
+          }
+        }
+      }
+    },
+    "performance.helper.versionMismatch": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yardımcının eski bir sürümü çalışıyor. Yeniden kur."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An older version of the helper is running. Install it again."
+          }
+        }
+      }
+    },
+    "performance.helper.failed": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yardımcı kurulamadı. Aşağıdaki bilgi ile tekrar dene."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The helper could not be installed. Try again."
+          }
+        }
+      }
+    },
+    "performance.helper.install": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yardımcıyı kur"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Install the helper"
+          }
+        }
+      }
+    },
+    "performance.helper.openSettings": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar'ı aç"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Settings"
+          }
+        }
+      }
+    },
+    "performance.task.flushDNS": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DNS önbelleğini temizle"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flush the DNS cache"
+          }
+        }
+      }
+    },
+    "performance.task.flushDNS.detail": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ad çözümleme kayıtlarını siler; site adresleri yeniden çözülür. Yönetici yetkisi ister."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clears name-lookup records; site addresses are resolved again. Needs administrator rights."
+          }
+        }
+      }
+    },
+    "performance.task.rebuildLaunchServices": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Launch Services'i yeniden kur"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rebuild Launch Services"
+          }
+        }
+      }
+    },
+    "performance.task.rebuildLaunchServices.detail": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "'Birlikte aç' menüsündeki yinelenen veya eski girdileri düzeltir. Yönetici yetkisi gerekmez."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fixes duplicate or stale entries in the 'Open with' menu. No administrator rights needed."
+          }
+        }
+      }
+    },
+    "performance.task.reindexSpotlight": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spotlight'ı yeniden indeksle"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reindex Spotlight"
+          }
+        }
+      }
+    },
+    "performance.task.reindexSpotlight.detail": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arama dizinini baştan kurar; bu sırada arama eksik olabilir ve disk bir süre meşgul olur. Yönetici yetkisi ister."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rebuilds the search index; search may be incomplete meanwhile and the disk stays busy for a while. Needs administrator rights."
+          }
+        }
+      }
+    },
+    "performance.task.verifyDisk": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diski doğrula"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verify the disk"
+          }
+        }
+      }
+    },
+    "performance.task.verifyDisk.detail": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birim yapısını denetler, bir şeyi onarmaz. Yönetici yetkisi ister."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checks the volume structure; it repairs nothing. Needs administrator rights."
+          }
+        }
+      }
+    },
+    "performance.task.purgeMemory": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bellek önbelleğini boşalt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purge the memory cache"
+          }
+        }
+      }
+    },
+    "performance.task.purgeMemory.detail": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk önbelleğini bırakır. macOS belleği zaten kendisi yönetir; ölçülebilir bir fayda beklenmemeli. Yönetici yetkisi ister."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Releases the disk cache. macOS already manages memory itself, so do not expect a measurable benefit. Needs administrator rights."
+          }
+        }
+      }
+    },
+    "performance.task.runPeriodicScripts": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Periyodik bakım betikleri"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Periodic maintenance scripts"
+          }
+        }
+      }
+    },
+    "performance.task.runPeriodicScripts.detail": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS'un günlük, haftalık ve aylık bakım betiklerini çalıştırır (log döndürme vb.). Yönetici yetkisi ister."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Runs macOS's daily, weekly and monthly scripts (log rotation and the like). Needs administrator rights."
+          }
+        }
+      }
+    },
+    "performance.task.run": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çalıştır"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Run"
+          }
+        }
+      }
+    },
+    "performance.task.running": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çalışıyor…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running…"
+          }
+        }
+      }
+    },
+    "performance.task.needsHelper": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yardımcı gerekli"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Helper needed"
+          }
+        }
+      }
+    },
+    "performance.startup.note": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anahtar bir öğeyi kapatır, silmez: dosya yerinde kalır ve istediğin an geri açabilirsin. Apple'ın öğelerine ve yönetici (daemon) öğelerine dokunulmaz."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The switch turns an item off, it does not delete it: the file stays and you can turn it back on any time. Apple's items and administrator (daemon) items are not touched."
+          }
+        }
+      }
+    },
+    "performance.startup.missing": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Programı bulunamıyor"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Program not found"
+          }
+        }
+      }
+    },
+    "performance.startup.apple": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple"
+          }
+        }
+      }
+    },
+    "performance.startup.daemon": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yönetici öğesi"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Administrator item"
+          }
+        }
+      }
+    },
+    "performance.startup.userAgent": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kullanıcı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "User"
+          }
+        }
+      }
+    },
+    "performance.startup.globalAgent": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm kullanıcılar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All users"
+          }
+        }
+      }
+    },
+    "performance.processes.cpu": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İşlemci"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU"
+          }
+        }
+      }
+    },
+    "performance.processes.memory": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bellek"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memory"
+          }
+        }
+      }
+    },
+    "performance.processes.quit": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapat"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quit"
+          }
+        }
+      }
+    },
+    "performance.processes.note": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yalnızca açık uygulamalar nazikçe kapanması istenerek kapatılır; sistem süreçleri ve Burnish hariç."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only open apps can be asked to quit, politely; system processes and Burnish are excluded."
+          }
+        }
+      }
+    },
+    "performance.pressure.toggle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bellek baskısı yüksekken bildirim gönder"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notify me when memory pressure is high"
+          }
+        }
+      }
+    }
+  }
+}
