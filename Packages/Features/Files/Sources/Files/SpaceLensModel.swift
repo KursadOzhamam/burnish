@@ -23,16 +23,30 @@ public final class SpaceLensModel {
 
     private let approval = ApprovalFlow()
     public var pendingPlan: DeletionPlan? { approval.pendingPlan }
-    private let root: URL
+    /// Where the map starts. Changeable until a scan runs.
+    public var root: URL
+    private let scope: ScanScope?
     private let history: HistoryStore?
 
     public init(
         root: URL = FileManager.default.homeDirectoryForCurrentUser,
+        scope: ScanScope? = nil,
         history: HistoryStore? = nil
     ) {
         self.root = root
+        self.scope = scope
         self.history = history
         self.canRecordHistory = history != nil
+    }
+
+    /// Places the map can start from: the home folder, the user's added folders and other disks.
+    public var rootOptions: [URL] {
+        var options = [FileManager.default.homeDirectoryForCurrentUser]
+        for url in (scope?.candidates ?? []) + ScanScope.mountedVolumes() where !options.contains(where: { $0.path == url.path }) {
+            options.append(url)
+        }
+        if !options.contains(where: { $0.path == root.path }) { options.append(root) }
+        return options
     }
 
     // MARK: Phase
@@ -57,7 +71,7 @@ public final class SpaceLensModel {
         selection = []
         focusPath = []
         hovered = nil
-        let scanner = SpaceLensScanner(root: root)
+        let scanner = SpaceLensScanner(root: root, excludedPaths: scope?.excludedPaths ?? [])
         approval.use(DeletionService(guards: [scanner.id: PathGuard(allowedRoots: [root])], history: history))
         let next = HeavyScanSession(scanner: scanner)
         session = next

@@ -23,8 +23,13 @@ public struct SpaceLensScanner: HeavyScanning {
     /// is invisible on a map anyway, and keeping all of them cost half a million nodes on a
     /// real home folder.
     public let minimumNodeSize: ByteCount
+    public let excludedPaths: [String]
 
-    public init(root: URL, childLimit: Int = 120, minimumNodeSize: ByteCount = ByteCount(1_048_576)) {
+    public init(
+        root: URL, childLimit: Int = 120, minimumNodeSize: ByteCount = ByteCount(1_048_576),
+        excludedPaths: [String] = []
+    ) {
+        self.excludedPaths = excludedPaths
         self.root = root
         self.childLimit = childLimit
         self.minimumNodeSize = minimumNodeSize
@@ -34,10 +39,10 @@ public struct SpaceLensScanner: HeavyScanning {
         progress: @Sendable (ScanProgress) -> Void,
         partial: @Sendable ([ScanItem]) -> Void
     ) async throws -> [ScanItem] {
-        let settings = Settings(childLimit: childLimit, minimumNodeSize: minimumNodeSize)
+        let settings = Settings(childLimit: childLimit, minimumNodeSize: minimumNodeSize, excluded: excludedPaths)
         let state = State()
         let id = self.id
-        let top = try Self.children(of: root)
+        let top = try Self.children(of: root).filter { !isExcluded($0, by: excludedPaths) }
 
         // The first two levels are measured side by side: that is where a home folder splits
         // into a few huge branches (Library, Desktop), and one thread walking them in turn took
@@ -69,6 +74,7 @@ public struct SpaceLensScanner: HeavyScanning {
     struct Settings: Sendable {
         let childLimit: Int
         let minimumNodeSize: ByteCount
+        let excluded: [String]
     }
 
     // MARK: Measuring (synchronous: DirectoryEnumerator cannot be iterated from async code)
@@ -153,7 +159,7 @@ public struct SpaceLensScanner: HeavyScanning {
         let lastUsed = [values.contentAccessDate, values.contentModificationDate].compactMap { $0 }.max()
         let entries: [URL]
         do {
-            entries = try children(of: url)
+            entries = try children(of: url).filter { !isExcluded($0, by: settings.excluded) }
         } catch {
             return ScanItem(
                 scanner: id, url: url, size: .zero, confidence: .low,
@@ -202,7 +208,7 @@ public struct SpaceLensScanner: HeavyScanning {
         if values.isDirectory == true, values.isPackage != true {
             let entries: [URL]
             do {
-                entries = try children(of: url)
+                entries = try children(of: url).filter { !isExcluded($0, by: settings.excluded) }
             } catch {
                 // Exists but cannot be read: show it as a block we could not open, not as empty.
                 return ScanItem(

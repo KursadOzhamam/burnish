@@ -40,18 +40,23 @@ public final class DuplicatesModel {
     private let approval = ApprovalFlow()
     public var pendingPlan: DeletionPlan? { approval.pendingPlan }
 
-    private let roots: [URL]
+    public let scope: ScanScope
     private let minimumSize: ByteCount
     private let history: HistoryStore?
 
+    /// A model that searches exactly `roots`, for tests.
+    public convenience init(kind: Kind = .identical, roots: [URL], minimumSize: ByteCount? = nil, history: HistoryStore? = nil) {
+        self.init(kind: kind, scope: ScanScope(roots: roots), minimumSize: minimumSize, history: history)
+    }
+
     public init(
         kind: Kind = .identical,
-        roots: [URL] = LargeFilesScanner.defaultRoots(home: FileManager.default.homeDirectoryForCurrentUser),
+        scope: ScanScope = ScanScope(),
         minimumSize: ByteCount? = nil,
         history: HistoryStore? = nil
     ) {
         self.kind = kind
-        self.roots = roots
+        self.scope = scope
         self.minimumSize = minimumSize ?? (kind == .identical ? ByteCount(1_048_576) : ByteCount(50 * 1_024))
         self.history = history
         self.canRecordHistory = history != nil
@@ -75,9 +80,11 @@ public final class DuplicatesModel {
         cancel()
         approval.reset()
         selection = []
+        let roots = scope.roots
+        let excluded = scope.excludedPaths
         let scanner: any HeavyScanning = switch kind {
-        case .identical: DuplicateScanner(roots: roots, minimumSize: minimumSize)
-        case .similar: SimilarImagesScanner(roots: roots, minimumSize: minimumSize)
+        case .identical: DuplicateScanner(roots: roots, minimumSize: minimumSize, excludedPaths: excluded)
+        case .similar: SimilarImagesScanner(roots: roots, minimumSize: minimumSize, excludedPaths: excluded)
         }
         approval.use(DeletionService(guards: [scanner.id: PathGuard(allowedRoots: roots)], history: history))
         let next = HeavyScanSession(scanner: scanner)

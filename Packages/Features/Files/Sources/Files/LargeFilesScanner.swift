@@ -17,17 +17,21 @@ public struct LargeFilesScanner: HeavyScanning {
     /// Upper bound on the list, so a Mac full of big files does not produce a 50,000 row screen.
     public let limit: Int
 
+    /// Paths never entered (CLAUDE.md §6.9 exclusions).
+    public let excludedPaths: [String]
     private let clock: @Sendable () -> Date
 
     public init(
         roots: [URL],
         minimumSize: ByteCount = ByteCount(100 * 1_024 * 1_024),
         limit: Int = 500,
+        excludedPaths: [String] = [],
         clock: @escaping @Sendable () -> Date = { Date() }
     ) {
         self.roots = roots
         self.minimumSize = minimumSize
         self.limit = limit
+        self.excludedPaths = excludedPaths
         self.clock = clock
     }
 
@@ -93,6 +97,10 @@ public struct LargeFilesScanner: HeavyScanning {
                     )
                 }
 
+                if !excludedPaths.isEmpty, isExcluded(url, by: excludedPaths) {
+                    enumerator.skipDescendants()
+                    continue
+                }
                 guard let values = try? url.resourceValues(forKeys: Set(keys)) else { continue }
                 // Symlinks are not followed (§4.4); packages (.app, .photoslibrary) are not
                 // entered and are not treated as files.

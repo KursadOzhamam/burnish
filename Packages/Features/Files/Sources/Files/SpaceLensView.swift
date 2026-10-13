@@ -52,6 +52,13 @@ public struct SpaceLensView: View {
         VStack(spacing: Spacing.large) {
             Spacer()
             EmptyState(symbol: "chart.pie", title: FilesStrings.mapTitle, message: FilesStrings.mapHint)
+            Picker(selection: Binding(get: { model.root }, set: { model.root = $0 })) {
+                ForEach(model.rootOptions, id: \.path) { url in
+                    Text(url.path == FileManager.default.homeDirectoryForCurrentUser.path
+                         ? String(localized: FilesStrings.mapHome) : url.lastPathComponent).tag(url)
+                }
+            } label: { Text(FilesStrings.mapRoot) }
+            .frame(maxWidth: 320)
             ScanButton(title: FilesStrings.scan, palette: section.textSafePalette, action: model.scan)
             Spacer()
         }

@@ -21,6 +21,7 @@ public struct SimilarImagesScanner: HeavyScanning {
     /// Upper bound, so a very large collection cannot exhaust memory with feature prints.
     public let imageLimit: Int
     public let groupLimit: Int
+    public let excludedPaths: [String]
 
     static let imageExtensions: Set<String> = ["jpg", "jpeg", "png", "heic", "heif", "tif", "tiff"]
     private static let skippedFolderNames: Set<String> = ["node_modules", ".git", ".build", ".venv"]
@@ -31,7 +32,8 @@ public struct SimilarImagesScanner: HeavyScanning {
         threshold: Float = 0.35,
         window: Int = 40,
         imageLimit: Int = 20_000,
-        groupLimit: Int = 300
+        groupLimit: Int = 300,
+        excludedPaths: [String] = []
     ) {
         self.roots = roots
         self.minimumSize = minimumSize
@@ -39,6 +41,7 @@ public struct SimilarImagesScanner: HeavyScanning {
         self.window = window
         self.imageLimit = imageLimit
         self.groupLimit = groupLimit
+        self.excludedPaths = excludedPaths
     }
 
     struct Picture {
@@ -51,7 +54,9 @@ public struct SimilarImagesScanner: HeavyScanning {
         progress: @Sendable (ScanProgress) -> Void,
         partial: @Sendable ([ScanItem]) -> Void
     ) async throws -> [ScanItem] {
-        let pictures = try Self.list(roots: roots, minimumSize: minimumSize, limit: imageLimit, progress: progress)
+        let pictures = try Self.list(
+            roots: roots, minimumSize: minimumSize, limit: imageLimit, excluded: excludedPaths, progress: progress
+        )
         let id = self.id
         let threshold = self.threshold
         let window = self.window
@@ -102,7 +107,8 @@ public struct SimilarImagesScanner: HeavyScanning {
     // MARK: Listing (synchronous: DirectoryEnumerator cannot be iterated from async code)
 
     private static func list(
-        roots: [URL], minimumSize: ByteCount, limit: Int, progress: @Sendable (ScanProgress) -> Void
+        roots: [URL], minimumSize: ByteCount, limit: Int, excluded: [String],
+        progress: @Sendable (ScanProgress) -> Void
     ) throws -> [Picture] {
         let keys: [URLResourceKey] = [
             .fileSizeKey, .isRegularFileKey, .isSymbolicLinkKey, .isPackageKey, .isDirectoryKey,
@@ -122,6 +128,10 @@ public struct SimilarImagesScanner: HeavyScanning {
                 if visited % 512 == 0 {
                     try Task.checkCancellation()
                     progress(ScanProgress(fraction: nil, currentPath: url.path, itemCount: pictures.count))
+                }
+                if !excluded.isEmpty, isExcluded(url, by: excluded) {
+                    enumerator.skipDescendants()
+                    continue
                 }
                 guard let values = try? url.resourceValues(forKeys: Set(keys)) else { continue }
                 if values.isDirectory == true, skippedFolderNames.contains(url.lastPathComponent) {

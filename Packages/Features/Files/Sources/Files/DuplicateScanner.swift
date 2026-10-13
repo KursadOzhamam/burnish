@@ -20,6 +20,7 @@ public struct DuplicateScanner: HeavyScanning {
     public let minimumSize: ByteCount
     /// Cap on groups returned, biggest waste first.
     public let groupLimit: Int
+    public let excludedPaths: [String]
 
     private static let edgeBytes = 64 * 1_024
     private static let chunkBytes = 1_024 * 1_024
@@ -30,11 +31,13 @@ public struct DuplicateScanner: HeavyScanning {
     public init(
         roots: [URL],
         minimumSize: ByteCount = ByteCount(1_048_576),
-        groupLimit: Int = 300
+        groupLimit: Int = 300,
+        excludedPaths: [String] = []
     ) {
         self.roots = roots
         self.minimumSize = minimumSize
         self.groupLimit = groupLimit
+        self.excludedPaths = excludedPaths
     }
 
     struct Candidate {
@@ -130,6 +133,10 @@ public struct DuplicateScanner: HeavyScanning {
                 if visited % 512 == 0 {
                     try Task.checkCancellation()
                     progress(ScanProgress(fraction: nil, currentPath: url.path, itemCount: visited))
+                }
+                if !excludedPaths.isEmpty, isExcluded(url, by: excludedPaths) {
+                    enumerator.skipDescendants()
+                    continue
                 }
                 guard let values = try? url.resourceValues(forKeys: Set(keys)) else { continue }
                 if values.isDirectory == true, Self.skippedFolderNames.contains(url.lastPathComponent) {

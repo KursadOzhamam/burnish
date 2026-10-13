@@ -8,17 +8,20 @@ import SafetyKit
 /// another section and back.
 @MainActor
 public final class FilesModels {
+    public let scope: ScanScope
     public let largeFiles: LargeFilesModel
     public let spaceLens: SpaceLensModel
     public let duplicates: DuplicatesModel
     public let similar: DuplicatesModel
     public let shredder: ShredderModel
 
-    public init(history: HistoryStore?) {
-        largeFiles = LargeFilesModel(history: history)
-        spaceLens = SpaceLensModel(history: history)
-        duplicates = DuplicatesModel(history: history)
-        similar = DuplicatesModel(kind: .similar, history: history)
+    public init(history: HistoryStore?, defaults: UserDefaults? = .standard) {
+        let scope = ScanScope(defaults: defaults)
+        self.scope = scope
+        largeFiles = LargeFilesModel(scope: scope, history: history)
+        spaceLens = SpaceLensModel(scope: scope, history: history)
+        duplicates = DuplicatesModel(scope: scope, history: history)
+        similar = DuplicatesModel(kind: .similar, scope: scope, history: history)
         shredder = ShredderModel(history: history)
     }
 }
@@ -28,6 +31,7 @@ public struct FilesHubView: View {
     private enum Tab: Hashable { case large, map, duplicates, similar, shredder }
 
     @State private var tab: Tab = .large
+    @State private var isEditingScope = false
     /// Nil when it cannot be determined; the notice shows only when access is known to be missing.
     @State private var hasFullDiskAccess: Bool? = FullDiskAccess.isGranted()
     private let models: FilesModels
@@ -39,16 +43,25 @@ public struct FilesHubView: View {
     public var body: some View {
         VStack(spacing: 0) {
             if hasFullDiskAccess == false { accessNotice }
-            Picker(selection: $tab) {
-                Text(FilesStrings.hubLarge).tag(Tab.large)
-                Text(FilesStrings.hubMap).tag(Tab.map)
-                Text(FilesStrings.hubDuplicates).tag(Tab.duplicates)
-                Text(FilesStrings.hubSimilar).tag(Tab.similar)
-                Text(FilesStrings.hubShredder).tag(Tab.shredder)
-            } label: { EmptyView() }
-            .pickerStyle(.segmented)
-            .labelsHidden()
-            .frame(maxWidth: 720)
+            HStack(spacing: Spacing.medium) {
+                Picker(selection: $tab) {
+                    Text(FilesStrings.hubLarge).tag(Tab.large)
+                    Text(FilesStrings.hubMap).tag(Tab.map)
+                    Text(FilesStrings.hubDuplicates).tag(Tab.duplicates)
+                    Text(FilesStrings.hubSimilar).tag(Tab.similar)
+                    Text(FilesStrings.hubShredder).tag(Tab.shredder)
+                } label: { EmptyView() }
+                .pickerStyle(.segmented)
+                .labelsHidden()
+                .frame(maxWidth: 640)
+
+                if tab != .shredder {
+                    Button { isEditingScope = true } label: {
+                        Label { Text(FilesStrings.scopeButton) } icon: { Image(systemName: "folder.badge.gearshape") }
+                    }
+                    .buttonStyle(.borderless)
+                }
+            }
             .padding(.top, Spacing.medium)
 
             switch tab {
@@ -61,6 +74,7 @@ public struct FilesHubView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.background)
+        .sheet(isPresented: $isEditingScope) { ScopeView(scope: models.scope) { isEditingScope = false } }
         // Re-check when the user comes back from System Settings, so the notice disappears by itself.
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
             hasFullDiskAccess = FullDiskAccess.isGranted()

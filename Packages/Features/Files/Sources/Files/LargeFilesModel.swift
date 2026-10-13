@@ -41,18 +41,23 @@ public final class LargeFilesModel {
 
     private let approval = ApprovalFlow()
     public var pendingPlan: DeletionPlan? { approval.pendingPlan }
-    private let roots: [URL]
+    public let scope: ScanScope
     private let minimumSize: ByteCount
     private let history: HistoryStore?
     private let clock: @Sendable () -> Date
 
+    /// A model that searches exactly `roots`, for tests.
+    public convenience init(roots: [URL], minimumSize: ByteCount = ByteCount(100 * 1_024 * 1_024), history: HistoryStore? = nil) {
+        self.init(scope: ScanScope(roots: roots), minimumSize: minimumSize, history: history)
+    }
+
     public init(
-        roots: [URL] = LargeFilesScanner.defaultRoots(home: FileManager.default.homeDirectoryForCurrentUser),
+        scope: ScanScope = ScanScope(),
         minimumSize: ByteCount = ByteCount(100 * 1_024 * 1_024),
         history: HistoryStore? = nil,
         clock: @escaping @Sendable () -> Date = { Date() }
     ) {
-        self.roots = roots
+        self.scope = scope
         self.minimumSize = minimumSize
         self.history = history
         self.canRecordHistory = history != nil
@@ -79,7 +84,10 @@ public final class LargeFilesModel {
         cancel()
         approval.reset()
         selection = []
-        let scanner = LargeFilesScanner(roots: roots, minimumSize: minimumSize, clock: clock)
+        let roots = scope.roots
+        let scanner = LargeFilesScanner(
+            roots: roots, minimumSize: minimumSize, excludedPaths: scope.excludedPaths, clock: clock
+        )
         // The scanner may act only within the folders it searched (§4.2).
         approval.use(DeletionService(
             guards: [scanner.id: PathGuard(allowedRoots: roots)],
