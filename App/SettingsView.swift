@@ -15,6 +15,7 @@ struct SettingsView: View {
 
     @AppStorage("menubar.enabled") private var showsMenuBarItem = true
     @AppStorage("privacy.crashReports") private var crashReports = false
+    @AppStorage("schedule.frequency") private var scheduleFrequency = "off"
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
     @State private var loginError: String?
     @State private var fullDiskAccess = FullDiskAccess.isGranted()
@@ -43,6 +44,12 @@ struct SettingsView: View {
             Toggle(isOn: Binding(get: { launchAtLogin }, set: { setLaunchAtLogin($0) })) { Text("settings.launchAtLogin") }
             if let loginError { Text(loginError).font(.caption).foregroundStyle(.secondary) }
             Toggle(isOn: $showsMenuBarItem) { Text("settings.menuBar") }
+            Picker(selection: $scheduleFrequency) {
+                Text("settings.schedule.off").tag("off")
+                Text("settings.schedule.daily").tag("daily")
+                Text("settings.schedule.weekly").tag("weekly")
+            } label: { Text("settings.schedule") }
+            Text("settings.schedule.note").font(.caption).foregroundStyle(.secondary)
             Text("settings.language.note").font(.caption).foregroundStyle(.secondary)
             Text("settings.deletion.note").font(.caption).foregroundStyle(.secondary)
         }

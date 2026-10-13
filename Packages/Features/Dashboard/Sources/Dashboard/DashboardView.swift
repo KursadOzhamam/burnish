@@ -7,12 +7,18 @@ import SystemMonitor
 public struct DashboardView: View {
     @State private var model: DashboardModel
     private let onStartScan: () -> Void
+    private let onOpenSection: (AppSection) -> Void
 
     private var section: AppSection { .dashboard }
 
-    public init(model: DashboardModel = DashboardModel(), onStartScan: @escaping () -> Void = {}) {
+    public init(
+        model: DashboardModel = DashboardModel(),
+        onStartScan: @escaping () -> Void = {},
+        onOpenSection: @escaping (AppSection) -> Void = { _ in }
+    ) {
         self._model = State(initialValue: model)
         self.onStartScan = onStartScan
+        self.onOpenSection = onOpenSection
     }
 
     public var body: some View {
@@ -25,6 +31,8 @@ public struct DashboardView: View {
                 )
 
                 heroCard
+
+                if !model.recommendations.isEmpty { recommendationsList }
 
                 metricGrid
             }
@@ -100,6 +108,21 @@ public struct DashboardView: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Text(DashboardStrings.healthTitle))
         .accessibilityValue("\(model.score.value)")
+    }
+
+    private var recommendationsList: some View {
+        VStack(alignment: .leading, spacing: Spacing.small) {
+            Text(DashboardStrings.recTitle).font(Typography.caption).foregroundStyle(.secondary)
+            ForEach(model.recommendations) { recommendation in
+                GlassCard(cornerRadius: CornerRadius.medium, padding: Spacing.medium) {
+                    HStack {
+                        Text(DashboardStrings.text(for: recommendation.kind)).font(Typography.body)
+                        Spacer()
+                        Button { onOpenSection(recommendation.section) } label: { Text(DashboardStrings.recOpen) }
+                    }
+                }
+            }
+        }
     }
 
     private var metricGrid: some View {

@@ -23,6 +23,8 @@ struct RootView: View {
     @State private var applicationsModel = ApplicationsModel(history: Self.history)
     @State private var performanceModel = PerformanceModel()
     @AppStorage("onboarding.done") private var onboardingDone = false
+    @AppStorage("schedule.frequency") private var scheduleFrequency = "off"
+    @State private var scheduler: ScanScheduler?
     @State private var dashboardModel = DashboardModel()
     @State private var privacyModel = CleanupModel.privacy(history: Self.history)
     @State private var protectionModel = ProtectionModel(supportDirectory: Self.supportDirectory)
@@ -54,7 +56,14 @@ struct RootView: View {
             selection = .smartScan
             scanCoordinator.start()
         }
-        .task { await performanceModel.loadLaunchItems() }
+        .task {
+            await performanceModel.loadLaunchItems()
+            scheduler = ScanScheduler(coordinator: scanCoordinator)
+            scheduler?.apply(ScanSchedule.Frequency(rawValue: scheduleFrequency) ?? .off)
+        }
+        .onChange(of: scheduleFrequency) { _, value in
+            scheduler?.apply(ScanSchedule.Frequency(rawValue: value) ?? .off)
+        }
         // The health score is built only from what scans actually measured (CLAUDE.md §6.1, §10.4).
         .onChange(of: protectionModel.lastScan) { _, date in
             guard let date else { return }
@@ -67,7 +76,10 @@ struct RootView: View {
         }
         .onChange(of: scanCoordinator.cleanup.phase.isBusy) { wasBusy, isBusy in
             if wasBusy, !isBusy, !scanCoordinator.cleanup.categories.isEmpty {
-                dashboardModel.update(scannedAt: Date())
+                let cleanable = scanCoordinator.cleanup.categories.map {
+                    (name: String(localized: CleanupScanner(rule: $0.rule).title), size: $0.totalSize)
+                }
+                dashboardModel.update(scannedAt: Date(), cleanable: cleanable)
             }
         }
     }
@@ -97,7 +109,8 @@ struct RootView: View {
                 onStartScan: {
                     selection = .smartScan
                     scanCoordinator.start()
-                }
+                },
+                onOpenSection: { selection = $0 }
             )
 
         case .smartScan:

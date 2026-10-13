@@ -1041,6 +1041,118 @@
           }
         }
       }
+    },
+    "scheduled.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zamanlanmış tarama bitti"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scheduled scan finished"
+          }
+        }
+      }
+    },
+    "scheduled.body %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ temizlenebilir alan bulundu. Hiçbir şey silinmedi; incelemek için Burnish'ı aç."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ of cleanable space was found. Nothing was deleted; open Burnish to review."
+          }
+        }
+      }
+    },
+    "settings.schedule": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zamanlanmış tarama"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scheduled scan"
+          }
+        }
+      }
+    },
+    "settings.schedule.off": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapalı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Off"
+          }
+        }
+      }
+    },
+    "settings.schedule.daily": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her gün"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily"
+          }
+        }
+      }
+    },
+    "settings.schedule.weekly": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her hafta"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weekly"
+          }
+        }
+      }
+    },
+    "settings.schedule.note": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yalnızca tarar ve bildirir, asla silmez. Burnish açıkken çalışır; pil düşükken ve Düşük Güç Modu'nda ertelenir."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It only scans and notifies, and never deletes. It runs while Burnish is open, and waits when the battery is low or Low Power Mode is on."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

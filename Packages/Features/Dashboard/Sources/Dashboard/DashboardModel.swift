@@ -13,6 +13,8 @@ public final class DashboardModel {
     public private(set) var snapshot: SystemSnapshot
     public private(set) var score: HealthScore
     public private(set) var lastScanDate: Date?
+    public private(set) var recommendations: [Recommendation] = []
+    private var cleanable: [(name: String, size: ByteCount)] = []
 
     /// Shown in the explanation panel.
     public var isShowingScoreBreakdown = false
@@ -59,8 +61,10 @@ public final class DashboardModel {
     /// Feeds in what the scans found. A nil field keeps its earlier value, so a threat count from
     /// the Protection scan is not forgotten when the startup count arrives later.
     public func update(
-        threatCount: Int? = nil, pendingUpdateCount: Int? = nil, startupItemCount: Int? = nil, scannedAt: Date? = nil
+        threatCount: Int? = nil, pendingUpdateCount: Int? = nil, startupItemCount: Int? = nil, scannedAt: Date? = nil,
+        cleanable: [(name: String, size: ByteCount)]? = nil
     ) {
+        if let cleanable { self.cleanable = cleanable }
         inputs = HealthScore.Inputs(
             threatCount: threatCount ?? inputs.threatCount,
             pendingUpdateCount: pendingUpdateCount ?? inputs.pendingUpdateCount,
@@ -68,10 +72,20 @@ public final class DashboardModel {
         )
         if let scannedAt { lastScanDate = scannedAt }
         score = HealthScore.evaluate(snapshot: snapshot, inputs: inputs)
+        refreshRecommendations()
+    }
+
+    private func refreshRecommendations() {
+        recommendations = RecommendationEngine.make(from: RecommendationFacts(
+            cleanable: cleanable, threatCount: inputs.threatCount,
+            freeFraction: snapshot.disk.freeFraction, freeBytes: snapshot.disk.free,
+            startupItemCount: inputs.startupItemCount
+        ))
     }
 
     private func apply(_ reading: SystemSnapshot) {
         snapshot = reading
         score = HealthScore.evaluate(snapshot: reading, inputs: inputs)
+        refreshRecommendations()
     }
 }

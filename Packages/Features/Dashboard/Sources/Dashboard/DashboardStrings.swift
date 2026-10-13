@@ -46,4 +46,16 @@ enum DashboardStrings {
         case .startupLoad: key("dashboard.factor.startupLoad")
         }
     }
+
+    static let recTitle = key("dashboard.rec.title")
+    static let recOpen = key("dashboard.rec.open")
+
+    static func text(for kind: Recommendation.Kind) -> LocalizedStringResource {
+        switch kind {
+        case .cleanable(let name, let size): LocalizedStringResource("dashboard.rec.cleanable \(name) \(size.formatted())", bundle: .atURL(bundleURL))
+        case .threats(let count): LocalizedStringResource("dashboard.rec.threats \(count)", bundle: .atURL(bundleURL))
+        case .lowDisk(let free): LocalizedStringResource("dashboard.rec.lowDisk \(free.formatted())", bundle: .atURL(bundleURL))
+        case .manyStartupItems(let count): LocalizedStringResource("dashboard.rec.startup \(count)", bundle: .atURL(bundleURL))
+        }
+    }
 }

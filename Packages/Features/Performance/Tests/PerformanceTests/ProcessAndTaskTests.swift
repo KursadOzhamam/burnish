@@ -98,3 +98,22 @@ struct BurnishFootprintTests {
         #expect(BurnishFootprint(home: home).items().isEmpty)
     }
 }
+
+@Suite("Scan schedule")
+struct ScanScheduleTests {
+    @Test("Intervals are a day and a week, and off has none")
+    func intervals() {
+        #expect(ScanSchedule.Frequency.daily.interval == 86_400)
+        #expect(ScanSchedule.Frequency.weekly.interval == 604_800)
+        #expect(ScanSchedule.Frequency.off.interval == nil)
+    }
+
+    @Test("A low unplugged battery or Low Power Mode defers the scan; a desktop or a charging Mac does not")
+    func deferral() {
+        #expect(ScanSchedule.shouldDefer(batteryCharge: 0.1, isCharging: false, isLowPowerMode: false))
+        #expect(!ScanSchedule.shouldDefer(batteryCharge: 0.1, isCharging: true, isLowPowerMode: false))
+        #expect(!ScanSchedule.shouldDefer(batteryCharge: 0.8, isCharging: false, isLowPowerMode: false))
+        #expect(!ScanSchedule.shouldDefer(batteryCharge: nil, isCharging: false, isLowPowerMode: false))
+        #expect(ScanSchedule.shouldDefer(batteryCharge: 0.9, isCharging: true, isLowPowerMode: true))
+    }
+}
