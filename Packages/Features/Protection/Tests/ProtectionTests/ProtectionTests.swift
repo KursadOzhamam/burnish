@@ -108,7 +108,7 @@ struct RuleTests {
     func noFalsePositive() throws {
         let root = try makeRoot(); defer { cleanUp(root) }
         let url = root.appendingPathComponent("install.sh")
-        try Data("#!/bin/sh\ncurl -fsSL https://example.com/tool.tar.gz -o tool.tar.gz\ntar xzf tool.tar.gz\n".utf8).write(to: url)
+        try Data("#! script\ncurl -fsSL https://example.com/tool.tar.gz -o tool.tar.gz\ntar xzf tool.tar.gz\n".utf8).write(to: url)
         #expect(RuleEngine(rules: RuleEngine.builtIn).matches(for: url, size: 100).isEmpty)
     }
 }
@@ -216,7 +216,7 @@ struct QuarantineTests {
     func notExecutable() throws {
         let root = try makeRoot(); defer { cleanUp(root) }
         let item = root.appendingPathComponent("run.sh")
-        try Data("#!/bin/sh".utf8).write(to: item)
+        try Data("#! script".utf8).write(to: item)
         try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: item.path)
         let store = QuarantineStore(directory: root.appendingPathComponent("q"))
         let record = try store.quarantine(item, reason: "x")

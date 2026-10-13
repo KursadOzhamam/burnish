@@ -67,6 +67,8 @@ packages:
     path: Packages/HelperProtocol
   Performance:
     path: Packages/Features/Performance
+  Protection:
+    path: Packages/Features/Protection
   Applications:
     path: Packages/Features/Applications
   Dashboard:
@@ -166,6 +168,8 @@ targets:
         product: Applications
       - package: Performance
         product: Performance
+      - package: Protection
+        product: Protection
       - package: HelperProtocol
         product: HelperProtocol
       - target: BurnishHelper

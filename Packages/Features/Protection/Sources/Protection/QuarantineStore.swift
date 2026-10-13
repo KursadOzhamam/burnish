@@ -43,7 +43,8 @@ public struct QuarantineStore: Sendable {
             try FileManager.default.moveItem(at: url, to: target.appendingPathComponent(record.storedName))
             try JSONEncoder().encode(record).write(to: target.appendingPathComponent("record.json"))
             // Nothing in quarantine may be executed by accident.
-            try? FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: target.appendingPathComponent(record.storedName).path)
+            let stored = target.appendingPathComponent(record.storedName)
+            try? FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: stored.path)
         } catch {
             throw QuarantineError.failed(error.localizedDescription)
         }
@@ -53,7 +54,9 @@ public struct QuarantineStore: Sendable {
     // MARK: List and restore
 
     public func records() -> [Record] {
-        guard let folders = try? FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]) else { return [] }
+        guard let folders = try? FileManager.default.contentsOfDirectory(
+            at: directory, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]
+        ) else { return [] }
         return folders.compactMap { folder in
             (try? Data(contentsOf: folder.appendingPathComponent("record.json"))).flatMap { try? JSONDecoder().decode(Record.self, from: $0) }
         }

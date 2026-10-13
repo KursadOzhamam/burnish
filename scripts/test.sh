@@ -31,6 +31,7 @@ PACKAGES=(
     Packages/DeletionUI
     Packages/Features/Applications
     Packages/Features/Performance
+    Packages/Features/Protection
     Packages/HelperProtocol
 )
 

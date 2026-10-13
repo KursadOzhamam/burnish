@@ -8,6 +8,7 @@ import Dashboard
 import Files
 import History
 import Performance
+import Protection
 import SmartScan
 
 /// Main window — sidebar plus detail, per CLAUDE.md §5.1.
@@ -21,6 +22,7 @@ struct RootView: View {
     @State private var filesModels = FilesModels(history: Self.history)
     @State private var applicationsModel = ApplicationsModel(history: Self.history)
     @State private var performanceModel = PerformanceModel()
+    @State private var protectionModel = ProtectionModel(supportDirectory: Self.supportDirectory)
 
     var body: some View {
         NavigationSplitView {
@@ -83,6 +85,9 @@ struct RootView: View {
         case .cleanup:
             CleanupView(model: scanCoordinator.cleanup)
 
+        case .protection:
+            ProtectionView(model: protectionModel)
+
         case .performance:
             PerformanceView(model: performanceModel)
 
@@ -99,6 +104,12 @@ struct RootView: View {
 }
 
 extension RootView {
+    /// `~/Library/Application Support/<App>/`, where quarantine and the allow-list live.
+    static var supportDirectory: URL {
+        (try? AppIdentity.current.supportDirectory())
+            ?? FileManager.default.temporaryDirectory.appendingPathComponent("Burnish")
+    }
+
     /// One log for the whole window, opened once.
     static let history: HistoryStore? = makeHistory()
 
