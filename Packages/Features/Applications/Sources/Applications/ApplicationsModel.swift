@@ -140,6 +140,13 @@ public final class ApplicationsModel {
         useService(for: built.all)
     }
 
+    /// Reset: keep the application, clear its settings and caches. Unticks the app itself and
+    /// ticks only the sure leftovers.
+    public func resetOnly() {
+        guard let plan else { return }
+        selection = Set(plan.leftovers.filter { $0.isActionable && $0.confidence > .low }.map(\.id))
+    }
+
     public func closeReview() {
         plan = nil
         selection = []
@@ -185,6 +192,40 @@ public final class ApplicationsModel {
 
     public var selectedOrphans: [ScanItem] { orphans.filter { orphanSelection.contains($0.id) } }
 
+    // MARK: Extensions
+
+    public private(set) var extensions: [ScanItem] = []
+    public var extensionSelection: Set<UUID> = []
+
+    public func scanExtensions() async {
+        extensionSelection = []
+        let finder = ExtensionFinder(home: leftoverFinder.home)
+        extensions = await Task.detached { (try? finder.extensions()) ?? [] }.value
+        useService(for: extensions)
+    }
+
+    public func toggleExtension(_ item: ScanItem) {
+        guard item.isActionable else { return }
+        if extensionSelection.contains(item.id) { extensionSelection.remove(item.id) } else { extensionSelection.insert(item.id) }
+    }
+
+    public var selectedExtensions: [ScanItem] { extensions.filter { extensionSelection.contains($0.id) } }
+    public func prepareExtensionRemoval() { approval.prepare(selectedExtensions) }
+
+    // MARK: Updates
+
+    /// Points the user at the right place. Burnish does not update anything itself and makes no
+    /// network request (CLAUDE.md §6.6): an App Store app goes to the Store, any other app is
+    /// opened so it can run its own updater.
+    public func openUpdates(for app: InstalledApp) {
+        switch app.updateSource {
+        case .appStore:
+            if let url = URL(string: "macappstore://showUpdatesPage") { NSWorkspace.shared.open(url) }
+        case .sparkle, .unknown:
+            NSWorkspace.shared.open(app.url)
+        }
+    }
+
     // MARK: Approval
 
     public func prepareUninstall() { approval.prepare(selectedItems) }
@@ -196,6 +237,7 @@ public final class ApplicationsModel {
             guard let self else { return }
             self.selection = []
             self.orphanSelection = []
+            self.extensionSelection = []
         }
     }
 

@@ -10,6 +10,15 @@ public struct InstalledApp: Identifiable, Sendable, Hashable {
     public let size: ByteCount
     /// Last time the user opened it, from Spotlight. Nil when unknown.
     public let lastUsed: Date?
+    /// How this app gets its updates. Burnish only points the way: the app updates itself.
+    public let updateSource: UpdateSource
+
+    public enum UpdateSource: Sendable, Hashable {
+        case appStore
+        /// Sparkle, the updater most independent Mac apps bundle.
+        case sparkle
+        case unknown
+    }
 
     public var id: String { url.path }
 
@@ -19,15 +28,20 @@ public struct InstalledApp: Identifiable, Sendable, Hashable {
 
     /// The same app with a measured size.
     public func withSize(_ size: ByteCount) -> InstalledApp {
-        InstalledApp(url: url, name: name, bundleID: bundleID, version: version, size: size, lastUsed: lastUsed)
+        InstalledApp(
+            url: url, name: name, bundleID: bundleID, version: version, size: size,
+            lastUsed: lastUsed, updateSource: updateSource
+        )
     }
 
-    public init(url: URL, name: String, bundleID: String?, version: String?, size: ByteCount, lastUsed: Date?) {
+    public init(url: URL, name: String, bundleID: String?, version: String?, size: ByteCount, lastUsed: Date?,
+                updateSource: UpdateSource = .unknown) {
         self.url = url
         self.name = name
         self.bundleID = bundleID
         self.version = version
         self.size = size
         self.lastUsed = lastUsed
+        self.updateSource = updateSource
     }
 }

@@ -8,7 +8,7 @@ import SafetyKit
 
 /// The Applications screen — CLAUDE.md §6.6.
 public struct ApplicationsView: View {
-    private enum Tab: Hashable { case apps, orphans }
+    private enum Tab: Hashable { case apps, orphans, extensions }
 
     @State private var model: ApplicationsModel
     @State private var tab: Tab = .apps
@@ -31,14 +31,16 @@ public struct ApplicationsView: View {
                 Picker(selection: $tab) {
                     Text(AppsStrings.tabApps).tag(Tab.apps)
                     Text(AppsStrings.tabOrphans).tag(Tab.orphans)
+                    Text(AppsStrings.tabExtensions).tag(Tab.extensions)
                 } label: { EmptyView() }
                 .pickerStyle(.segmented)
                 .labelsHidden()
-                .frame(maxWidth: 320, alignment: .leading)
+                .frame(maxWidth: 440, alignment: .leading)
 
                 switch tab {
                 case .apps: appsTab
                 case .orphans: orphansTab
+                case .extensions: extensionsTab
                 }
             }
         }
@@ -126,6 +128,14 @@ public struct ApplicationsView: View {
                 Text(AppsStrings.running).font(Typography.caption).foregroundStyle(.secondary)
             }
             Text(app.size.formatted()).numericStyle(Typography.caption).foregroundStyle(.secondary)
+            if app.updateSource != .unknown {
+                Button { model.openUpdates(for: app) } label: {
+                    Image(systemName: "arrow.triangle.2.circlepath")
+                }
+                .buttonStyle(.borderless)
+                .help(Text(app.updateSource == .appStore ? AppsStrings.updateStore : AppsStrings.updateOwn))
+                .accessibilityLabel(Text(app.updateSource == .appStore ? AppsStrings.updateStore : AppsStrings.updateOwn))
+            }
             Button { Task { await model.review(app) } } label: { Text(AppsStrings.uninstall) }
                 .disabled(app.isApple)
         }
@@ -171,6 +181,50 @@ public struct ApplicationsView: View {
                     Button(action: model.prepareOrphanRemoval) { Text(AppsStrings.orphansTrash).frame(minWidth: 140) }
                         .buttonStyle(.borderedProminent).controlSize(.large)
                         .disabled(model.selectedOrphans.isEmpty)
+                }
+            }
+        }
+        .frame(maxHeight: .infinity)
+    }
+
+    // MARK: Extensions tab
+
+    private var extensionsTab: some View {
+        VStack(alignment: .leading, spacing: Spacing.medium) {
+            Text(AppsStrings.extensionsSubtitle).font(Typography.caption).foregroundStyle(.secondary)
+            Text(AppsStrings.updateNote).font(Typography.caption).foregroundStyle(.tertiary)
+            if model.extensions.isEmpty {
+                VStack(spacing: Spacing.large) {
+                    Spacer()
+                    EmptyState(symbol: "puzzlepiece.extension", title: AppsStrings.extensionsNone, message: AppsStrings.extensionsSubtitle)
+                    ScanButton(title: AppsStrings.extensionsScan, palette: section.textSafePalette) { Task { await model.scanExtensions() } }
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity)
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: Spacing.xxs) {
+                        ForEach(model.extensions) { item in
+                            Toggle(isOn: Binding(get: { model.extensionSelection.contains(item.id) }, set: { _ in model.toggleExtension(item) })) {
+                                HStack(spacing: Spacing.xs) {
+                                    Text(item.url.lastPathComponent).font(Typography.body).lineLimit(1)
+                                    Text((item.url.deletingLastPathComponent().path as NSString).abbreviatingWithTildeInPath)
+                                        .font(Typography.path).foregroundStyle(.tertiary).lineLimit(1).truncationMode(.head)
+                                    Spacer()
+                                    Text(item.size.formatted()).numericStyle(Typography.caption).foregroundStyle(.secondary)
+                                }
+                            }
+                            .toggleStyle(.checkbox)
+                        }
+                    }
+                }
+                HStack {
+                    Text(AppsStrings.selected(count: model.selectedExtensions.count, size: model.selectedExtensions.totalSize().formatted()))
+                        .font(Typography.caption).foregroundStyle(.secondary)
+                    Spacer()
+                    Button(action: model.prepareExtensionRemoval) { Text(AppsStrings.orphansTrash).frame(minWidth: 140) }
+                        .buttonStyle(.borderedProminent).controlSize(.large)
+                        .disabled(model.selectedExtensions.isEmpty)
                 }
             }
         }
@@ -236,6 +290,7 @@ private struct ReviewSheet: View {
             Text(AppsStrings.selected(count: model.selectedItems.count, size: model.selectedSize.formatted()))
                 .font(Typography.caption).foregroundStyle(.secondary)
             Spacer()
+            Button(action: model.resetOnly) { Text(AppsStrings.reset) }
             Button(action: model.closeReview) { Text(AppsStrings.reviewCancel) }.keyboardShortcut(.cancelAction)
             Button(action: model.prepareUninstall) { Text(AppsStrings.reviewTrash).frame(minWidth: 130) }
                 .buttonStyle(.borderedProminent).controlSize(.large)

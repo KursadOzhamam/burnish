@@ -577,6 +577,134 @@
           }
         }
       }
+    },
+    "apps.tab.extensions": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uzantılar"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add-ons"
+          }
+        }
+      }
+    },
+    "apps.extensions.subtitle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "QuickLook eklentileri, tercih panelleri, tarayıcı eklentileri ve ekran koruyucular. Bunları sen ya da bir yükleyici ekledi: hiçbiri önceden seçilmez."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "QuickLook plug-ins, preference panes, Internet plug-ins and screen savers. You or an installer added these: nothing is preselected."
+          }
+        }
+      }
+    },
+    "apps.extensions.scan": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uzantıları listele"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "List add-ons"
+          }
+        }
+      }
+    },
+    "apps.extensions.none": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uzantı bulunamadı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No add-ons found"
+          }
+        }
+      }
+    },
+    "apps.reset": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yalnızca sıfırla (uygulamayı koru)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset only (keep the app)"
+          }
+        }
+      }
+    },
+    "apps.update.store": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store güncellemeleri"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store updates"
+          }
+        }
+      }
+    },
+    "apps.update.own": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulamayı aç (kendi güncelleyicisi)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open the app (its own updater)"
+          }
+        }
+      }
+    },
+    "apps.update.note": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Burnish güncelleme yapmaz ve ağa bağlanmaz; uygulamanın kendisine yönlendirir."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Burnish does not update anything or use the network; it points you to the app itself."
+          }
+        }
+      }
     }
   }
 }

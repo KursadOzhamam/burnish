@@ -121,3 +121,69 @@ struct ApplicationsModelTests {
         }
     }
 }
+
+@Suite("Reset, extensions and update source", .serialized)
+@MainActor
+struct ResetAndExtensionTests {
+    @Test("Reset keeps the app unticked and ticks only the sure leftovers")
+    func resetOnly() async throws {
+        let root = URL(fileURLWithPath: "/private/tmp").appendingPathComponent("BurnishReset-\(UUID().uuidString)")
+        let home = root.appendingPathComponent("home")
+        let apps = root.appendingPathComponent("Applications")
+        try FileManager.default.createDirectory(at: home.appendingPathComponent("Library/Caches/com.example.alpha"), withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: home.appendingPathComponent("Library/Application Support/Alpha"), withIntermediateDirectories: true)
+        let contents = apps.appendingPathComponent("Alpha.app/Contents")
+        try FileManager.default.createDirectory(at: contents, withIntermediateDirectories: true)
+        try PropertyListSerialization.data(fromPropertyList: ["CFBundleIdentifier": "com.example.alpha", "CFBundleName": "Alpha"], format: .xml, options: 0)
+            .write(to: contents.appendingPathComponent("Info.plist"))
+        try Data(repeating: 1, count: 5_000).write(to: home.appendingPathComponent("Library/Caches/com.example.alpha/x.bin"))
+        try Data(repeating: 1, count: 5_000).write(to: home.appendingPathComponent("Library/Application Support/Alpha/y.bin"))
+        defer {
+            // Fixture teardown, not product code.
+            // swiftlint:disable:next no_direct_remove_item
+            try? FileManager.default.removeItem(at: root)
+        }
+        let model = ApplicationsModel(catalogue: AppCatalogue(roots: [apps]), home: home, inspector: StaticRunningApplicationInspector([]))
+        await model.load()
+        await model.review(try #require(model.apps.first))
+        #expect(model.selectedItems.count == 2, "app + the bundle-id cache")
+        model.resetOnly()
+        let plan = try #require(model.plan)
+        #expect(!model.selection.contains(plan.app.id), "the application itself stays")
+        #expect(model.selectedItems.map { $0.url.lastPathComponent } == ["com.example.alpha"])
+    }
+
+    @Test("Extensions are listed at low confidence and nothing is preselected")
+    func extensions() async throws {
+        let home = URL(fileURLWithPath: "/private/tmp").appendingPathComponent("BurnishExt-\(UUID().uuidString)")
+        let plugin = home.appendingPathComponent("Library/QuickLook/Thing.qlgenerator")
+        try FileManager.default.createDirectory(at: plugin, withIntermediateDirectories: true)
+        try Data(repeating: 1, count: 5_000).write(to: plugin.appendingPathComponent("x"))
+        defer {
+            // swiftlint:disable:next no_direct_remove_item
+            try? FileManager.default.removeItem(at: home)
+        }
+        let model = ApplicationsModel(home: home, inspector: StaticRunningApplicationInspector([]))
+        await model.scanExtensions()
+        #expect(model.extensions.map { $0.url.lastPathComponent } == ["Thing.qlgenerator"])
+        #expect(model.extensions.allSatisfy { $0.confidence == .low })
+        #expect(model.extensionSelection.isEmpty)
+    }
+
+    @Test("A bundle with an App Store receipt, or with Sparkle, is recognised without any network")
+    func updateSource() throws {
+        let root = URL(fileURLWithPath: "/private/tmp").appendingPathComponent("BurnishUpd-\(UUID().uuidString)")
+        defer {
+            // swiftlint:disable:next no_direct_remove_item
+            try? FileManager.default.removeItem(at: root)
+        }
+        let store = root.appendingPathComponent("Store.app")
+        try FileManager.default.createDirectory(at: store.appendingPathComponent("Contents/_MASReceipt"), withIntermediateDirectories: true)
+        let sparkle = root.appendingPathComponent("Spark.app")
+        try FileManager.default.createDirectory(at: sparkle.appendingPathComponent("Contents/Frameworks/Sparkle.framework"), withIntermediateDirectories: true)
+        #expect(AppCatalogue.updateSource(of: store, info: [:]) == .appStore)
+        #expect(AppCatalogue.updateSource(of: sparkle, info: [:]) == .sparkle)
+        #expect(AppCatalogue.updateSource(of: root, info: ["SUFeedURL": "https://x"]) == .sparkle)
+        #expect(AppCatalogue.updateSource(of: root, info: [:]) == .unknown)
+    }
+}

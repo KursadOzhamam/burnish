@@ -186,7 +186,7 @@
 <script>
 /* Güncelleme için: yalnızca META, DEC, PH ve LOG değişir. Durum kodları:
    d tamamlandı · t bekliyor · u sende · k karar bekliyor · o opsiyonel */
-const META={updated:"2026-10-12",rev:26,
+const META={updated:"2026-10-12",rev:29,
   focus:"Faz 4 kapanışı: kalan temizlik tarayıcıları (4.13, 4.15–4.23). Ardından Faz 5 (İndirilenler dahil). UI testleri (10.10) erkene çekilmeye değer. Senden bekleyenler: D1–D9 kararları, Faz 0 maddeleri ve CleanMyMac kopyasının kapatılması (0.14)."};
 
 const ST={d:["done","tamamlandı","tdone"],t:["","bekliyor","tmig"],u:["user","sende","tuser"],k:["dec","karar bekliyor","tdec"],o:["opt","opsiyonel","topt"]};
@@ -290,9 +290,9 @@ const PH=[
  ["6.2","d","Kaldırıcı","Bundle ID ile ilişkili artıklar: Application Support, Caches, Preferences, Containers, Group Containers, Saved State, LaunchAgents, HTTPStorages, WebKit. YAPILDI: kaldırma önizlemesi (uygulama + artıklar), bundle ID eşleşmeleri işaretli, yalnızca ad eşleşmesi işaretsiz, çalışan uygulama engelli, Apple uygulaması engelli, hedefler tam olarak bulunan yollar, Çöp. Uygulamada önizleme görüldü, gerçek kaldırma denenmedi.","Mac"],
  ["6.3","d","Artık dosyalar","Yüklü olmayan uygulamalardan kalanlar; düşük güvenli eşleşmeler seçili gelmez. YAPILDI: 'Artık dosyalar' sekmesi, yüklü hiçbir uygulamayla eşleşmeyen bundle-ID benzeri klasörler, hepsi düşük güven/işaretsiz; yüklü üreticinin ortak bileşenleri, Apple ve geliştirici araç klasörleri listelenmez (gerçek ölçümde 148'den 71'e).","Mac"],
  ["6.4","d","Kullanılmayan uygulamalar","Uzun süredir açılmayanlar (ör. Flash Player gibi eski paketler). YAPILDI: Spotlight son kullanım tarihine göre 90 gün filtresi.","Mac"],
- ["6.5","t","Sıfırlama","Uygulamayı silmeden ayar ve önbelleğini temizle.","Mac"],
- ["6.6","t","Güncelleyici","Sparkle akışlı uygulamaları kontrol et, App Store uygulamalarını Mac App Store'a yönlendir; güncellemeyi uygulamaya bırak. Önceden seçili kurulum yok.","Mac"],
- ["6.7","t","Uzantılar","Safari uzantıları, tercih panelleri, QuickLook eklentileri, giriş öğeleri.","Mac"],
+ ["6.5","d","Sıfırlama","Uygulamayı silmeden ayar ve önbelleğini temizle. YAPILDI: önizlemede 'Yalnızca sıfırla (uygulamayı koru)': uygulama işaretsiz, yalnızca bundle-ID eşleşen ayar/önbellek işaretli, Çöp.","Mac"],
+ ["6.6","d","Güncelleyici","Sparkle akışlı uygulamaları kontrol et, App Store uygulamalarını Mac App Store'a yönlendir; güncellemeyi uygulamaya bırak. Önceden seçili kurulum yok. YAPILDI: paket içinden güncelleme kaynağı okunur (App Store makbuzu / Sparkle), ağ isteği yok; satırdaki düğme App Store güncellemeler sayfasını ya da uygulamanın kendisini açar. Burnish güncelleme yapmaz.","Mac"],
+ ["6.7","d","Uzantılar","Safari uzantıları, tercih panelleri, QuickLook eklentileri, giriş öğeleri. YAPILDI: 'Uzantılar' sekmesi: QuickLook, tercih panelleri, Internet Plug-Ins, ekran koruyucular, Spotlight/Services; hepsi düşük güven, işaretsiz. Safari uzantıları Tam Disk Erişimi gerektirdiğinden kapsam dışı.","Mac"],
  ["6.8","d","Çalışan uygulamayı kapatma isteği","Kaldırmadan önce; zorla kapatma ayrı onay. YAPILDI: çalışan uygulamaya nazik kapatma isteği (terminate), zorla kapatma yok.","Mac"]
 ]},
 {id:"f7",c:"pi",l:"Faz 7",t:"Helper ve Hız",n:"",items:[

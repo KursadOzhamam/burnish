@@ -57,8 +57,20 @@ public struct AppCatalogue: Sendable {
             bundleID: info["CFBundleIdentifier"] as? String,
             version: info["CFBundleShortVersionString"] as? String,
             size: size,
-            lastUsed: Self.lastUsed(of: url)
+            lastUsed: Self.lastUsed(of: url),
+            updateSource: Self.updateSource(of: url, info: info)
         )
+    }
+
+    /// Read from the bundle alone, with no network: a Mac App Store receipt, or Sparkle.
+    static func updateSource(of url: URL, info: [String: Any]) -> InstalledApp.UpdateSource {
+        let fileManager = FileManager()
+        if fileManager.fileExists(atPath: url.appendingPathComponent("Contents/_MASReceipt").path) { return .appStore }
+        if info["SUFeedURL"] != nil
+            || fileManager.fileExists(atPath: url.appendingPathComponent("Contents/Frameworks/Sparkle.framework").path) {
+            return .sparkle
+        }
+        return .unknown
     }
 
     /// Spotlight's record of the last time the app was opened.
