@@ -785,6 +785,38 @@
           }
         }
       }
+    },
+    "files.fda.notice": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tam Disk Erişimi ver: macOS tüm klasörleri tek seferde açar. Vermezsen her klasör için ayrı izin sorar."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grant Full Disk Access: macOS then allows every folder at once. Without it, it asks for each folder separately."
+          }
+        }
+      }
+    },
+    "files.fda.open": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar'ı aç"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Settings"
+          }
+        }
+      }
     }
   }
 }

@@ -24,6 +24,8 @@ enum FilesStrings {
     static let cloud = key("files.cloud")
     static let hubLarge = key("files.hub.large")
     static let hubMap = key("files.hub.map")
+    static let fdaNotice = key("files.fda.notice")
+    static let fdaOpen = key("files.fda.open")
     static let hubDuplicates = key("files.hub.duplicates")
     static let dupTitle = key("files.dup.title")
     static let dupSubtitle = key("files.dup.subtitle")

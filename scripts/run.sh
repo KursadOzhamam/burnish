@@ -50,6 +50,19 @@ PRODUCTS=$(xcodebuild -scheme Burnish -destination 'platform=macOS' \
 APP="$PRODUCTS/Burnish.app"
 [ -d "$APP" ] || { echo "build produced no app at $APP" >&2; exit 1; }
 
+# Sign with a stable identity. An ad-hoc signature changes with every build, and macOS ties its
+# privacy grants (Full Disk Access, Desktop/Documents/Downloads) to the signature, so each
+# rebuild looked like a new app and asked for every folder again. With the same identity the
+# grants survive rebuilds. Local development only; release signing is Phase 11.
+IDENTITY=$(security find-identity -v -p codesigning | awk '/Apple Development/{print $2; exit}')
+if [ -n "$IDENTITY" ]; then
+    codesign --force --sign "$IDENTITY" --timestamp=none "$APP" >/dev/null 2>&1 \
+        && echo "==> signed with a stable development identity" \
+        || echo "==> warning: signing failed, permissions will be asked again after each build" >&2
+else
+    echo "==> warning: no Apple Development identity found, permissions will be asked again after each build" >&2
+fi
+
 echo "==> $APP"
 
 if [ "$LAUNCH" = true ]; then
