@@ -33,24 +33,13 @@ struct RootView: View {
     private var privacyModel: CleanupModel { models.privacyModel }
     private var protectionModel: ProtectionModel { models.protectionModel }
 
-    /// Transparent space below the window's visible container. The round action button hangs into
-    /// it, so it can stick out past the container as in the design.
-    private static let overhang: CGFloat = 84
-
     var body: some View {
-        VStack(spacing: 0) {
-            container
-            Color.clear.frame(height: Self.overhang)
-        }
-        .background(WindowConfigurator())
-        .overlayPreferenceValue(FloatingActionKey.self) { action in
-            if let action {
-                FloatingActionButton(title: action.title, action: action.perform)
-                    // Centre of the circle sits a little above the container's bottom edge.
-                    .padding(.bottom, Self.overhang - 56)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+        // The window is the container. The page's round action is drawn across its bottom edge by
+        // a child window (see `FloatingActionHost`), so nothing is reserved around the window.
+        container
+            .backgroundPreferenceValue(FloatingActionKey.self) { action in
+                FloatingActionHost(action: action)
             }
-        }
     }
 
     private var container: some View {
@@ -62,7 +51,6 @@ struct RootView: View {
                 .environment(\.hostsFloatingAction, true)
         }
         .navigationSplitViewStyle(.balanced)
-        .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
@@ -141,7 +129,7 @@ struct RootView: View {
             }
             Spacer()
         }
-        .padding(.top, 56)
+        .padding(.top, 8)
         .padding(.horizontal, 12)
         .frame(maxHeight: .infinity)
         .background(theme.sidebar.ignoresSafeArea())

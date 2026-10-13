@@ -16,7 +16,7 @@ struct BurnishApp: App {
             RootView()
                 .environment(\.entitlements, entitlements)
                 // §5.1: dark-first, with light fully supported — so no scheme is forced here.
-                .frame(minWidth: 940, minHeight: 640 + 84)
+                .frame(minWidth: 940, minHeight: 640)
         }
         // §5.1: transparent title bar with full-size content.
         .windowStyle(.hiddenTitleBar)

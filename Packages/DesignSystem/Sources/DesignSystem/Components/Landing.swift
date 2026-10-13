@@ -539,7 +539,7 @@ public struct SectionPage<Hero: View, Content: View>: View {
                 if action != nil { Color.clear.frame(height: 150) }
             }
             .padding(.horizontal, 32)
-            .padding(.top, 64)
+            .padding(.top, 20)
             .padding(.bottom, 24)
         }
         .scrollIndicators(.hidden)
