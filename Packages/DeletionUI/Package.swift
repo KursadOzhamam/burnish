@@ -14,12 +14,13 @@ let package = Package(
         .package(path: "../CoreKit"),
         .package(path: "../DesignSystem"),
         .package(path: "../ScanEngine"),
-        .package(path: "../SafetyKit")
+        .package(path: "../SafetyKit"),
+        .package(path: "../SafetyKitMac")
     ],
     targets: [
         .target(
             name: "DeletionUI",
-            dependencies: ["CoreKit", "DesignSystem", "ScanEngine", "SafetyKit"],
+            dependencies: ["CoreKit", "DesignSystem", "ScanEngine", "SafetyKit", "SafetyKitMac"],
             resources: [.process("Resources")]
         ),
         .testTarget(name: "DeletionUITests", dependencies: ["DeletionUI"])

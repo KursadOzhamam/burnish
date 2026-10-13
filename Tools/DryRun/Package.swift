@@ -12,7 +12,8 @@ let package = Package(
         .package(path: "../../Packages/SafetyKit"),
         .package(path: "../../Packages/SafetyKitMac"),
         .package(path: "../../Packages/Features/Cleanup"),
-        .package(path: "../../Packages/Features/Files")
+        .package(path: "../../Packages/Features/Files"),
+        .package(path: "../../Packages/Features/Applications")
     ],
     targets: [
         .executableTarget(
@@ -22,6 +23,10 @@ let package = Package(
         .executableTarget(
             name: "DryRunDuplicates",
             dependencies: ["CoreKit", "ScanEngine", "Files"]
+        ),
+        .executableTarget(
+            name: "DryRunApps",
+            dependencies: ["CoreKit", "ScanEngine", "Applications"]
         ),
         .executableTarget(
             name: "DryRunSimilar",

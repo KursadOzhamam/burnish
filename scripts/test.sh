@@ -29,6 +29,7 @@ PACKAGES=(
     Packages/Features/History
     Packages/Features/Files
     Packages/DeletionUI
+    Packages/Features/Applications
 )
 
 total=0

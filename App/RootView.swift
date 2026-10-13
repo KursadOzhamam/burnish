@@ -2,6 +2,7 @@ import SwiftUI
 import CoreKit
 import SafetyKit
 import DesignSystem
+import Applications
 import Cleanup
 import Dashboard
 import Files
@@ -17,6 +18,7 @@ struct RootView: View {
     @State private var historyModel = HistoryModel(store: Self.history)
     @State private var showHistory = false
     @State private var filesModels = FilesModels(history: Self.history)
+    @State private var applicationsModel = ApplicationsModel(history: Self.history)
 
     var body: some View {
         NavigationSplitView {
@@ -78,6 +80,9 @@ struct RootView: View {
 
         case .cleanup:
             CleanupView(model: scanCoordinator.cleanup)
+
+        case .applications:
+            ApplicationsView(model: applicationsModel)
 
         case .files:
             FilesHubView(models: filesModels)

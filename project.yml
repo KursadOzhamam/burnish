@@ -63,6 +63,8 @@ packages:
     path: Packages/Features/Files
   DeletionUI:
     path: Packages/DeletionUI
+  Applications:
+    path: Packages/Features/Applications
   Dashboard:
     path: Packages/Features/Dashboard
   SmartScan:
@@ -125,6 +127,8 @@ targets:
         product: Files
       - package: DeletionUI
         product: DeletionUI
+      - package: Applications
+        product: Applications
 
 schemes:
   Burnish:

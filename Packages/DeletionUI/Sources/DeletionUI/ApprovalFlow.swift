@@ -11,33 +11,35 @@ import SafetyKitMac
 /// matters most: only the plan the sheet showed can run, and it always goes to the Trash.
 @Observable
 @MainActor
-final class ApprovalFlow {
-    private(set) var pendingPlan: DeletionPlan?
-    private(set) var report: DeletionReport?
-    private(set) var isDeleting = false
+public final class ApprovalFlow {
+    public private(set) var pendingPlan: DeletionPlan?
+    public private(set) var report: DeletionReport?
+    public private(set) var isDeleting = false
 
     private var service: DeletionService?
 
-    func use(_ service: DeletionService) {
+    public init() {}
+
+    public func use(_ service: DeletionService) {
         self.service = service
         report = nil
     }
 
     /// Builds the plan and opens the sheet. Touches nothing. The Trash is the default; only the
     /// shredder asks for `.permanent`, and its sheet is the second confirmation §4.1 requires.
-    func prepare(_ items: [ScanItem], mode: DeletionMode = .trash) {
+    public func prepare(_ items: [ScanItem], mode: DeletionMode = .trash) {
         guard let service, !items.isEmpty else { return }
         pendingPlan = service.plan(for: items, mode: mode)
     }
 
     /// Items the safety layer would act on, as it sees them now.
-    func screened(_ items: [ScanItem]) -> [ScanItem] {
+    public func screened(_ items: [ScanItem]) -> [ScanItem] {
         service?.screened(items) ?? items
     }
 
-    func dismiss() { pendingPlan = nil }
+    public func dismiss() { pendingPlan = nil }
 
-    func confirm(_ plan: DeletionPlan, then finished: @escaping @MainActor () -> Void) {
+    public func confirm(_ plan: DeletionPlan, then finished: @escaping @MainActor () -> Void) {
         guard plan == pendingPlan, let service else { return }
         pendingPlan = nil
         isDeleting = true
@@ -57,7 +59,7 @@ final class ApprovalFlow {
         }
     }
 
-    func reset() {
+    public func reset() {
         pendingPlan = nil
         report = nil
         isDeleting = false
