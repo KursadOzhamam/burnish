@@ -118,7 +118,7 @@ public struct CleanupScanner: Scanning {
                 }
             } else if let item = try scanWhole(
                 url,
-                label: root.label,
+                label: root.labelKey.map { String(localized: CleanupStrings.key($0)) } ?? root.label,
                 blocked: blocked,
                 discovered: &discovered,
                 fraction: fraction,
@@ -195,8 +195,14 @@ public struct CleanupScanner: Scanning {
         fraction: Double,
         progress: @Sendable (ScanProgress) -> Void
     ) throws -> ScanItem? {
-        let result = try walker.measure(url, isCancelled: { Task.isCancelled })
-        guard result.totalSize.bytes > 0 else { return nil }
+        var isDirectory: ObjCBool = false
+        _ = FileManager().fileExists(atPath: url.path, isDirectory: &isDirectory)
+        // A root may be a single file (a browser's history database), not only a folder.
+        let measured: ByteCount = isDirectory.boolValue
+            ? try walker.measure(url, isCancelled: { Task.isCancelled }).totalSize
+            : ByteCount(Int64((try? url.resourceValues(forKeys: [.totalFileAllocatedSizeKey]))?.totalFileAllocatedSize ?? 0))
+        guard measured.bytes > 0 else { return nil }
+        let result = (totalSize: measured, fileCount: 1)
 
         discovered += result.totalSize
         progress(

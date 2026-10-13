@@ -3,6 +3,7 @@ import CoreKit
 import DesignSystem
 import ScanEngine
 import SafetyKit
+import SafetyKitMac
 import DeletionUI
 
 /// The Cleanup screen — CLAUDE.md §6.3.
@@ -13,17 +14,40 @@ import DeletionUI
 public struct CleanupView: View {
     @State private var model: CleanupModel
 
-    private var section: AppSection { .cleanup }
+    private let section: AppSection
+    private let title: LocalizedStringResource
+    private let subtitle: LocalizedStringResource
 
-    public init(model: CleanupModel = CleanupModel()) {
+    /// - Parameters:
+    ///   - section: which section's colours and result screen this is shown under, so the same
+    ///     review flow serves both Cleanup and Privacy.
+    public init(
+        model: CleanupModel = CleanupModel(),
+        section: AppSection = .cleanup,
+        title: LocalizedStringResource? = nil,
+        subtitle: LocalizedStringResource? = nil
+    ) {
         self._model = State(initialValue: model)
+        self.section = section
+        self.title = title ?? CleanupStrings.title
+        self.subtitle = subtitle ?? CleanupStrings.subtitle
+    }
+
+    /// The Privacy screen: the same flow over browsing-trace scanners.
+    public static func privacy(model: CleanupModel) -> CleanupView {
+        CleanupView(
+            model: model,
+            section: .privacy,
+            title: CleanupStrings.key("privacy.title"),
+            subtitle: CleanupStrings.key("privacy.subtitle")
+        )
     }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: Spacing.large) {
             SectionHeader(
-                title: CleanupStrings.title,
-                subtitle: CleanupStrings.subtitle,
+                title: title,
+                subtitle: subtitle,
                 palette: section.palette
             )
 
@@ -37,7 +61,7 @@ public struct CleanupView: View {
             case .deleting(let completed, let total):
                 deletingState(completed: completed, total: total)
             case .finished(let report):
-                DeletionResultView(report: report, section: .cleanup) { model.reset() }
+                DeletionResultView(report: report, section: section) { model.reset() }
             }
         }
         .padding(Spacing.large)
@@ -50,7 +74,7 @@ public struct CleanupView: View {
         )) { wrapper in
             ConfirmationSheet(
                 plan: wrapper.plan,
-                section: .cleanup,
+                section: section,
                 canRecordHistory: model.canRecordHistory,
                 onCancel: model.dismissConfirmation,
                 onConfirm: { model.confirm(wrapper.plan) }

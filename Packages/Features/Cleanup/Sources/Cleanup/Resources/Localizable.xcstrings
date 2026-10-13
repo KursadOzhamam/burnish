@@ -540,6 +540,182 @@
           }
         }
       }
+    },
+    "privacy.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gizlilik"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy"
+          }
+        }
+      }
+    },
+    "privacy.subtitle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarayıcı geçmişi, çerezler ve son kullanılan öğeler. Bunlar senin verin: hiçbiri önceden seçilmez, tarayıcı açıkken işlem yapılmaz. Dosyalar Çöp'e taşınır; iz gerçekten Çöp'ü boşaltınca gider. Çerezleri silmek sitelerdeki oturumlarını kapatır."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Browser history, cookies and recent items. This is your data: nothing is preselected and nothing happens while the browser is open. Files go to the Trash; the trace is really gone once you empty it. Removing cookies signs you out of sites."
+          }
+        }
+      }
+    },
+    "privacy.safari.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Safari izleri"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Safari traces"
+          }
+        }
+      }
+    },
+    "privacy.safari.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçmiş, son oturum ve çerezler. Tam Disk Erişimi gerekir; Safari açıkken atlanır."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History, last session and cookies. Needs Full Disk Access; skipped while Safari is open."
+          }
+        }
+      }
+    },
+    "privacy.chromium.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chrome, Brave, Edge ve Arc izleri"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chrome, Brave, Edge and Arc traces"
+          }
+        }
+      }
+    },
+    "privacy.chromium.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçmiş, çerezler ve form verileri. Hangi tarayıcının dosyası olduğu yolda görünür; tarayıcı açıkken atlanır."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History, cookies and form data. The path shows which browser a file belongs to; skipped while the browser is open."
+          }
+        }
+      }
+    },
+    "privacy.recentItems.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son kullanılan öğeler"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recent items"
+          }
+        }
+      }
+    },
+    "privacy.recentItems.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finder ve uygulamaların 'son kullanılanlar' listeleri."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The 'recent items' lists of Finder and apps."
+          }
+        }
+      }
+    },
+    "privacy.label.history": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçmiş"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History"
+          }
+        }
+      }
+    },
+    "privacy.label.lastSession": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son oturum"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last session"
+          }
+        }
+      }
+    },
+    "privacy.label.cookies": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çerezler"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cookies"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

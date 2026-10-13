@@ -123,18 +123,24 @@ public struct CleanupRoot: Sendable, Hashable {
     /// meaningless on its own ("Cache", "Code Cache").
     public let label: String?
 
+    /// A String Catalog key for the name, for roots that need a localized one (a privacy file called
+    /// "History" is meaningless without saying whose).
+    public let labelKey: String?
+
     public init(
         base: Base,
         path: String,
         listsChildren: Bool = true,
         owners: [String] = [],
-        label: String? = nil
+        label: String? = nil,
+        labelKey: String? = nil
     ) {
         self.base = base
         self.path = path
         self.listsChildren = listsChildren
         self.owners = owners
         self.label = label
+        self.labelKey = labelKey
     }
 
     public static func home(
@@ -142,11 +148,12 @@ public struct CleanupRoot: Sendable, Hashable {
         listsChildren: Bool = true,
         owner: String? = nil,
         owners: [String] = [],
-        label: String? = nil
+        label: String? = nil,
+        labelKey: String? = nil
     ) -> CleanupRoot {
         CleanupRoot(
             base: .home, path: path, listsChildren: listsChildren,
-            owners: owner.map { [$0] } ?? owners, label: label
+            owners: owner.map { [$0] } ?? owners, label: label, labelKey: labelKey
         )
     }
 
@@ -155,11 +162,12 @@ public struct CleanupRoot: Sendable, Hashable {
         listsChildren: Bool = true,
         owner: String? = nil,
         owners: [String] = [],
-        label: String? = nil
+        label: String? = nil,
+        labelKey: String? = nil
     ) -> CleanupRoot {
         CleanupRoot(
             base: .absolute, path: path, listsChildren: listsChildren,
-            owners: owner.map { [$0] } ?? owners, label: label
+            owners: owner.map { [$0] } ?? owners, label: label, labelKey: labelKey
         )
     }
 

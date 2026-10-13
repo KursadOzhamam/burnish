@@ -123,3 +123,43 @@ struct AppCacheTests {
         }
     }
 }
+
+@Suite("Privacy scanners")
+struct PrivacyCatalogueTests {
+    @Test("Every privacy scanner is low confidence, so nothing is ever preselected")
+    func neverPreselected() {
+        for rule in CleanupCatalogue.Privacy.all { #expect(rule.confidence == .low, "\(rule.id)") }
+    }
+
+    @Test("Privacy removal goes to the Trash like everything else (§4.1)")
+    func notPermanent() {
+        for rule in CleanupCatalogue.Privacy.all { #expect(!CleanupCatalogue.permanentScanners.contains(rule.id)) }
+    }
+
+    @Test("Every browser file declares the browser that owns it, so an open browser blocks it")
+    func ownersDeclared() {
+        for rule in [CleanupCatalogue.Privacy.safari, CleanupCatalogue.Privacy.chromium] {
+            for root in rule.roots { #expect(!root.owners.isEmpty, "\(root.path)") }
+        }
+    }
+
+    @Test("A single history file is found, labelled, and blocked while its browser runs")
+    func singleFile() async throws {
+        let home = URL(fileURLWithPath: "/private/tmp").appendingPathComponent("BurnishPriv-\(UUID().uuidString)")
+        let folder = home.appendingPathComponent("Library/Application Support/Google/Chrome/Default")
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        try Data(repeating: 1, count: 5_000).write(to: folder.appendingPathComponent("History"))
+        defer {
+            // Fixture teardown, not product code.
+            // swiftlint:disable:next no_direct_remove_item
+            try? FileManager.default.removeItem(at: home)
+        }
+        let closed = try await CleanupScanner(rule: CleanupCatalogue.Privacy.chromium, home: home, inspector: StaticRunningApplicationInspector([])).scan { _ in }
+        #expect(closed.map(\.displayName) == ["History"])
+        #expect(closed.allSatisfy { $0.isActionable })
+        let running = try await CleanupScanner(
+            rule: CleanupCatalogue.Privacy.chromium, home: home, inspector: StaticRunningApplicationInspector(["com.google.Chrome"])
+        ).scan { _ in }
+        #expect(running.allSatisfy { $0.blockedReason == .ownerRunning })
+    }
+}

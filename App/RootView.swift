@@ -22,6 +22,7 @@ struct RootView: View {
     @State private var filesModels = FilesModels(history: Self.history)
     @State private var applicationsModel = ApplicationsModel(history: Self.history)
     @State private var performanceModel = PerformanceModel()
+    @State private var privacyModel = CleanupModel.privacy(history: Self.history)
     @State private var protectionModel = ProtectionModel(supportDirectory: Self.supportDirectory)
 
     var body: some View {
@@ -84,6 +85,9 @@ struct RootView: View {
 
         case .cleanup:
             CleanupView(model: scanCoordinator.cleanup)
+
+        case .privacy:
+            CleanupView.privacy(model: privacyModel)
 
         case .protection:
             ProtectionView(model: protectionModel)
