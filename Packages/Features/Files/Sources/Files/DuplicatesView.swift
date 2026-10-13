@@ -1,4 +1,6 @@
 import SwiftUI
+import ImageIO
+import AppKit
 import CoreKit
 import DesignSystem
 import DeletionUI
@@ -10,6 +12,7 @@ public struct DuplicatesView: View {
     @State private var model: DuplicatesModel
 
     private var section: AppSection { .files }
+    private var isSimilar: Bool { model.kind == .similar }
 
     public init(model: DuplicatesModel = DuplicatesModel()) {
         self._model = State(initialValue: model)
@@ -17,7 +20,11 @@ public struct DuplicatesView: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: Spacing.large) {
-            SectionHeader(title: FilesStrings.dupTitle, subtitle: FilesStrings.dupSubtitle, palette: section.palette)
+            SectionHeader(
+                title: isSimilar ? FilesStrings.similarTitle : FilesStrings.dupTitle,
+                subtitle: isSimilar ? FilesStrings.similarSubtitle : FilesStrings.dupSubtitle,
+                palette: section.palette
+            )
 
             switch model.phase {
             case .idle, .failed: idleState
@@ -48,7 +55,11 @@ public struct DuplicatesView: View {
     private var idleState: some View {
         VStack(spacing: Spacing.large) {
             Spacer()
-            EmptyState(symbol: "square.on.square", title: FilesStrings.dupTitle, message: FilesStrings.dupSubtitle)
+            EmptyState(
+                symbol: isSimilar ? "photo.on.rectangle" : "square.on.square",
+                title: isSimilar ? FilesStrings.similarTitle : FilesStrings.dupTitle,
+                message: isSimilar ? FilesStrings.similarSubtitle : FilesStrings.dupSubtitle
+            )
             ScanButton(title: FilesStrings.scan, palette: section.textSafePalette, action: model.scan)
             Spacer()
         }
@@ -64,7 +75,11 @@ public struct DuplicatesView: View {
             )
             .frame(width: 180, height: 180)
             .overlay {
-                AnimatedCounter(progress.discovered.formatted(), font: Typography.metric)
+                // Look-alike scans measure no bytes while running; show how many pictures are done instead of "0 kB".
+                AnimatedCounter(
+                    progress.discovered.bytes > 0 ? progress.discovered.formatted() : "\(progress.itemCount)",
+                    font: Typography.metric
+                )
                     .frame(maxWidth: 130)
             }
             Text(FilesStrings.found(count: progress.itemCount))
@@ -102,8 +117,8 @@ public struct DuplicatesView: View {
                     Spacer()
                     EmptyState(
                         symbol: "checkmark.circle",
-                        title: FilesStrings.dupEmptyTitle,
-                        message: FilesStrings.dupEmptyDetail
+                        title: isSimilar ? FilesStrings.similarEmptyTitle : FilesStrings.dupEmptyTitle,
+                        message: isSimilar ? FilesStrings.similarEmptyDetail : FilesStrings.dupEmptyDetail
                     )
                     Spacer()
                 }
@@ -123,6 +138,9 @@ public struct DuplicatesView: View {
     private var rules: some View {
         HStack(spacing: Spacing.small) {
             Button { model.apply(.oldest) } label: { Text(FilesStrings.keepOldest) }
+            if isSimilar {
+                Button { model.apply(.largest) } label: { Text(FilesStrings.keepLargest) }
+            }
             Button { model.apply(.shortestPath) } label: { Text(FilesStrings.keepShortest) }
             Button(action: model.clearSelection) { Text(FilesStrings.clearSelection) }
                 .disabled(model.selection.isEmpty)
@@ -149,12 +167,16 @@ public struct DuplicatesView: View {
                     set: { _ in model.toggle(copy, in: group) }
                 )) {
                     HStack(spacing: Spacing.xs) {
+                        if isSimilar { Thumbnail(url: copy.url) }
                         Text((copy.url.deletingLastPathComponent().path as NSString).abbreviatingWithTildeInPath)
                             .font(Typography.path)
                             .foregroundStyle(.secondary)
                             .lineLimit(1)
                             .truncationMode(.head)
                         Spacer(minLength: Spacing.small)
+                        if isSimilar {
+                            Text(copy.size.formatted()).numericStyle(Typography.caption).foregroundStyle(.secondary)
+                        }
                         if let date = copy.lastUsed {
                             Text(date, format: .dateTime.year().month().day())
                                 .font(Typography.caption).foregroundStyle(.tertiary)
@@ -199,4 +221,36 @@ public struct DuplicatesView: View {
 private struct IdentifiedPlan: Identifiable, Equatable {
     let plan: DeletionPlan
     var id: Int { plan.hashValue }
+}
+
+/// A small preview, decoded off the main thread at thumbnail size so a list of large originals
+/// does not hold them in memory.
+private struct Thumbnail: View {
+    let url: URL
+    @State private var image: NSImage?
+
+    var body: some View {
+        Group {
+            if let image {
+                Image(nsImage: image).resizable().scaledToFill()
+            } else {
+                Rectangle().fill(.quaternary)
+            }
+        }
+        .frame(width: 56, height: 56)
+        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.small))
+        .accessibilityHidden(true)
+        .task(id: url) {
+            let url = url
+            image = await Task.detached(priority: .utility) {
+                guard let source = CGImageSourceCreateWithURL(url as CFURL, nil),
+                      let cg = CGImageSourceCreateThumbnailAtIndex(source, 0, [
+                          kCGImageSourceCreateThumbnailFromImageAlways: true,
+                          kCGImageSourceCreateThumbnailWithTransform: true,
+                          kCGImageSourceThumbnailMaxPixelSize: 112
+                      ] as CFDictionary) else { return nil }
+                return NSImage(cgImage: cg, size: .zero)
+            }.value
+        }
+    }
 }

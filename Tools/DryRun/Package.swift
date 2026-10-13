@@ -24,6 +24,10 @@ let package = Package(
             dependencies: ["CoreKit", "ScanEngine", "Files"]
         ),
         .executableTarget(
+            name: "DryRunSimilar",
+            dependencies: ["CoreKit", "ScanEngine", "Files"]
+        ),
+        .executableTarget(
             name: "DryRunSpaceLens",
             dependencies: ["CoreKit", "ScanEngine", "Files"]
         ),

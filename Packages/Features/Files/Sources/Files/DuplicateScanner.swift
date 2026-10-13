@@ -206,9 +206,10 @@ public struct DuplicateScanner: HeavyScanning {
 }
 
 extension ScanItem {
-    /// For a duplicate group: the space freed if all but one copy were removed.
+    /// For a group of duplicates or look-alikes: the space freed if everything but the largest
+    /// member were removed. For identical files that is simply all copies but one.
     public var wasted: Int64 {
-        guard children.count >= 2, let each = children.first?.size.bytes else { return 0 }
-        return each * Int64(children.count - 1)
+        guard children.count >= 2, let largest = children.map(\.size.bytes).max() else { return 0 }
+        return children.reduce(0) { $0 + $1.size.bytes } - largest
     }
 }

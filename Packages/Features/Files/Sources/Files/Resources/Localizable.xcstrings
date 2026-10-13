@@ -993,6 +993,102 @@
           }
         }
       }
+    },
+    "files.hub.similar": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benzer görseller"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Similar pictures"
+          }
+        }
+      }
+    },
+    "files.similar.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benzer görseller"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Similar pictures"
+          }
+        }
+      }
+    },
+    "files.similar.subtitle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birbirine çok benzeyen görselleri (seri çekim, tekrar çekim) bulur. Hesaplama bu Mac'te yapılır, görseller dışarı gönderilmez. Her grupta en az biri kalır; hiçbiri önceden seçilmez ve yalnızca Çöp'e taşınır."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finds pictures that look very alike (bursts, retakes). Analysis happens on this Mac and nothing is sent anywhere. Every group keeps at least one; nothing is preselected and files only go to the Trash."
+          }
+        }
+      }
+    },
+    "files.similar.empty.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benzer görsel bulunmadı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No similar pictures found"
+          }
+        }
+      }
+    },
+    "files.similar.empty.detail": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçilen klasörlerde birbirine benzeyen görsel grubu yok."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There are no groups of look-alike pictures in the chosen folders."
+          }
+        }
+      }
+    },
+    "files.dup.keepLargest": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En büyüğü tut"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep the largest"
+          }
+        }
+      }
     }
   }
 }

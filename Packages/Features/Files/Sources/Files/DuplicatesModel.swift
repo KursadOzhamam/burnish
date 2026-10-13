@@ -19,7 +19,19 @@ public final class DuplicatesModel {
     public enum KeepRule: Sendable, CaseIterable {
         case oldest
         case shortestPath
+        /// The biggest file, which for look-alike pictures is the highest-resolution one.
+        case largest
     }
+
+    /// What counts as belonging together.
+    public enum Kind: Sendable {
+        /// Byte-for-byte identical files.
+        case identical
+        /// Pictures that look alike.
+        case similar
+    }
+
+    public let kind: Kind
 
     public private(set) var session: HeavyScanSession?
     public var selection: Set<UUID> = []
@@ -33,12 +45,14 @@ public final class DuplicatesModel {
     private let history: HistoryStore?
 
     public init(
+        kind: Kind = .identical,
         roots: [URL] = LargeFilesScanner.defaultRoots(home: FileManager.default.homeDirectoryForCurrentUser),
-        minimumSize: ByteCount = ByteCount(1_048_576),
+        minimumSize: ByteCount? = nil,
         history: HistoryStore? = nil
     ) {
+        self.kind = kind
         self.roots = roots
-        self.minimumSize = minimumSize
+        self.minimumSize = minimumSize ?? (kind == .identical ? ByteCount(1_048_576) : ByteCount(50 * 1_024))
         self.history = history
         self.canRecordHistory = history != nil
     }
@@ -61,7 +75,10 @@ public final class DuplicatesModel {
         cancel()
         approval.reset()
         selection = []
-        let scanner = DuplicateScanner(roots: roots, minimumSize: minimumSize)
+        let scanner: any HeavyScanning = switch kind {
+        case .identical: DuplicateScanner(roots: roots, minimumSize: minimumSize)
+        case .similar: SimilarImagesScanner(roots: roots, minimumSize: minimumSize)
+        }
         approval.use(DeletionService(guards: [scanner.id: PathGuard(allowedRoots: roots)], history: history))
         let next = HeavyScanSession(scanner: scanner)
         session = next
@@ -112,6 +129,8 @@ public final class DuplicatesModel {
                 kept = group.children.first
             case .shortestPath:
                 kept = group.children.min { $0.url.path.count < $1.url.path.count }
+            case .largest:
+                kept = group.children.max { $0.size.bytes < $1.size.bytes }
             }
             for copy in group.children where copy.id != kept?.id && copy.isActionable {
                 chosen.insert(copy.id)

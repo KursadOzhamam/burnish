@@ -11,19 +11,21 @@ public final class FilesModels {
     public let largeFiles: LargeFilesModel
     public let spaceLens: SpaceLensModel
     public let duplicates: DuplicatesModel
+    public let similar: DuplicatesModel
     public let shredder: ShredderModel
 
     public init(history: HistoryStore?) {
         largeFiles = LargeFilesModel(history: history)
         spaceLens = SpaceLensModel(history: history)
         duplicates = DuplicatesModel(history: history)
+        similar = DuplicatesModel(kind: .similar, history: history)
         shredder = ShredderModel(history: history)
     }
 }
 
 /// The Files section: one place for the large-files list and the space map.
 public struct FilesHubView: View {
-    private enum Tab: Hashable { case large, map, duplicates, shredder }
+    private enum Tab: Hashable { case large, map, duplicates, similar, shredder }
 
     @State private var tab: Tab = .large
     /// Nil when it cannot be determined; the notice shows only when access is known to be missing.
@@ -41,17 +43,19 @@ public struct FilesHubView: View {
                 Text(FilesStrings.hubLarge).tag(Tab.large)
                 Text(FilesStrings.hubMap).tag(Tab.map)
                 Text(FilesStrings.hubDuplicates).tag(Tab.duplicates)
+                Text(FilesStrings.hubSimilar).tag(Tab.similar)
                 Text(FilesStrings.hubShredder).tag(Tab.shredder)
             } label: { EmptyView() }
             .pickerStyle(.segmented)
             .labelsHidden()
-            .frame(maxWidth: 560)
+            .frame(maxWidth: 720)
             .padding(.top, Spacing.medium)
 
             switch tab {
             case .large: LargeFilesView(model: models.largeFiles)
             case .map: SpaceLensView(model: models.spaceLens)
             case .duplicates: DuplicatesView(model: models.duplicates)
+            case .similar: DuplicatesView(model: models.similar)
             case .shredder: ShredderView(model: models.shredder)
             }
         }
