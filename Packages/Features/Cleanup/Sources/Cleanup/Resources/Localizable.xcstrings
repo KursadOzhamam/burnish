@@ -962,6 +962,422 @@
           }
         }
       }
+    },
+    "cleanup.landing.subtitle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gereksiz dosyaları bulun, Mac'inizde yer açın."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find files you do not need and free up space on your Mac."
+          }
+        }
+      }
+    },
+    "cleanup.landing.hero.heading": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daha temiz bir Mac için ilk adım"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The first step to a cleaner Mac"
+          }
+        }
+      }
+    },
+    "cleanup.landing.hero.message": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem artıkları ve gereksiz dosyalar için tarama başlatın. Temizlemeden önce tüm sonuçları inceleyin."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start a scan for system leftovers and files you do not need. Review every result before cleaning."
+          }
+        }
+      }
+    },
+    "cleanup.landing.hero.note": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silinecek dosyalar sizin onayınızla seçilir."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What gets removed is chosen with your approval."
+          }
+        }
+      }
+    },
+    "cleanup.landing.list": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarama kapsamı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan scope"
+          }
+        }
+      }
+    },
+    "cleanup.landing.selected %lld": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld kategori seçili"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld categories selected"
+          }
+        }
+      }
+    },
+    "cleanup.landing.included": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dahil"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Included"
+          }
+        }
+      }
+    },
+    "cleanup.landing.excluded": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hariç"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excluded"
+          }
+        }
+      }
+    },
+    "cleanup.landing.notScanned": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henüz taranmadı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not scanned yet"
+          }
+        }
+      }
+    },
+    "cleanup.landing.info.heading": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kontrol sizde"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You are in control"
+          }
+        }
+      }
+    },
+    "cleanup.landing.info.message": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarama dosyalarınızı silmez. Sonuçları inceleyip temizlenecek öğelere kendiniz karar verirsiniz."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning never deletes your files. You review the results and decide what gets cleaned."
+          }
+        }
+      }
+    },
+    "cleanup.landing.info.note": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kişisel belgeleriniz ve fotoğraflarınız bu tarama kapsamına alınmaz."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your personal documents and photos are not part of this scan."
+          }
+        }
+      }
+    },
+    "cleanup.landing.info.button": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarayıcıları yönet"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manage scanners"
+          }
+        }
+      }
+    },
+    "cleanup.landing.lastScan": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son tarama: Henüz yapılmadı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last scan: not yet"
+          }
+        }
+      }
+    },
+    "cleanup.landing.footer": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kazanılabilecek alan, taramadan sonra hesaplanır."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The space you can gain is calculated after the scan."
+          }
+        }
+      }
+    },
+    "cleanup.landing.action": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taramayı Başlat"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Scan"
+          }
+        }
+      }
+    },
+    "privacy.landing.subtitle": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dijital izlerinizi inceleyin, kişisel verilerinizin kontrolünü elinizde tutun."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review your digital traces and keep control of your personal data."
+          }
+        }
+      }
+    },
+    "privacy.landing.hero.heading": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kişisel verileriniz, sizin kararınız"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your personal data, your decision"
+          }
+        }
+      }
+    },
+    "privacy.landing.hero.message": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarayıcı verilerini ve kullanım izlerini inceleyin. Temizlemek istediğiniz verileri ayrı ayrı seçin."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review browser data and usage traces. Choose the data you want to clear one by one."
+          }
+        }
+      }
+    },
+    "privacy.landing.hero.note": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hiçbir şey önceden seçilmez; dosyalar Çöp'e taşınır."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing is preselected; files go to the Trash."
+          }
+        }
+      }
+    },
+    "privacy.landing.list": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gizlilik alanları"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy areas"
+          }
+        }
+      }
+    },
+    "privacy.landing.info.heading": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlemeden önce"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Before you clear"
+          }
+        }
+      }
+    },
+    "privacy.landing.info.message": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çerezleri silmek web sitelerindeki oturumlarınızı kapatabilir. Tarayıcı açıkken işlem yapılmaz."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Removing cookies can sign you out of websites. Nothing happens while the browser is open."
+          }
+        }
+      }
+    },
+    "privacy.landing.info.note": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaydedilmiş parolalar bu temizlik kapsamına alınmaz."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved passwords are not part of this cleanup."
+          }
+        }
+      }
+    },
+    "privacy.landing.footer": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İnceleme verilerinizi silmez veya izinlerinizi değiştirmez."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reviewing does not delete your data or change your permissions."
+          }
+        }
+      }
+    },
+    "privacy.landing.action": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gizlilik Analizi"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy Analysis"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

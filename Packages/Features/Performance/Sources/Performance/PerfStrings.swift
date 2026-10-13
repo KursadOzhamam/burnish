@@ -51,4 +51,30 @@ enum PerfStrings {
 
     static func task(_ task: MaintenanceTask) -> LocalizedStringResource { key("performance.task.\(task.rawValue)") }
     static func taskDetail(_ task: MaintenanceTask) -> LocalizedStringResource { key("performance.task.\(task.rawValue).detail") }
+
+    static let landingSubtitle = key("performance.landing.subtitle")
+    static let landingHeroHeading = key("performance.landing.hero.heading")
+    static let landingHeroMessage = key("performance.landing.hero.message")
+    static let landingHeroNote = key("performance.landing.hero.note")
+    static let landingNotScanned = key("performance.landing.notScanned")
+    static let landingList = key("performance.landing.list")
+    static let landingListWaiting = key("performance.landing.list.waiting")
+    static let landingRowStartup = key("performance.landing.row.startup")
+    static let landingRowStartupDetail = key("performance.landing.row.startup.detail")
+    static let landingRowBackground = key("performance.landing.row.background")
+    static let landingRowBackgroundDetail = key("performance.landing.row.background.detail")
+    static let landingRowMaintenance = key("performance.landing.row.maintenance")
+    static let landingRowMaintenanceDetail = key("performance.landing.row.maintenance.detail")
+    static let landingRowMemory = key("performance.landing.row.memory")
+    static let landingRowMemoryDetail = key("performance.landing.row.memory.detail")
+    static let landingStatusReview = key("performance.landing.status.review")
+    static let landingStatusNotReviewed = key("performance.landing.status.notReviewed")
+    static let landingMemoryNote = key("performance.landing.memory.note")
+    static let landingCpuNote = key("performance.landing.cpu.note")
+    static let landingLastScan = key("performance.landing.lastScan")
+    static let landingFooter = key("performance.landing.footer")
+    static let landingAction = key("performance.landing.action")
+    static let back = key("performance.back")
+    static let landingMemory = key("performance.landing.memory")
+    static let landingCpu = key("performance.landing.cpu")
 }

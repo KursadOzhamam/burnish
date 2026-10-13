@@ -63,4 +63,38 @@ enum ProtStrings {
 
     static func progress(_ n: Int) -> LocalizedStringResource { LocalizedStringResource("protection.scan.progress \(n)", bundle: .atURL(bundleURL)) }
     static func found(_ n: Int) -> LocalizedStringResource { LocalizedStringResource("protection.scan.found \(n)", bundle: .atURL(bundleURL)) }
+
+    static func rowStatusFound(_ n: Int) -> LocalizedStringResource {
+        LocalizedStringResource("protection.landing.status.found \(n)", bundle: .atURL(bundleURL))
+    }
+    static func rowStatusItems(_ n: Int) -> LocalizedStringResource {
+        LocalizedStringResource("protection.landing.status.items \(n)", bundle: .atURL(bundleURL))
+    }
+
+    static let landingSubtitle = key("protection.landing.subtitle")
+    static let landingHeroHeading = key("protection.landing.hero.heading")
+    static let landingHeroMessage = key("protection.landing.hero.message")
+    static let landingHeroNote = key("protection.landing.hero.note")
+    static let landingNotScanned = key("protection.landing.notScanned")
+    static let landingList = key("protection.landing.list")
+    static let landingListWaiting = key("protection.landing.list.waiting")
+    static let landingRowMalware = key("protection.landing.row.malware")
+    static let landingRowMalwareDetail = key("protection.landing.row.malware.detail")
+    static let landingRowStartup = key("protection.landing.row.startup")
+    static let landingRowStartupDetail = key("protection.landing.row.startup.detail")
+    static let landingRowQuarantine = key("protection.landing.row.quarantine")
+    static let landingRowQuarantineDetail = key("protection.landing.row.quarantine.detail")
+    static let landingRowSystem = key("protection.landing.row.system")
+    static let landingRowSystemDetail = key("protection.landing.row.system.detail")
+    static let landingStatusNotScanned = key("protection.landing.status.notScanned")
+    static let landingStatusClean = key("protection.landing.status.clean")
+    static let landingStatusView = key("protection.landing.status.view")
+    static let landingInfoHeading = key("protection.landing.info.heading")
+    static let landingInfoMessage = key("protection.landing.info.message")
+    static let landingInfoNote = key("protection.landing.info.note")
+    static let landingInfoButton = key("protection.landing.info.button")
+    static let landingLastScan = key("protection.landing.lastScan")
+    static let landingFooter = key("protection.landing.footer")
+    static let landingAction = key("protection.landing.action")
+    static let back = key("protection.back")
 }

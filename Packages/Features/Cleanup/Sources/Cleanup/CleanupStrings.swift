@@ -57,4 +57,8 @@ enum CleanupStrings {
         case .outsideScope, .excludedByUser, .needsFullDiskAccess: otherBlocked
         }
     }
+
+    static func selectedCategories(_ count: Int) -> LocalizedStringResource {
+        LocalizedStringResource("cleanup.landing.selected \(count)", bundle: .atURL(bundleURL))
+    }
 }

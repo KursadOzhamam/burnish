@@ -97,82 +97,30 @@ public enum AppSection: String, Sendable, Hashable, CaseIterable, Identifiable {
 
     public var id: String { rawValue }
 
-    /// SF Symbol for the sidebar.
+    /// SF Symbol for the sidebar. Matches the supplied design.
     public var symbol: String {
         switch self {
         case .dashboard: "square.grid.2x2"
         case .smartScan: "sparkles"
-        case .cleanup: "sparkle.magnifyingglass"
-        case .protection: "shield.lefthalf.filled"
-        case .performance: "speedometer"
-        case .applications: "app.badge"
+        case .cleanup: "magnifyingglass.circle"
+        case .protection: "shield"
+        case .performance: "gauge.with.dots.needle.33percent"
+        case .applications: "macwindow"
         case .files: "chart.pie"
         case .privacy: "hand.raised"
         }
     }
 
-    /// Decorative brand gradient — rings, sparklines, gradient-filled headings, icon tints.
+    /// Brand gradient for rings, sparklines and icon tints.
     ///
-    /// Tuned for vividness, not for carrying text. Six of the eight pairs do not reach WCAG AA
-    /// against white, so anything with a label on top must use `textSafePalette` instead. Values
-    /// are our own; §1 forbids reusing another product's palette.
-    public var palette: GradientPair {
-        switch self {
-        case .dashboard:
-            // indigo → violet
-            GradientPair(start: RGB(hex: 0x4F46E5), end: RGB(hex: 0x9333EA))
-        case .smartScan:
-            // violet → fuchsia, a brighter sibling of the dashboard so Smart Scan reads as primary
-            GradientPair(start: RGB(hex: 0x6D28D9), end: RGB(hex: 0xC026D3))
-        case .cleanup:
-            // turquoise → green
-            GradientPair(start: RGB(hex: 0x14B8A6), end: RGB(hex: 0x22C55E))
-        case .protection:
-            // rose → orange
-            GradientPair(start: RGB(hex: 0xE11D48), end: RGB(hex: 0xF97316))
-        case .performance:
-            // amber → yellow
-            GradientPair(start: RGB(hex: 0xD97706), end: RGB(hex: 0xFACC15))
-        case .applications:
-            // blue → cyan
-            GradientPair(start: RGB(hex: 0x2563EB), end: RGB(hex: 0x06B6D4))
-        case .files:
-            // purple → pink
-            GradientPair(start: RGB(hex: 0x7C3AED), end: RGB(hex: 0xEC4899))
-        case .privacy:
-            // navy → blue
-            GradientPair(start: RGB(hex: 0x1E3A8A), end: RGB(hex: 0x3B82F6))
-        }
-    }
-    /// Gradient for surfaces that carry text, e.g. a filled button.
-    ///
-    /// CLAUDE.md §5.3 requires WCAG AA. The decorative palette above cannot meet it — white on
-    /// the amber→yellow pair lands at 1.53:1 — so text-bearing fills get a darkened variant of
-    /// the same hues instead. Every pair here clears 4.5:1 against `Palette.onColor` at **both**
-    /// stops, which `PaletteContrastTests` verifies for all sections so a future colour tweak
-    /// cannot silently break legibility.
-    public var textSafePalette: GradientPair {
-        switch self {
-        // Already compliant; identical to the decorative pair.
-        case .dashboard:
-            GradientPair(start: RGB(hex: 0x4F46E5), end: RGB(hex: 0x9333EA))
-        case .smartScan:
-            GradientPair(start: RGB(hex: 0x6D28D9), end: RGB(hex: 0xC026D3))
-        // Darkened to carry white text while keeping the hue story of §5.3.
-        case .cleanup:
-            GradientPair(start: RGB(hex: 0x0E8174), end: RGB(hex: 0x16803D))
-        case .protection:
-            GradientPair(start: RGB(hex: 0xE11D48), end: RGB(hex: 0xBB5610))
-        case .performance:
-            GradientPair(start: RGB(hex: 0xAE5F05), end: RGB(hex: 0x8A700C))
-        case .applications:
-            GradientPair(start: RGB(hex: 0x2563EB), end: RGB(hex: 0x047F94))
-        case .files:
-            GradientPair(start: RGB(hex: 0x7C3AED), end: RGB(hex: 0xC93D82))
-        case .privacy:
-            GradientPair(start: RGB(hex: 0x1E3A8A), end: RGB(hex: 0x326ED1))
-        }
-    }
+    /// The design uses one violet for every section, so every section returns the same pair.
+    /// The API stays per-section so a later redesign can differentiate them again without
+    /// touching call sites.
+    public var palette: GradientPair { Brand.pair }
+
+    /// Gradient for surfaces that carry text, e.g. a filled button. White on this violet is
+    /// 6.2:1, above WCAG AA (§5.3); `PaletteContrastTests` guards it.
+    public var textSafePalette: GradientPair { Brand.pair }
 }
 
 /// Foreground colours guaranteed against `textSafePalette`.

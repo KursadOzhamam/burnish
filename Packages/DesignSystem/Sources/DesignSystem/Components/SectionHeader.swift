@@ -2,6 +2,7 @@ import SwiftUI
 
 /// Gradient section title and description — CLAUDE.md §5.4.
 public struct SectionHeader: View {
+    @Environment(\.colorScheme) private var scheme
     private let title: LocalizedStringResource
     private let subtitle: LocalizedStringResource?
     private let palette: GradientPair
@@ -19,13 +20,13 @@ public struct SectionHeader: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xxs) {
             Text(title)
-                .font(Typography.title)
-                .foregroundStyle(palette.linear)
+                .font(.system(size: 28, weight: .light))
+                .foregroundStyle(scheme.theme.ink)
 
             if let subtitle {
                 Text(subtitle)
-                    .font(Typography.body)
-                    .foregroundStyle(.secondary)
+                    .font(.system(size: 13))
+                    .foregroundStyle(scheme.theme.inkSecondary)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

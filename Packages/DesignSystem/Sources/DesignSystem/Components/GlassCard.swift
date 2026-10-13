@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Frosted container — CLAUDE.md §5.4: hover grows it by 2% and deepens the shadow.
+/// Flat container (the design uses white cards with a hairline border, not frosted glass) — CLAUDE.md §5.4: hover grows it by 2% and deepens the shadow.
 ///
 /// The material is only a background layer and the geometry is ours, so the card looks the same
 /// across macOS releases (§5.2).
@@ -30,22 +30,9 @@ public struct GlassCard<Content: View>: View {
         content
             .padding(padding)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background {
-                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .fill(.regularMaterial)
-            }
-            .overlay {
-                // Hairline edge gives the card a defined boundary on busy backdrops.
-                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .strokeBorder(.white.opacity(0.08), lineWidth: 1)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
-            .shadow(
-                color: .black.opacity(isRaised ? 0.28 : 0.16),
-                radius: isRaised ? 20 : 10,
-                y: isRaised ? 8 : 4
-            )
-            .scaleEffect(isRaised ? 1.02 : 1)
+            .cardSurface(radius: min(cornerRadius, 20))
+            .shadow(color: .black.opacity(isRaised ? 0.08 : 0.025), radius: isRaised ? 12 : 4, y: isRaised ? 5 : 1)
+            .scaleEffect(isRaised ? 1.01 : 1)
             .motion(Motion.snappy, value: isRaised)
             .onHover { hovering in
                 // Hover is a pointer concept; on iOS this closure simply never fires.

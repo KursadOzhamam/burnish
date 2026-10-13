@@ -13,12 +13,12 @@ import SafetyKit
 struct SettingsView: View {
     let performance: PerformanceModel
 
-    @AppStorage("menubar.enabled") private var showsMenuBarItem = true
+    @AppStorage("menubar.enabled") private var showsMenuBarItem = false
     @AppStorage("privacy.crashReports") private var crashReports = false
     @AppStorage("schedule.frequency") private var scheduleFrequency = "off"
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
     @State private var loginError: String?
-    @State private var fullDiskAccess = FullDiskAccess.isGranted()
+    @State private var fullDiskAccess: Bool?
     @State private var preferences = ScannerPreferences()
     @State private var rules = CleanupCatalogue.all
     @State private var refresh = 0

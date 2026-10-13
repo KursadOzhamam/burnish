@@ -80,8 +80,9 @@ public final class CleanupModel {
     /// from the app afterwards, and the user is told before approving rather than after.
     public let canRecordHistory: Bool
 
-    private let scanners: [CleanupScanner]
-    private let service: DeletionService
+    private var scanners: [CleanupScanner]
+    private var service: DeletionService
+    private let history: HistoryStore?
     private var task: Task<Void, Never>?
 
     public init(
@@ -89,6 +90,7 @@ public final class CleanupModel {
         history: HistoryStore? = nil
     ) {
         self.scanners = scanners
+        self.history = history
         self.canRecordHistory = history != nil
         // Each scanner may act only within its own declared roots (§4.2).
         var guards: [ScannerID: PathGuard] = [:]
@@ -99,6 +101,19 @@ public final class CleanupModel {
             )
         }
         self.service = DeletionService(guards: guards, history: history)
+    }
+
+    /// Switches to a different set of scanners, e.g. after the user turned one off in the scope
+    /// list. Each scanner may act only within its own declared roots (§4.2), so the safety layer
+    /// is rebuilt with them.
+    public func updateScanners(_ scanners: [CleanupScanner]) {
+        guard !phase.isBusy else { return }
+        self.scanners = scanners
+        var guards: [ScannerID: PathGuard] = [:]
+        for scanner in scanners {
+            guards[scanner.id] = PathGuard(allowedRoots: scanner.allowedRoots, allowedTargets: scanner.allowedTargets)
+        }
+        service = DeletionService(guards: guards, history: history)
     }
 
     // MARK: Scanning

@@ -1,1302 +1,1766 @@
 {
   "sourceLanguage": "en",
-  "version": "1.0",
   "strings": {
-    "files.title": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Büyük ve eski dosyalar"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Large and old files"
-          }
-        }
-      }
-    },
-    "files.subtitle": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ev klasöründeki en büyük dosyaları bulur. Hepsi senin içeriğin: hiçbiri önceden seçilmez ve yalnızca Çöp'e taşınır."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Finds the largest files in your home folders. They are all your own content: nothing is preselected and files only go to the Trash."
-          }
-        }
-      }
-    },
-    "files.action.scan": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tara"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan"
-          }
-        }
-      }
-    },
     "files.action.cancel": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Durdur"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Stop"
           }
-        }
-      }
-    },
-    "files.action.trash": {
-      "localizations": {
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Çöp'e taşı…"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Move to Trash…"
+            "value": "Durdur"
           }
         }
       }
     },
     "files.action.rescan": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yeniden tara"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Scan again"
           }
-        }
-      }
-    },
-    "files.empty.title": {
-      "localizations": {
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Büyük dosya bulunmadı"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No large files found"
+            "value": "Yeniden tara"
           }
         }
       }
     },
-    "files.empty.detail": {
+    "files.action.scan": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seçilen klasörlerde 100 MB üzeri dosya yok."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "There are no files over 100 MB in the chosen folders."
+            "value": "Scan"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tara"
           }
         }
       }
     },
-    "files.partial": {
+    "files.action.trash": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tarama durduruldu: yalnızca o ana kadar bulunanlar gösteriliyor."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scan stopped: only what was found so far is shown."
+            "value": "Move to Trash…"
           }
-        }
-      }
-    },
-    "files.permission": {
-      "localizations": {
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bazı klasörler okunamadı. Tam Disk Erişimi verirsen daha fazlası görünür."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Some folders could not be read. Grant Full Disk Access to see more."
-          }
-        }
-      }
-    },
-    "files.filter.kind": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tür"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Type"
-          }
-        }
-      }
-    },
-    "files.filter.age": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Son kullanım"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Last used"
-          }
-        }
-      }
-    },
-    "files.filter.kind.all": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tümü"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "All"
-          }
-        }
-      }
-    },
-    "files.kind.video": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Video"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Video"
-          }
-        }
-      }
-    },
-    "files.kind.audio": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ses"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Audio"
-          }
-        }
-      }
-    },
-    "files.kind.image": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Görsel"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Image"
-          }
-        }
-      }
-    },
-    "files.kind.archive": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Arşiv"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Archive"
-          }
-        }
-      }
-    },
-    "files.kind.diskImage": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Disk kalıbı"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Disk image"
-          }
-        }
-      }
-    },
-    "files.kind.document": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Belge"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Document"
-          }
-        }
-      }
-    },
-    "files.kind.other": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diğer"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Other"
-          }
-        }
-      }
-    },
-    "files.age.any": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fark etmez"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Any time"
-          }
-        }
-      }
-    },
-    "files.age.90": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "90 günden eski"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Over 90 days"
+            "value": "Çöp'e taşı…"
           }
         }
       }
     },
     "files.age.365": {
       "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Over 1 year"
+          }
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "1 yıldan eski"
           }
-        },
+        }
+      }
+    },
+    "files.age.90": {
+      "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Over 1 year"
+            "value": "Over 90 days"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "90 günden eski"
+          }
+        }
+      }
+    },
+    "files.age.any": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Any time"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fark etmez"
+          }
+        }
+      }
+    },
+    "files.back": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Files"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosyalar"
           }
         }
       }
     },
     "files.cloud": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bu dosya bir bulut klasöründe (iCloud, Creative Cloud) olabilir; silmek buluttaki kopyayı da etkileyebilir."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "This file may be in a cloud-synced folder (iCloud, Creative Cloud); removing it can affect the cloud copy too."
           }
-        }
-      }
-    },
-    "files.selected %lld %@": {
-      "localizations": {
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%lld dosya seçili · %@"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld files selected · %@"
-          }
-        }
-      }
-    },
-    "files.found %lld": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld dosya"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld files"
-          }
-        }
-      }
-    },
-    "files.remaining %@": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yaklaşık %@ kaldı"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "About %@ left"
-          }
-        }
-      }
-    },
-    "files.unused %lld": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld gündür dokunulmadı"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "untouched for %lld days"
-          }
-        }
-      }
-    },
-    "files.hub.large": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Büyük dosyalar"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Large files"
-          }
-        }
-      }
-    },
-    "files.hub.map": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alan haritası"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Space map"
-          }
-        }
-      }
-    },
-    "files.map.title": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alan haritası"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Space map"
-          }
-        }
-      }
-    },
-    "files.map.subtitle": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ev klasörünün neyin ne kadar yer kapladığını gösterir. Bir klasöre tıklayınca içine girersin; hiçbir şey önceden seçilmez ve yalnızca Çöp'e taşınır."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Shows what takes how much space in your home folder. Click a folder to zoom in; nothing is preselected and items only go to the Trash."
-          }
-        }
-      }
-    },
-    "files.map.other": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diğer küçük öğeler"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Other small items"
-          }
-        }
-      }
-    },
-    "files.map.unreadable": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Okunamadı (izin gerekli)"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Could not be read (permission needed)"
-          }
-        }
-      }
-    },
-    "files.map.up": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bir üst klasör"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Up one level"
-          }
-        }
-      }
-    },
-    "files.map.hint": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Küçük öğeler gruplanır; toplam boyut değişmez."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Small items are grouped; the total size does not change."
-          }
-        }
-      }
-    },
-    "files.map.share %lld": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Üst klasörün %%%lld'i"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld%% of the folder"
-          }
-        }
-      }
-    },
-    "files.hub.duplicates": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kopyalar"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Duplicates"
-          }
-        }
-      }
-    },
-    "files.dup.title": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kopya dosyalar"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Duplicate files"
-          }
-        }
-      }
-    },
-    "files.dup.subtitle": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "İçeriği birebir aynı olan dosyaları bulur. Her grupta en az bir kopya her zaman kalır; hiçbiri önceden seçilmez ve yalnızca Çöp'e taşınır."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Finds files with exactly the same content. Every group always keeps at least one copy; nothing is preselected and files only go to the Trash."
-          }
-        }
-      }
-    },
-    "files.dup.empty.title": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kopya bulunmadı"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No duplicates found"
-          }
-        }
-      }
-    },
-    "files.dup.empty.detail": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1 MB üzeri, içeriği aynı iki dosya yok."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "There are no two files over 1 MB with the same content."
-          }
-        }
-      }
-    },
-    "files.dup.keepOldest": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "En eskiyi tut"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keep the oldest"
-          }
-        }
-      }
-    },
-    "files.dup.keepShortest": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "En kısa yolu tut"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keep the shortest path"
+            "value": "Bu dosya bir bulut klasöründe (iCloud, Creative Cloud) olabilir; silmek buluttaki kopyayı da etkileyebilir."
           }
         }
       }
     },
     "files.dup.clear": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seçimi temizle"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Clear selection"
           }
-        }
-      }
-    },
-    "files.dup.keepNote": {
-      "localizations": {
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bir gruptaki son kopya seçilemez."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The last copy in a group cannot be selected."
-          }
-        }
-      }
-    },
-    "files.dup.reclaimable %@": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Toplam kazanılabilir: %@"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reclaimable in total: %@"
+            "value": "Seçimi temizle"
           }
         }
       }
     },
     "files.dup.copies %lld": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld kopya"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "%lld copies"
           }
-        }
-      }
-    },
-    "files.dup.wasted %@": {
-      "localizations": {
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ fazla"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@ extra"
+            "value": "%lld kopya"
           }
         }
       }
     },
-    "files.fda.notice": {
+    "files.dup.empty.detail": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tam Disk Erişimi ver: macOS tüm klasörleri tek seferde açar. Vermezsen her klasör için ayrı izin sorar."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Grant Full Disk Access: macOS then allows every folder at once. Without it, it asks for each folder separately."
+            "value": "There are no two files over 1 MB with the same content."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 MB üzeri, içeriği aynı iki dosya yok."
           }
         }
       }
     },
-    "files.fda.open": {
+    "files.dup.empty.title": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ayarlar'ı aç"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Open Settings"
+            "value": "No duplicates found"
           }
-        }
-      }
-    },
-    "files.hub.shredder": {
-      "localizations": {
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Parçalayıcı"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Shredder"
-          }
-        }
-      }
-    },
-    "files.shred.title": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Parçalayıcı"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Shredder"
-          }
-        }
-      }
-    },
-    "files.shred.subtitle": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seçtiğin dosyaları kalıcı olarak siler. Çöp'e gitmez, geri alınamaz. Yalnızca senin eklediğin dosyalara dokunur."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permanently deletes the files you choose. They do not go to the Trash and cannot be restored. Only files you add are touched."
-          }
-        }
-      }
-    },
-    "files.shred.add": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dosya ekle…"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add files…"
-          }
-        }
-      }
-    },
-    "files.shred.drop": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dosyaları buraya bırak ya da Dosya ekle'ye bas"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drop files here or press Add files"
-          }
-        }
-      }
-    },
-    "files.shred.honest": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dürüst not: SSD'lerde ve APFS'te dosyanın üzerine yazmak, eski verinin gittiğini garanti etmez (kopyala-yaz, aşınma dengeleme, TRIM). Burnish üzerine yazıyormuş gibi davranmaz; dosyayı kalıcı olarak siler. Gerçek güvenlik için FileVault'u aç."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Honest note: on SSDs and APFS, overwriting a file does not guarantee the old data is gone (copy-on-write, wear levelling, TRIM). Burnish does not pretend to overwrite; it deletes the file permanently. For real protection, turn on FileVault."
-          }
-        }
-      }
-    },
-    "files.shred.acknowledge": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bunun geri alınamayacağını anlıyorum"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "I understand this cannot be undone"
-          }
-        }
-      }
-    },
-    "files.shred.delete": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kalıcı olarak sil…"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete permanently…"
-          }
-        }
-      }
-    },
-    "files.shred.blocked": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Korunan yol: silinemez"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Protected path: cannot be deleted"
-          }
-        }
-      }
-    },
-    "files.shred.remove": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Listeden çıkar"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remove from list"
-          }
-        }
-      }
-    },
-    "files.shred.clear": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Listeyi temizle"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Clear list"
-          }
-        }
-      }
-    },
-    "files.hub.similar": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Benzer görseller"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Similar pictures"
-          }
-        }
-      }
-    },
-    "files.similar.title": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Benzer görseller"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Similar pictures"
-          }
-        }
-      }
-    },
-    "files.similar.subtitle": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Birbirine çok benzeyen görselleri (seri çekim, tekrar çekim) bulur. Hesaplama bu Mac'te yapılır, görseller dışarı gönderilmez. Her grupta en az biri kalır; hiçbiri önceden seçilmez ve yalnızca Çöp'e taşınır."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Finds pictures that look very alike (bursts, retakes). Analysis happens on this Mac and nothing is sent anywhere. Every group keeps at least one; nothing is preselected and files only go to the Trash."
-          }
-        }
-      }
-    },
-    "files.similar.empty.title": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Benzer görsel bulunmadı"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No similar pictures found"
-          }
-        }
-      }
-    },
-    "files.similar.empty.detail": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seçilen klasörlerde birbirine benzeyen görsel grubu yok."
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "There are no groups of look-alike pictures in the chosen folders."
+            "value": "Kopya bulunmadı"
           }
         }
       }
     },
     "files.dup.keepLargest": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "En büyüğü tut"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Keep the largest"
           }
-        }
-      }
-    },
-    "files.scope.button": {
-      "localizations": {
+        },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kapsam"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scope"
+            "value": "En büyüğü tut"
           }
         }
       }
     },
-    "files.scope.title": {
+    "files.dup.keepNote": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Taranacak klasörler"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Folders to search"
+            "value": "The last copy in a group cannot be selected."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir gruptaki son kopya seçilemez."
           }
         }
       }
     },
-    "files.scope.subtitle": {
+    "files.dup.keepOldest": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Büyük dosyalar, kopyalar ve benzer görseller bu klasörlerde aranır. Hariç tuttuklarının içine hiç girilmez."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Large files, duplicates and similar pictures are searched in these folders. Excluded folders are never entered."
+            "value": "Keep the oldest"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En eskiyi tut"
           }
         }
       }
     },
-    "files.scope.addFolder": {
+    "files.dup.keepShortest": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Klasör ekle…"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Add folder…"
+            "value": "Keep the shortest path"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En kısa yolu tut"
           }
         }
       }
     },
-    "files.scope.addVolume": {
+    "files.dup.reclaimable %@": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Disk ekle"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Add a disk"
+            "value": "Reclaimable in total: %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toplam kazanılabilir: %@"
           }
         }
       }
     },
-    "files.scope.noVolumes": {
+    "files.dup.subtitle": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Takılı harici disk yok"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "No external disks connected"
+            "value": "Finds files with exactly the same content. Every group always keeps at least one copy; nothing is preselected and files only go to the Trash."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İçeriği birebir aynı olan dosyaları bulur. Her grupta en az bir kopya her zaman kalır; hiçbiri önceden seçilmez ve yalnızca Çöp'e taşınır."
           }
         }
       }
     },
-    "files.scope.excluded": {
+    "files.dup.title": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hariç tutulanlar"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Excluded"
+            "value": "Duplicate files"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopya dosyalar"
           }
         }
       }
     },
-    "files.scope.exclude": {
+    "files.dup.wasted %@": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Klasör hariç tut…"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Exclude a folder…"
+            "value": "%@ extra"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ fazla"
           }
         }
       }
     },
-    "files.scope.noneExcluded": {
+    "files.empty.detail": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hariç tutulan klasör yok."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "No excluded folders."
+            "value": "There are no files over 100 MB in the chosen folders."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçilen klasörlerde 100 MB üzeri dosya yok."
           }
         }
       }
     },
-    "files.scope.done": {
+    "files.empty.title": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bitti"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Done"
+            "value": "No large files found"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Büyük dosya bulunmadı"
           }
         }
       }
     },
-    "files.scope.remove": {
+    "files.fda.notice": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Listeden kaldır"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Remove from list"
+            "value": "Grant Full Disk Access: macOS then allows every folder at once. Without it, it asks for each folder separately."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tam Disk Erişimi ver: macOS tüm klasörleri tek seferde açar. Vermezsen her klasör için ayrı izin sorar."
           }
         }
       }
     },
-    "files.map.root": {
+    "files.fda.open": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Taranacak yer"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Where to look"
+            "value": "Open Settings"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar'ı aç"
+          }
+        }
+      }
+    },
+    "files.filter.age": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last used"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son kullanım"
+          }
+        }
+      }
+    },
+    "files.filter.kind": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tür"
+          }
+        }
+      }
+    },
+    "files.filter.kind.all": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tümü"
+          }
+        }
+      }
+    },
+    "files.found %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld files"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld dosya"
+          }
+        }
+      }
+    },
+    "files.hub.duplicates": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duplicates"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopyalar"
+          }
+        }
+      }
+    },
+    "files.hub.large": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Large files"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Büyük dosyalar"
+          }
+        }
+      }
+    },
+    "files.hub.map": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Space map"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alan haritası"
+          }
+        }
+      }
+    },
+    "files.hub.shredder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shredder"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parçalayıcı"
+          }
+        }
+      }
+    },
+    "files.hub.similar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Similar pictures"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benzer görseller"
+          }
+        }
+      }
+    },
+    "files.kind.archive": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archive"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arşiv"
+          }
+        }
+      }
+    },
+    "files.kind.audio": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Audio"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ses"
+          }
+        }
+      }
+    },
+    "files.kind.diskImage": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk image"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk kalıbı"
+          }
+        }
+      }
+    },
+    "files.kind.document": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Document"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belge"
+          }
+        }
+      }
+    },
+    "files.kind.image": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Image"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Görsel"
+          }
+        }
+      }
+    },
+    "files.kind.other": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Other"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diğer"
+          }
+        }
+      }
+    },
+    "files.kind.video": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Video"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Video"
+          }
+        }
+      }
+    },
+    "files.landing.action": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyse Files"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosyaları Analiz Et"
+          }
+        }
+      }
+    },
+    "files.landing.footer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Files are never moved or deleted unless you choose them."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosyalar siz seçmeden taşınmaz veya silinmez."
+          }
+        }
+      }
+    },
+    "files.landing.free.button": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose scan location"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarama konumunu seç"
+          }
+        }
+      }
+    },
+    "files.landing.free.heading": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free disk space"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boş disk alanı"
+          }
+        }
+      }
+    },
+    "files.landing.free.message": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The disk figure from the overview. File sizes appear after the analysis."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Genel Bakış'taki disk bilgisi. Dosya boyutları analizden sonra gösterilir."
+          }
+        }
+      }
+    },
+    "files.landing.hero.heading": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See where your space goes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alanınızın nereye gittiğini görün"
+          }
+        }
+      }
+    },
+    "files.landing.hero.message": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find large, old and duplicate files. Review each one and decide which to keep."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Büyük, eski ve yinelenen dosyaları bulun. Her dosyayı inceleyerek hangilerini saklayacağınıza karar verin."
+          }
+        }
+      }
+    },
+    "files.landing.hero.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No file analysis has been run yet."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosya analizi henüz yapılmadı."
+          }
+        }
+      }
+    },
+    "files.landing.lastScan": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last scan: not yet"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son tarama: Henüz yapılmadı"
+          }
+        }
+      }
+    },
+    "files.landing.list": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "File analysis"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosya analizi"
+          }
+        }
+      }
+    },
+    "files.landing.list.waiting": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Results appear after scanning"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonuçlar tarama sonrası"
+          }
+        }
+      }
+    },
+    "files.landing.notScanned": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not scanned yet"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henüz taranmadı"
+          }
+        }
+      }
+    },
+    "files.landing.row.duplicates": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duplicate files"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yinelenen dosyalar"
+          }
+        }
+      }
+    },
+    "files.landing.row.duplicates.detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copies of files with identical content"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aynı içeriğe sahip dosya kopyaları"
+          }
+        }
+      }
+    },
+    "files.landing.row.large": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Large files"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Büyük dosyalar"
+          }
+        }
+      }
+    },
+    "files.landing.row.large.detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The files that take the most space on your disk"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diskinizde en çok yer kaplayan dosyalar"
+          }
+        }
+      }
+    },
+    "files.landing.row.map": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Space map"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alan haritası"
+          }
+        }
+      }
+    },
+    "files.landing.row.map.detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See what your disk is full of"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diskinizin neyle dolu olduğunu görün"
+          }
+        }
+      }
+    },
+    "files.landing.row.old": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Old files"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eski dosyalar"
+          }
+        }
+      }
+    },
+    "files.landing.row.old.detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review files that have not been opened for a long time"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uzun süredir açılmayan dosyaları inceleyin"
+          }
+        }
+      }
+    },
+    "files.landing.row.shredder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shredder"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parçalayıcı"
+          }
+        }
+      }
+    },
+    "files.landing.row.shredder.detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permanently delete files you choose"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçtiğiniz dosyaları kalıcı olarak silin"
+          }
+        }
+      }
+    },
+    "files.landing.row.similar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Similar photos"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benzer fotoğraflar"
+          }
+        }
+      }
+    },
+    "files.landing.row.similar.detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compare photos that look alike"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birbirine benzeyen fotoğrafları karşılaştırın"
+          }
+        }
+      }
+    },
+    "files.landing.status.notScanned": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not scanned"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taranmadı"
+          }
+        }
+      }
+    },
+    "files.landing.status.open": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aç"
+          }
+        }
+      }
+    },
+    "files.landing.subtitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get to know your disk space and make room for what you want to keep."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk alanınızı daha iyi tanıyın, saklamak istediklerinize yer açın."
+          }
+        }
+      }
+    },
+    "files.landing.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Files"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosyalar"
+          }
+        }
+      }
+    },
+    "files.map.hint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Small items are grouped; the total size does not change."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Küçük öğeler gruplanır; toplam boyut değişmez."
           }
         }
       }
     },
     "files.map.home": {
       "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ev klasörü"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Home folder"
           }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ev klasörü"
+          }
+        }
+      }
+    },
+    "files.map.other": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Other small items"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diğer küçük öğeler"
+          }
+        }
+      }
+    },
+    "files.map.root": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Where to look"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taranacak yer"
+          }
+        }
+      }
+    },
+    "files.map.share %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld%% of the folder"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Üst klasörün %%%lld'i"
+          }
+        }
+      }
+    },
+    "files.map.subtitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shows what takes how much space in your home folder. Click a folder to zoom in; nothing is preselected and items only go to the Trash."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ev klasörünün neyin ne kadar yer kapladığını gösterir. Bir klasöre tıklayınca içine girersin; hiçbir şey önceden seçilmez ve yalnızca Çöp'e taşınır."
+          }
+        }
+      }
+    },
+    "files.map.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Space map"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alan haritası"
+          }
+        }
+      }
+    },
+    "files.map.unreadable": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not be read (permission needed)"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Okunamadı (izin gerekli)"
+          }
+        }
+      }
+    },
+    "files.map.up": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Up one level"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir üst klasör"
+          }
+        }
+      }
+    },
+    "files.partial": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan stopped: only what was found so far is shown."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarama durduruldu: yalnızca o ana kadar bulunanlar gösteriliyor."
+          }
+        }
+      }
+    },
+    "files.permission": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some folders could not be read. Grant Full Disk Access to see more."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bazı klasörler okunamadı. Tam Disk Erişimi verirsen daha fazlası görünür."
+          }
+        }
+      }
+    },
+    "files.remaining %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About %@ left"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yaklaşık %@ kaldı"
+          }
+        }
+      }
+    },
+    "files.scope.addFolder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add folder…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klasör ekle…"
+          }
+        }
+      }
+    },
+    "files.scope.addVolume": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a disk"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk ekle"
+          }
+        }
+      }
+    },
+    "files.scope.button": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scope"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapsam"
+          }
+        }
+      }
+    },
+    "files.scope.done": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitti"
+          }
+        }
+      }
+    },
+    "files.scope.exclude": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exclude a folder…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Klasör hariç tut…"
+          }
+        }
+      }
+    },
+    "files.scope.excluded": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excluded"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hariç tutulanlar"
+          }
+        }
+      }
+    },
+    "files.scope.noVolumes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No external disks connected"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Takılı harici disk yok"
+          }
+        }
+      }
+    },
+    "files.scope.noneExcluded": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No excluded folders."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hariç tutulan klasör yok."
+          }
+        }
+      }
+    },
+    "files.scope.remove": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove from list"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listeden kaldır"
+          }
+        }
+      }
+    },
+    "files.scope.subtitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Large files, duplicates and similar pictures are searched in these folders. Excluded folders are never entered."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Büyük dosyalar, kopyalar ve benzer görseller bu klasörlerde aranır. Hariç tuttuklarının içine hiç girilmez."
+          }
+        }
+      }
+    },
+    "files.scope.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folders to search"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taranacak klasörler"
+          }
+        }
+      }
+    },
+    "files.selected %lld %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld files selected · %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld dosya seçili · %@"
+          }
+        }
+      }
+    },
+    "files.shred.acknowledge": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I understand this cannot be undone"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bunun geri alınamayacağını anlıyorum"
+          }
+        }
+      }
+    },
+    "files.shred.add": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add files…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosya ekle…"
+          }
+        }
+      }
+    },
+    "files.shred.blocked": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protected path: cannot be deleted"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Korunan yol: silinemez"
+          }
+        }
+      }
+    },
+    "files.shred.clear": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear list"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listeyi temizle"
+          }
+        }
+      }
+    },
+    "files.shred.delete": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete permanently…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalıcı olarak sil…"
+          }
+        }
+      }
+    },
+    "files.shred.drop": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drop files here or press Add files"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosyaları buraya bırak ya da Dosya ekle'ye bas"
+          }
+        }
+      }
+    },
+    "files.shred.honest": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Honest note: on SSDs and APFS, overwriting a file does not guarantee the old data is gone (copy-on-write, wear levelling, TRIM). Burnish does not pretend to overwrite; it deletes the file permanently. For real protection, turn on FileVault."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dürüst not: SSD'lerde ve APFS'te dosyanın üzerine yazmak, eski verinin gittiğini garanti etmez (kopyala-yaz, aşınma dengeleme, TRIM). Burnish üzerine yazıyormuş gibi davranmaz; dosyayı kalıcı olarak siler. Gerçek güvenlik için FileVault'u aç."
+          }
+        }
+      }
+    },
+    "files.shred.remove": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove from list"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listeden çıkar"
+          }
+        }
+      }
+    },
+    "files.shred.subtitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permanently deletes the files you choose. They do not go to the Trash and cannot be restored. Only files you add are touched."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçtiğin dosyaları kalıcı olarak siler. Çöp'e gitmez, geri alınamaz. Yalnızca senin eklediğin dosyalara dokunur."
+          }
+        }
+      }
+    },
+    "files.shred.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shredder"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parçalayıcı"
+          }
+        }
+      }
+    },
+    "files.similar.empty.detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There are no groups of look-alike pictures in the chosen folders."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçilen klasörlerde birbirine benzeyen görsel grubu yok."
+          }
+        }
+      }
+    },
+    "files.similar.empty.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No similar pictures found"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benzer görsel bulunmadı"
+          }
+        }
+      }
+    },
+    "files.similar.subtitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finds pictures that look very alike (bursts, retakes). Analysis happens on this Mac and nothing is sent anywhere. Every group keeps at least one; nothing is preselected and files only go to the Trash."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birbirine çok benzeyen görselleri (seri çekim, tekrar çekim) bulur. Hesaplama bu Mac'te yapılır, görseller dışarı gönderilmez. Her grupta en az biri kalır; hiçbiri önceden seçilmez ve yalnızca Çöp'e taşınır."
+          }
+        }
+      }
+    },
+    "files.similar.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Similar pictures"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Benzer görseller"
+          }
+        }
+      }
+    },
+    "files.subtitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finds the largest files in your home folders. They are all your own content: nothing is preselected and files only go to the Trash."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ev klasöründeki en büyük dosyaları bulur. Hepsi senin içeriğin: hiçbiri önceden seçilmez ve yalnızca Çöp'e taşınır."
+          }
+        }
+      }
+    },
+    "files.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Large and old files"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Büyük ve eski dosyalar"
+          }
+        }
+      }
+    },
+    "files.unused %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "untouched for %lld days"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld gündür dokunulmadı"
+          }
         }
       }
     }
-  }
+  },
+  "version": "1.0"
 }

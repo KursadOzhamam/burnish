@@ -13,30 +13,56 @@ import SmartScan
 
 /// Main window — sidebar plus detail, per CLAUDE.md §5.1.
 struct RootView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @State private var selection: AppSection = .dashboard
-    @State private var scanCoordinator = ScanCoordinator(history: Self.history)
 
     /// Same log as Cleanup writes to, so what was just removed is what the sheet lists.
-    @State private var historyModel = HistoryModel(store: Self.history)
     @State private var showHistory = false
-    @State private var filesModels = FilesModels(history: Self.history)
-    @State private var applicationsModel = ApplicationsModel(history: Self.history)
-    @State private var performanceModel = PerformanceModel()
     @AppStorage("onboarding.done") private var onboardingDone = false
     @AppStorage("schedule.frequency") private var scheduleFrequency = "off"
     @State private var scheduler: ScanScheduler?
-    @State private var dashboardModel = DashboardModel()
-    @State private var privacyModel = CleanupModel.privacy(history: Self.history)
-    @State private var protectionModel = ProtectionModel(supportDirectory: Self.supportDirectory)
+    /// Created once for the whole run. As `@State` initial values these were rebuilt every time the
+    /// view struct was re-created, which repeated file and process work on every refresh.
+    private let models = AppModels.shared
+    private var scanCoordinator: ScanCoordinator { models.scanCoordinator }
+    private var historyModel: HistoryModel { models.historyModel }
+    private var filesModels: FilesModels { models.filesModels }
+    private var applicationsModel: ApplicationsModel { models.applicationsModel }
+    private var performanceModel: PerformanceModel { models.performanceModel }
+    private var dashboardModel: DashboardModel { models.dashboardModel }
+    private var privacyModel: CleanupModel { models.privacyModel }
+    private var protectionModel: ProtectionModel { models.protectionModel }
+
+    /// Transparent space below the window's visible container. The round action button hangs into
+    /// it, so it can stick out past the container as in the design.
+    private static let overhang: CGFloat = 84
 
     var body: some View {
+        VStack(spacing: 0) {
+            container
+            Color.clear.frame(height: Self.overhang)
+        }
+        .background(WindowConfigurator())
+        .overlayPreferenceValue(FloatingActionKey.self) { action in
+            if let action {
+                FloatingActionButton(title: action.title, action: action.perform)
+                    // Centre of the circle sits a little above the container's bottom edge.
+                    .padding(.bottom, Self.overhang - 56)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+            }
+        }
+    }
+
+    private var container: some View {
         NavigationSplitView {
             sidebar
         } detail: {
             detail
                 .navigationSplitViewColumnWidth(min: 640, ideal: 820)
+                .environment(\.hostsFloatingAction, true)
         }
         .navigationSplitViewStyle(.balanced)
+        .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
@@ -84,20 +110,42 @@ struct RootView: View {
         }
     }
 
+    /// The sidebar of the supplied design: soft grey, a lavender pill and a dot on the selected row.
+    /// Smart Scan has no row of its own there: it is the round button on the overview.
     private var sidebar: some View {
-        List(AppSection.allCases, selection: $selection) { section in
-            NavigationLink(value: section) {
-                Label {
-                    Text(section.title)
-                } icon: {
-                    Image(systemName: section.symbol)
-                        .foregroundStyle(section.palette.linear)
+        let theme = colorScheme.theme
+        return VStack(alignment: .leading, spacing: 6) {
+            ForEach(AppSection.allCases.filter { $0 != .smartScan }) { section in
+                let isSelected = selection == section || (selection == .smartScan && section == .dashboard)
+                Button { selection = section } label: {
+                    HStack(spacing: 12) {
+                        Image(systemName: section.symbol)
+                            .font(.system(size: 15))
+                            .foregroundStyle(isSelected ? theme.accent : theme.inkSecondary)
+                            .frame(width: 22)
+                        Text(section.title)
+                            .font(.system(size: 13, weight: isSelected ? .medium : .regular))
+                            .foregroundStyle(isSelected ? theme.accent : theme.ink)
+                        Spacer()
+                        if isSelected { Circle().fill(theme.accent).frame(width: 5, height: 5) }
+                    }
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 10)
+                    .background {
+                        if isSelected { RoundedRectangle(cornerRadius: 12, style: .continuous).fill(theme.selection) }
+                    }
+                    .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                 }
+                .buttonStyle(.plain)
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
             }
-            .tag(section)
+            Spacer()
         }
-        .listStyle(.sidebar)
-        .navigationSplitViewColumnWidth(min: 190, ideal: 215, max: 280)
+        .padding(.top, 56)
+        .padding(.horizontal, 12)
+        .frame(maxHeight: .infinity)
+        .background(theme.sidebar.ignoresSafeArea())
+        .navigationSplitViewColumnWidth(min: 200, ideal: 215, max: 240)
     }
 
     @ViewBuilder

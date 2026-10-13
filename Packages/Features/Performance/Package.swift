@@ -16,14 +16,15 @@ let package = Package(
         .package(path: "../../ScanEngine"),
         .package(path: "../../SafetyKit"),
         .package(path: "../../SafetyKitMac"),
-        .package(path: "../../HelperProtocol")
+        .package(path: "../../HelperProtocol"),
+        .package(path: "../../SystemMonitor")
     ],
     targets: [
         .target(
             name: "Performance",
             dependencies: [
                 "CoreKit", "CoreKitMac", "DesignSystem", "DeletionUI",
-                "ScanEngine", "SafetyKit", "SafetyKitMac", "HelperProtocol"
+                "ScanEngine", "SafetyKit", "SafetyKitMac", "HelperProtocol", "SystemMonitor"
             ],
             resources: [.process("Resources")]
         ),

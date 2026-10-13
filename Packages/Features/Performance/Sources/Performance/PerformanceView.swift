@@ -3,13 +3,17 @@ import AppKit
 import CoreKit
 import DesignSystem
 import HelperProtocol
+import CoreKitMac
+import SystemMonitor
 
 /// The Performance screen — CLAUDE.md §6.5.
 public struct PerformanceView: View {
-    private enum Tab: Hashable { case maintenance, startup, processes }
+    private enum Tab: Hashable { case landing, maintenance, startup, processes }
 
     @State private var model: PerformanceModel
-    @State private var tab: Tab = .maintenance
+    @State private var tab: Tab = .landing
+    @State private var snapshot: SystemSnapshot?
+    @Environment(\.colorScheme) private var colorScheme
 
     private var section: AppSection { .performance }
 
@@ -18,7 +22,16 @@ public struct PerformanceView: View {
     }
 
     public var body: some View {
+        if tab == .landing { landing } else { tool }
+    }
+
+    private var tool: some View {
         VStack(alignment: .leading, spacing: Spacing.large) {
+            Button { tab = .landing } label: {
+                Label { Text(PerfStrings.back) } icon: { Image(systemName: "chevron.left") }
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(colorScheme.theme.accent)
             SectionHeader(title: PerfStrings.title, subtitle: PerfStrings.subtitle, palette: section.palette)
 
             Picker(selection: $tab) {
@@ -31,15 +44,70 @@ public struct PerformanceView: View {
             .frame(maxWidth: 520, alignment: .leading)
 
             switch tab {
+            case .landing: EmptyView()
             case .maintenance: maintenance
             case .startup: startup
             case .processes: processes
             }
         }
         .padding(Spacing.large)
+        .padding(.top, 24)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(.background)
+        .background(colorScheme.theme.background.ignoresSafeArea())
         .task { await model.refreshHelper() }
+    }
+
+    // MARK: Landing (the supplied design)
+
+    private var landing: some View {
+        let rows = [
+            FeatureRow(symbol: "power", title: PerfStrings.landingRowStartup, detail: PerfStrings.landingRowStartupDetail,
+                       status: PerfStrings.landingStatusReview) { tab = .startup },
+            FeatureRow(symbol: "square.3.layers.3d", title: PerfStrings.landingRowBackground, detail: PerfStrings.landingRowBackgroundDetail,
+                       status: PerfStrings.landingStatusReview) { tab = .startup },
+            FeatureRow(symbol: "wrench.and.screwdriver", title: PerfStrings.landingRowMaintenance, detail: PerfStrings.landingRowMaintenanceDetail,
+                       status: PerfStrings.landingStatusReview) { tab = .maintenance },
+            FeatureRow(symbol: "memorychip", title: PerfStrings.landingRowMemory, detail: PerfStrings.landingRowMemoryDetail,
+                       status: PerfStrings.landingStatusReview) { tab = .processes }
+        ]
+        return SectionPage(
+            title: PerfStrings.title,
+            subtitle: PerfStrings.landingSubtitle,
+            footer: PageFooter(
+                lastScan: String(localized: PerfStrings.landingLastScan), note: PerfStrings.landingFooter,
+                machine: MachineLabel.model, system: MachineLabel.system
+            ),
+            actionTitle: PerfStrings.landingAction,
+            action: { tab = .startup }
+        ) {
+            HeroCard(heading: PerfStrings.landingHeroHeading, message: PerfStrings.landingHeroMessage, note: PerfStrings.landingHeroNote) {
+                StatusRing(symbol: "gauge.with.dots.needle.33percent", title: String(localized: PerfStrings.landingNotScanned))
+            } trailing: {
+                IllustrationTile(symbol: "gauge.with.dots.needle.33percent", badge: "bolt")
+            }
+        } content: {
+            HStack(alignment: .top, spacing: 16) {
+                MetricCard(
+                    symbol: "memorychip", title: PerfStrings.landingMemory,
+                    value: snapshot?.memory.used.formatted() ?? "—", detail: PerfStrings.landingMemoryNote
+                ) { BrandBar(fraction: snapshot?.memory.usedFraction ?? 0).padding(.top, 6) }
+                .frame(width: 190)
+                MetricCard(
+                    symbol: "cpu", title: PerfStrings.landingCpu,
+                    value: snapshot.map { $0.cpu.total.formatted(.percent.precision(.fractionLength(0))) } ?? "—", detail: PerfStrings.landingCpuNote
+                ) { BrandBar(fraction: snapshot?.cpu.total ?? 0).padding(.top, 6) }
+                .frame(width: 190)
+                FeatureListCard(heading: PerfStrings.landingList, trailingHeading: PerfStrings.landingListWaiting, rows: rows)
+                    .frame(maxWidth: .infinity)
+            }
+        }
+        // Readings only while this page is on screen (CLAUDE.md §8).
+        .task {
+            for await reading in LiveSystemMonitor().stream(interval: .seconds(2)) {
+                if Task.isCancelled { break }
+                snapshot = reading
+            }
+        }
     }
 
     // MARK: Maintenance

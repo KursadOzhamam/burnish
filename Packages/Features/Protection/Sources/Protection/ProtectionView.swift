@@ -2,13 +2,15 @@ import SwiftUI
 import AppKit
 import CoreKit
 import DesignSystem
+import CoreKitMac
 
 /// The Protection screen — CLAUDE.md §6.4.
 public struct ProtectionView: View {
-    private enum Tab: Hashable { case scan, quarantine, system }
+    private enum Tab: Hashable { case landing, scan, quarantine, system }
 
+    @Environment(\.colorScheme) private var colorScheme
     @State private var model: ProtectionModel
-    @State private var tab: Tab = .scan
+    @State private var tab: Tab = .landing
 
     private var section: AppSection { .protection }
 
@@ -17,7 +19,16 @@ public struct ProtectionView: View {
     }
 
     public var body: some View {
+        if tab == .landing { landing } else { tool }
+    }
+
+    private var tool: some View {
         VStack(alignment: .leading, spacing: Spacing.large) {
+            Button { tab = .landing } label: {
+                Label { Text(ProtStrings.back) } icon: { Image(systemName: "chevron.left") }
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(colorScheme.theme.accent)
             SectionHeader(title: ProtStrings.title, subtitle: ProtStrings.subtitle, palette: section.palette)
 
             Picker(selection: $tab) {
@@ -32,14 +43,69 @@ public struct ProtectionView: View {
             if let message = model.message { messageBar(message) }
 
             switch tab {
+            case .landing: EmptyView()
             case .scan: scanTab
             case .quarantine: quarantineTab
             case .system: systemTab
             }
         }
         .padding(Spacing.large)
+        .padding(.top, 24)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(.background)
+        .background(colorScheme.theme.background.ignoresSafeArea())
+    }
+
+    // MARK: Landing (the supplied design)
+
+    private var landing: some View {
+        let scanned = model.lastScan != nil
+        let threats = model.findings.count
+        let rows = [
+            FeatureRow(
+                symbol: "exclamationmark.shield", title: ProtStrings.landingRowMalware, detail: ProtStrings.landingRowMalwareDetail,
+                status: scanned ? (threats == 0 ? ProtStrings.landingStatusClean : ProtStrings.rowStatusFound(threats)) : ProtStrings.landingStatusNotScanned,
+                highlightsStatus: scanned && threats > 0, action: { tab = .scan }
+            ),
+            FeatureRow(
+                symbol: "power", title: ProtStrings.landingRowStartup, detail: ProtStrings.landingRowStartupDetail,
+                status: scanned ? ProtStrings.landingStatusView : ProtStrings.landingStatusNotScanned, action: { tab = .scan }
+            ),
+            FeatureRow(
+                symbol: "tray.full", title: ProtStrings.landingRowQuarantine, detail: ProtStrings.landingRowQuarantineDetail,
+                status: ProtStrings.rowStatusItems(model.quarantined.count), action: { tab = .quarantine }
+            ),
+            FeatureRow(
+                symbol: "lock.shield", title: ProtStrings.landingRowSystem, detail: ProtStrings.landingRowSystemDetail,
+                status: ProtStrings.landingStatusView, action: { tab = .system }
+            )
+        ]
+        return SectionPage(
+            title: ProtStrings.title,
+            subtitle: ProtStrings.landingSubtitle,
+            footer: PageFooter(
+                lastScan: String(localized: ProtStrings.landingLastScan), note: ProtStrings.landingFooter,
+                machine: MachineLabel.model, system: MachineLabel.system
+            ),
+            actionTitle: ProtStrings.landingAction,
+            action: { model.scan(); tab = .scan }
+        ) {
+            HeroCard(heading: ProtStrings.landingHeroHeading, message: ProtStrings.landingHeroMessage, note: ProtStrings.landingHeroNote) {
+                StatusRing(symbol: "shield", title: String(localized: ProtStrings.landingNotScanned))
+            } trailing: {
+                IllustrationTile(symbol: "shield", badge: "magnifyingglass")
+            }
+        } content: {
+            HStack(alignment: .top, spacing: 16) {
+                FeatureListCard(heading: ProtStrings.landingList, trailingHeading: ProtStrings.landingListWaiting, rows: rows)
+                    .frame(maxWidth: .infinity)
+                InfoCard(
+                    symbol: "folder.badge.gearshape", heading: ProtStrings.landingInfoHeading, message: ProtStrings.landingInfoMessage,
+                    note: ProtStrings.landingInfoNote, buttonTitle: ProtStrings.landingInfoButton,
+                    action: { if let url = URL(string: FullDiskAccess.settingsURLString) { NSWorkspace.shared.open(url) } }
+                )
+                .frame(width: 280)
+            }
+        }
     }
 
     // MARK: Messages

@@ -44,6 +44,33 @@ public struct CleanupView: View {
     }
 
     public var body: some View {
+        Group {
+            if case .idle = model.phase {
+                CleanupLanding(
+                    model: model,
+                    content: section == .privacy ? .privacy : .cleanup,
+                    rules: section == .privacy ? CleanupCatalogue.Privacy.all : CleanupCatalogue.all,
+                    onChange: { if section == .cleanup { model.updateScanners(CleanupScanner.enabled()) } }
+                )
+            } else {
+                workflow
+            }
+        }
+        .sheet(item: Binding(
+            get: { model.pendingPlan.map(IdentifiedPlan.init) },
+            set: { if $0 == nil { model.dismissConfirmation() } }
+        )) { wrapper in
+            ConfirmationSheet(
+                plan: wrapper.plan,
+                section: section,
+                canRecordHistory: model.canRecordHistory,
+                onCancel: model.dismissConfirmation,
+                onConfirm: { model.confirm(wrapper.plan) }
+            )
+        }
+    }
+
+    private var workflow: some View {
         VStack(alignment: .leading, spacing: Spacing.large) {
             SectionHeader(
                 title: title,
@@ -68,18 +95,6 @@ public struct CleanupView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(.background)
         .motion(Motion.smooth, value: model.openCategory)
-        .sheet(item: Binding(
-            get: { model.pendingPlan.map(IdentifiedPlan.init) },
-            set: { if $0 == nil { model.dismissConfirmation() } }
-        )) { wrapper in
-            ConfirmationSheet(
-                plan: wrapper.plan,
-                section: section,
-                canRecordHistory: model.canRecordHistory,
-                onCancel: model.dismissConfirmation,
-                onConfirm: { model.confirm(wrapper.plan) }
-            )
-        }
     }
 
     // MARK: States

@@ -3,13 +3,12 @@ import CoreKit
 import DesignSystem
 import SystemMonitor
 
-/// The Overview screen — CLAUDE.md §6.1.
+/// The Overview screen — CLAUDE.md §6.1, in the supplied design.
 public struct DashboardView: View {
+    @Environment(\.colorScheme) private var scheme
     @State private var model: DashboardModel
     private let onStartScan: () -> Void
     private let onOpenSection: (AppSection) -> Void
-
-    private var section: AppSection { .dashboard }
 
     public init(
         model: DashboardModel = DashboardModel(),
@@ -21,155 +20,121 @@ public struct DashboardView: View {
         self.onOpenSection = onOpenSection
     }
 
+    /// What the page is titled: this Mac's own name, as in the design ("My MacBook").
+    private var computerName: LocalizedStringResource {
+        LocalizedStringResource(stringLiteral: Host.current().localizedName ?? model.snapshot.machine.model)
+    }
+
     public var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: Spacing.large) {
-                SectionHeader(
-                    title: DashboardStrings.title,
-                    subtitle: DashboardStrings.subtitle,
-                    palette: section.palette
-                )
-
-                heroCard
-
-                if !model.recommendations.isEmpty { recommendationsList }
-
-                metricGrid
-            }
-            .padding(Spacing.large)
+        SectionPage(
+            title: computerName,
+            subtitle: DashboardStrings.subtitle,
+            actionTitle: DashboardStrings.scanAction,
+            action: onStartScan
+        ) {
+            hero
+        } content: {
+            if !model.recommendations.isEmpty { recommendationsList }
+            metricRow
         }
-        .background(.background)
         // §8: polling runs only while this view is on screen.
-        .task {
-            model.startMonitoring()
-        }
+        .task { model.startMonitoring() }
         .onDisappear(perform: model.stopMonitoring)
         .sheet(isPresented: $model.isShowingScoreBreakdown) {
             HealthScoreBreakdownView(score: model.score)
         }
     }
 
-    private var heroCard: some View {
-        GlassCard(cornerRadius: CornerRadius.xl, padding: Spacing.large) {
-            HStack(alignment: .center, spacing: Spacing.xl) {
-                scoreRing
+    // MARK: Hero
 
-                VStack(alignment: .leading, spacing: Spacing.small) {
-                    Text(model.snapshot.machine.model)
-                        .font(Typography.cardTitle)
-                    Text(model.snapshot.machine.osVersion)
-                        .font(Typography.caption)
-                        .foregroundStyle(.secondary)
+    /// The ring shows "not scanned" until a scan has measured something: a score before any
+    /// measurement would be a number made up for decoration (CLAUDE.md §10.4).
+    private var hasMeasured: Bool { model.lastScanDate != nil }
 
+    private var hero: some View {
+        let t = scheme.theme
+        return HStack(spacing: 28) {
+            VStack(spacing: 6) {
+                if hasMeasured {
+                    StatusRing(progress: Double(model.score.value) / 100, title: String(localized: DashboardStrings.healthTitle), value: "\(model.score.value)")
+                    Button { model.isShowingScoreBreakdown = true } label: {
+                        Text(DashboardStrings.healthExplain).font(.system(size: 11)).foregroundStyle(t.accent)
+                    }
+                    .buttonStyle(.plain)
+                } else {
+                    StatusRing(title: String(localized: DashboardStrings.neverScanned))
+                }
+            }
+            Rectangle().fill(t.heroBorder).frame(width: 1, height: 130)
+            VStack(alignment: .leading, spacing: 6) {
+                Text(model.snapshot.machine.model).font(.system(size: 19, weight: .semibold)).foregroundStyle(t.ink)
+                Text(model.snapshot.machine.osVersion).font(.system(size: 12)).foregroundStyle(t.inkSecondary)
+                Label {
                     if let lastScan = model.lastScanDate {
                         Text(lastScan, format: .relative(presentation: .named))
-                            .font(Typography.caption)
-                            .foregroundStyle(.tertiary)
                     } else {
                         Text(DashboardStrings.neverScanned)
-                            .font(Typography.caption)
-                            .foregroundStyle(.tertiary)
                     }
-
-                    ScanButton(
-                        title: DashboardStrings.scanAction,
-                        palette: AppSection.smartScan.textSafePalette,
-                        action: onStartScan
-                    )
-                    .padding(.top, Spacing.xs)
-                }
-
-                Spacer(minLength: 0)
+                } icon: { Image(systemName: "clock").font(.system(size: 11)) }
+                .font(.system(size: 12)).foregroundStyle(t.inkTertiary)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            LaptopIllustration()
         }
+        .padding(.horizontal, 44)
+        .padding(.vertical, 30)
+        .frame(maxWidth: .infinity)
+        .heroSurface()
     }
 
-    private var scoreRing: some View {
-        VStack(spacing: Spacing.xs) {
-            ZStack {
-                GradientRing(
-                    progress: Double(model.score.value) / 100,
-                    palette: section.palette,
-                    lineWidth: 16
-                )
-                AnimatedCounter("\(model.score.value)", font: Typography.hero)
-                    .frame(maxWidth: 108)
-            }
-            .frame(width: 164, height: 164)
-
-            Button {
-                model.isShowingScoreBreakdown = true
-            } label: {
-                Text(DashboardStrings.healthExplain)
-                    .font(Typography.caption)
-            }
-            .buttonStyle(.link)
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(Text(DashboardStrings.healthTitle))
-        .accessibilityValue("\(model.score.value)")
-    }
+    // MARK: Suggestions
 
     private var recommendationsList: some View {
         VStack(alignment: .leading, spacing: Spacing.small) {
-            Text(DashboardStrings.recTitle).font(Typography.caption).foregroundStyle(.secondary)
+            Text(DashboardStrings.recTitle).font(.system(size: 12)).foregroundStyle(scheme.theme.inkSecondary)
             ForEach(model.recommendations) { recommendation in
-                GlassCard(cornerRadius: CornerRadius.medium, padding: Spacing.medium) {
-                    HStack {
-                        Text(DashboardStrings.text(for: recommendation.kind)).font(Typography.body)
-                        Spacer()
-                        Button { onOpenSection(recommendation.section) } label: { Text(DashboardStrings.recOpen) }
-                    }
+                HStack {
+                    Text(DashboardStrings.text(for: recommendation.kind)).font(.system(size: 13)).foregroundStyle(scheme.theme.ink)
+                    Spacer()
+                    Button { onOpenSection(recommendation.section) } label: { Text(DashboardStrings.recOpen) }
+                        .buttonStyle(.plain).font(.system(size: 12, weight: .medium)).foregroundStyle(scheme.theme.accent)
                 }
+                .padding(.horizontal, 16).padding(.vertical, 12)
+                .cardSurface(radius: 12)
             }
         }
     }
 
-    private var metricGrid: some View {
-        LazyVGrid(
-            columns: [.init(.adaptive(minimum: 210), spacing: Spacing.large)],
-            spacing: Spacing.large
-        ) {
-            MetricTile(
-                symbol: "internaldrive",
-                title: DashboardStrings.diskFree,
-                value: model.snapshot.disk.free.formatted(),
-                detail: DashboardStrings.diskDetail(total: model.snapshot.disk.total.formatted()),
-                palette: AppSection.files.palette
-            )
+    // MARK: Metrics
 
-            MetricTile(
-                symbol: "memorychip",
-                title: DashboardStrings.memory,
-                value: model.snapshot.memory.used.formatted(),
-                palette: AppSection.performance.palette,
-                trend: model.snapshot.memory.history
-            )
+    private var metricRow: some View {
+        let t = scheme.theme
+        let snapshot = model.snapshot
+        return HStack(alignment: .top, spacing: 16) {
+            MetricCard(
+                symbol: "internaldrive", title: DashboardStrings.diskFree, value: snapshot.disk.free.formatted(),
+                detail: DashboardStrings.diskDetail(total: snapshot.disk.total.formatted())
+            ) { BrandBar(fraction: snapshot.disk.freeFraction).padding(.top, 6) }
 
-            MetricTile(
-                symbol: "cpu",
-                title: DashboardStrings.cpu,
-                value: model.snapshot.cpu.total.formatted(.percent.precision(.fractionLength(0))),
-                palette: section.palette,
-                trend: model.snapshot.cpu.history
-            )
-
-            if let battery = model.snapshot.battery {
-                MetricTile(
-                    symbol: battery.isCharging ? "battery.100.bolt" : "battery.75",
-                    title: DashboardStrings.battery,
-                    value: battery.charge.formatted(.percent.precision(.fractionLength(0))),
-                    palette: AppSection.cleanup.palette
-                )
+            MetricCard(symbol: "memorychip", title: DashboardStrings.memory, value: snapshot.memory.used.formatted()) {
+                Sparkline(values: snapshot.memory.history, palette: AppSection.dashboard.palette).frame(height: 56)
             }
 
-            MetricTile(
-                symbol: "arrow.down.arrow.up",
-                title: DashboardStrings.network,
-                value: model.snapshot.network.download.formatted(),
-                detail: DashboardStrings.networkDetail,
-                palette: AppSection.applications.palette
-            )
+            MetricCard(
+                symbol: "cpu", title: DashboardStrings.cpu,
+                value: snapshot.cpu.total.formatted(.percent.precision(.fractionLength(0)))
+            ) { Sparkline(values: snapshot.cpu.history, palette: AppSection.dashboard.palette).frame(height: 56) }
+
+            MetricCard(
+                symbol: "battery.75",
+                title: DashboardStrings.battery,
+                value: snapshot.battery.map { $0.charge.formatted(.percent.precision(.fractionLength(0))) } ?? "—"
+            ) { if let battery = snapshot.battery { BrandBar(fraction: battery.charge).padding(.top, 6) } }
+
+            MetricCard(
+                symbol: "wifi", title: DashboardStrings.network, value: snapshot.network.download.formatted(),
+                detail: DashboardStrings.networkDetail
+            ) { Image(systemName: "arrow.down.to.line").font(.system(size: 14)).foregroundStyle(t.inkTertiary).padding(.top, 4) }
         }
     }
 }

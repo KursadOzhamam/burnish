@@ -12,7 +12,7 @@ struct OnboardingView: View {
     let onFinish: () -> Void
 
     @State private var page = 0
-    @State private var fullDiskAccess = FullDiskAccess.isGranted()
+    @State private var fullDiskAccess: Bool?
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.large) {
@@ -67,6 +67,7 @@ struct OnboardingView: View {
                 Text("onboarding.access.optional").font(Typography.caption).foregroundStyle(.tertiary)
             }
         }
+        .task { fullDiskAccess = FullDiskAccess.isGranted() }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
             fullDiskAccess = FullDiskAccess.isGranted()
         }

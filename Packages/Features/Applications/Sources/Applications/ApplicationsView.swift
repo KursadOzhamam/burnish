@@ -3,15 +3,17 @@ import AppKit
 import CoreKit
 import DesignSystem
 import DeletionUI
+import CoreKitMac
 import ScanEngine
 import SafetyKit
 
 /// The Applications screen — CLAUDE.md §6.6.
 public struct ApplicationsView: View {
-    private enum Tab: Hashable { case apps, orphans, extensions }
+    private enum Tab: Hashable { case landing, apps, orphans, extensions }
 
     @State private var model: ApplicationsModel
-    @State private var tab: Tab = .apps
+    @State private var tab: Tab = .landing
+    @Environment(\.colorScheme) private var colorScheme
 
     private var section: AppSection { .applications }
 
@@ -20,7 +22,31 @@ public struct ApplicationsView: View {
     }
 
     public var body: some View {
+        Group {
+            if tab == .landing && model.report == nil && !model.isDeleting { landing } else { tool }
+        }
+        .task { if model.loadState == .idle { await model.load() } }
+        .sheet(isPresented: Binding(get: { model.plan != nil }, set: { if !$0 { model.closeReview() } })) {
+            ReviewSheet(model: model)
+        }
+        .sheet(item: Binding(
+            get: { model.pendingPlan.map(IdentifiedPlan.init) },
+            set: { if $0 == nil { model.dismissConfirmation() } }
+        )) { wrapper in
+            ConfirmationSheet(
+                plan: wrapper.plan, section: section, canRecordHistory: model.canRecordHistory,
+                onCancel: model.dismissConfirmation, onConfirm: { model.confirm(wrapper.plan) }
+            )
+        }
+    }
+
+    private var tool: some View {
         VStack(alignment: .leading, spacing: Spacing.large) {
+            Button { tab = .landing } label: {
+                Label { Text(AppsStrings.back) } icon: { Image(systemName: "chevron.left") }
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(colorScheme.theme.accent)
             SectionHeader(title: AppsStrings.title, subtitle: AppsStrings.subtitle, palette: section.palette)
 
             if let report = model.report {
@@ -38,27 +64,74 @@ public struct ApplicationsView: View {
                 .frame(maxWidth: 440, alignment: .leading)
 
                 switch tab {
-                case .apps: appsTab
+                case .landing, .apps: appsTab
                 case .orphans: orphansTab
                 case .extensions: extensionsTab
                 }
             }
         }
         .padding(Spacing.large)
+        .padding(.top, 24)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(.background)
-        .task { if model.loadState == .idle { await model.load() } }
-        .sheet(isPresented: Binding(get: { model.plan != nil }, set: { if !$0 { model.closeReview() } })) {
-            ReviewSheet(model: model)
-        }
-        .sheet(item: Binding(
-            get: { model.pendingPlan.map(IdentifiedPlan.init) },
-            set: { if $0 == nil { model.dismissConfirmation() } }
-        )) { wrapper in
-            ConfirmationSheet(
-                plan: wrapper.plan, section: section, canRecordHistory: model.canRecordHistory,
-                onCancel: model.dismissConfirmation, onConfirm: { model.confirm(wrapper.plan) }
-            )
+        .background(colorScheme.theme.background.ignoresSafeArea())
+    }
+
+    // MARK: Landing (the supplied design)
+
+    private var landing: some View {
+        let loaded = model.loadState == .loaded
+        let rows = [
+            FeatureRow(symbol: "macwindow", title: AppsStrings.landingRowAll, detail: AppsStrings.landingRowAllDetail,
+                       status: loaded ? AppsStrings.count(model.apps.filter { !$0.isApple }.count) : AppsStrings.landingStatusWaiting) {
+                model.unusedForDays = nil
+                tab = .apps
+            },
+            FeatureRow(symbol: "shippingbox", title: AppsStrings.landingRowLeftovers, detail: AppsStrings.landingRowLeftoversDetail,
+                       status: AppsStrings.landingStatusView) {
+                tab = .orphans
+                Task { await model.scanOrphans() }
+            },
+            FeatureRow(symbol: "calendar.badge.clock", title: AppsStrings.landingRowUnused, detail: AppsStrings.landingRowUnusedDetail,
+                       status: AppsStrings.landingStatusView) {
+                model.unusedForDays = 90
+                tab = .apps
+            },
+            FeatureRow(symbol: "puzzlepiece.extension", title: AppsStrings.landingRowExtensions, detail: AppsStrings.landingRowExtensionsDetail,
+                       status: AppsStrings.landingStatusView) {
+                tab = .extensions
+                Task { await model.scanExtensions() }
+            }
+        ]
+        return SectionPage(
+            title: AppsStrings.title,
+            subtitle: AppsStrings.landingSubtitle,
+            footer: PageFooter(
+                lastScan: String(localized: AppsStrings.landingLastScan), note: AppsStrings.landingFooter,
+                machine: MachineLabel.model, system: MachineLabel.system
+            ),
+            actionTitle: AppsStrings.landingAction,
+            action: { model.unusedForDays = nil; tab = .apps }
+        ) {
+            HeroCard(heading: AppsStrings.landingHeroHeading, message: AppsStrings.landingHeroMessage, note: AppsStrings.landingHeroNote) {
+                StatusRing(symbol: "macwindow", title: String(localized: AppsStrings.landingNotScanned))
+            } trailing: {
+                IllustrationTile(symbol: "macwindow", badge: "shippingbox")
+            }
+        } content: {
+            HStack(alignment: .top, spacing: 16) {
+                FeatureListCard(
+                    heading: AppsStrings.landingList,
+                    trailingHeading: loaded ? nil : AppsStrings.landingListWaiting,
+                    rows: rows
+                )
+                .frame(maxWidth: .infinity)
+                InfoCard(
+                    symbol: "shippingbox", heading: AppsStrings.landingInfoHeading, message: AppsStrings.landingInfoMessage,
+                    note: AppsStrings.landingInfoNote, buttonTitle: AppsStrings.landingInfoButton,
+                    action: { NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil) }
+                )
+                .frame(width: 280)
+            }
         }
     }
 

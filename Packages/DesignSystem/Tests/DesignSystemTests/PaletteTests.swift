@@ -4,10 +4,11 @@ import SwiftUI
 
 @Suite("Section palettes")
 struct PaletteTests {
-    @Test("Every section has its own gradient — §5.3 gives each area a distinct identity")
-    func gradientsAreDistinct() {
-        let pairs = AppSection.allCases.map(\.palette)
-        #expect(Set(pairs).count == AppSection.allCases.count)
+    @Test("Every section shares the one brand violet of the supplied design")
+    func oneBrandIdentity() {
+        let pairs = Set(AppSection.allCases.map(\.palette))
+        #expect(pairs.count == 1)
+        #expect(pairs.first == Brand.pair)
     }
 
     @Test("Every section has a non-empty SF Symbol for the sidebar")
@@ -53,23 +54,18 @@ struct PaletteContrastTests {
         )
     }
 
-    @Test("Text-safe pairs keep the hue family of their decorative pair")
-    func textSafeStaysOnBrand() {
-        // A darkened variant must not be brighter than the vivid one it derives from.
-        for section in AppSection.allCases {
-            #expect(section.textSafePalette.start.luminance <= section.palette.start.luminance + 0.001)
-            #expect(section.textSafePalette.end.luminance <= section.palette.end.luminance + 0.001)
-        }
+    @Test("The accent is legible as text on the light and dark surfaces")
+    func accentOnSurfaces() {
+        #expect(Brand.accent.contrastRatio(against: RGB(hex: 0xFFFFFF)) >= 4.5)
+        #expect(Brand.accentOnDark.contrastRatio(against: RGB(hex: 0x1C1E28)) >= 4.5)
     }
 
-    @Test("The decorative palette is documented as failing AA, not accidentally passing")
-    func decorativePaletteIsKnownToFailAA() {
-        // Recorded so the split stays intentional: if every decorative pair ever did pass AA,
-        // textSafePalette would be redundant and should be removed rather than left to rot.
-        let failing = AppSection.allCases.filter {
-            $0.palette.minimumContrastRatio(against: Palette.onColor) < Palette.minimumContrast
-        }
-        #expect(failing.count == 6, "expected 6 decorative pairs below AA, found \(failing.count)")
+    @Test("Ink is legible on every surface in both appearances")
+    func inkOnSurfaces() {
+        #expect(RGB(hex: 0x23232F).contrastRatio(against: RGB(hex: 0xFFFFFF)) >= 7)
+        #expect(RGB(hex: 0x6E6E7C).contrastRatio(against: RGB(hex: 0xFFFFFF)) >= 4.5)
+        #expect(RGB(hex: 0xF3F3F8).contrastRatio(against: RGB(hex: 0x1C1E28)) >= 7)
+        #expect(RGB(hex: 0xA3A5B4).contrastRatio(against: RGB(hex: 0x1C1E28)) >= 4.5)
     }
 
     @Test("Brand ink is legible on a light surface")
