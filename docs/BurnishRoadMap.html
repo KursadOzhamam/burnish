@@ -186,7 +186,7 @@
 <script>
 /* Güncelleme için: yalnızca META, DEC, PH ve LOG değişir. Durum kodları:
    d tamamlandı · t bekliyor · u sende · k karar bekliyor · o opsiyonel */
-const META={updated:"2026-10-12",rev:56,
+const META={updated:"2026-10-12",rev:58,
   focus:"Faz 4 kapanışı: kalan temizlik tarayıcıları (4.13, 4.15–4.23). Ardından Faz 5 (İndirilenler dahil). UI testleri (10.10) erkene çekilmeye değer. Senden bekleyenler: D1–D9 kararları, Faz 0 maddeleri ve CleanMyMac kopyasının kapatılması (0.14)."};
 
 const ST={d:["done","tamamlandı","tdone"],t:["","bekliyor","tmig"],u:["user","sende","tuser"],k:["dec","karar bekliyor","tdec"],o:["opt","opsiyonel","topt"]};
@@ -338,8 +338,8 @@ const PH=[
  ["10.6","t","Boş ve hata durumları","Her ekran için.","Mac"],
  ["10.7","t","Gerçek macOS 14 doğrulaması (R11)","Geliştirme macOS 27'de; aşama sonunda 14'te çalıştırma.","Mac"],
  ["10.8","k","Smart Insights","Öğe başına cihaz-içi açıklama (D5).","AI"],
- ["10.9","t","Tanılama paketi","Kullanıcı onaylı, yol ve dosya adı içermez.","Güvenlik"]
- ["10.10","t","Kritik akışlar için UI testleri (XCUITest)","§9 şart koşuyor, henüz yok. Akıllı Tarama, Sonuçları İncele ve onay sayfası: başlık, kenar çubuğu ve alt çubuk görünür olmalı. Bu oturumdaki yerleşim çöküşünü yalnızca elle çalıştırınca fark ettik.","Mac,Çekirdek"],
+ ["10.9","d","Tanılama paketi","Kullanıcı onaylı, yol ve dosya adı içermez. YAPILDI: Ayarlar > Gizlilik > 'Tanılama bilgisini panoya kopyala': yalnızca sürüm, macOS, izin ve yardımcı durumu, kapalı tarayıcılar; dosya adı/yol/içerik yok, nereye gönderileceğine kullanıcı karar verir.","Güvenlik"]
+ ["10.10","t","Kritik akışlar için UI testleri (XCUITest)","§9 şart koşuyor, henüz yok. Akıllı Tarama, Sonuçları İncele ve onay sayfası: başlık, kenar çubuğu ve alt çubuk görünür olmalı. Bu oturumdaki yerleşim çöküşünü yalnızca elle çalıştırınca fark ettik. UI test hedefi ve 6 kritik akış testi YAZILDI (her bölümün açılması, Akıllı Tarama başlat düğmesinin tıklanabilirliği, Parçalayıcı'nın dosyasızken kapalı olması, uygulama kaldırma önizlemesinin açılıp iptal edilmesi); hiçbiri silme yapmaz. Çalıştırma sonucu bir sonraki kayıtta.","Mac,Çekirdek"],
 ]},
 {id:"fD",c:"pm",l:"Faz D",t:"Tasarım giydirme",n:"Genel hatlar bitince",items:[
  ["D.1","u","Tasarımın verilmesi","Figma, PDF veya görsel. Yol haritası burada güncellenir.","Tasarım"],

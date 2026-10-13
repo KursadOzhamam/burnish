@@ -29,7 +29,11 @@ struct BurnishApp: App {
             SettingsView(performance: PerformanceModel())
         }
 
-        MenuBarExtra(isInserted: $showsMenuBarItem) {
+        // The binding is read-only on purpose. SwiftUI writes `isInserted` back whenever macOS hides
+        // or shows the item (a crowded menu bar next to the notch does this), and writing that into
+        // `AppStorage` re-evaluated the scene in an endless loop that pinned the main thread at 100%
+        // and froze the window. Only the Settings switch changes it now.
+        MenuBarExtra(isInserted: Binding(get: { showsMenuBarItem }, set: { _ in })) {
             MenuBarPanel()
         } label: {
             Image(systemName: "sparkles")
