@@ -67,3 +67,6 @@ if [ ${#failed[@]} -gt 0 ]; then
     echo "  failed: ${failed[*]}"
     exit 1
 fi
+
+echo "==> localization"
+python3 scripts/check-localization.py || exit 1

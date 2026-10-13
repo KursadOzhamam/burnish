@@ -1,50 +1,74 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "designsystem.emptystate.default.title" : {
-      "comment" : "Fallback title for an empty result list.",
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Burada gösterilecek bir şey yok"
+  "sourceLanguage": "en",
+  "strings": {
+    "designsystem.emptystate.default.title": {
+      "comment": "Fallback title for an empty result list.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Burada gösterilecek bir şey yok"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There is nothing to show here"
           }
         }
       }
     },
-    "designsystem.ring.indeterminate" : {
-      "comment" : "VoiceOver value for a progress ring whose total is not yet known.",
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sürüyor"
+    "designsystem.ring.indeterminate": {
+      "comment": "VoiceOver value for a progress ring whose total is not yet known.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sürüyor"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In progress"
           }
         }
       }
     },
-    "designsystem.scanbutton.accessibility.hint" : {
-      "comment" : "VoiceOver hint on the primary scan button.",
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Taramayı başlatır. Hiçbir şey silinmez; önce ne bulunduğu gösterilir."
+    "designsystem.scanbutton.accessibility.hint": {
+      "comment": "VoiceOver hint on the primary scan button.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taramayı başlatır. Hiçbir şey silinmez; önce ne bulunduğu gösterilir."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starts the scan. Nothing is deleted; what was found is shown first."
           }
         }
       }
     },
-    "designsystem.pro.badge" : {
-      "comment" : "Badge marking a feature that needs a licence.",
-      "localizations" : {
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pro"
+    "designsystem.pro.badge": {
+      "comment": "Badge marking a feature that needs a licence.",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro"
           }
         }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

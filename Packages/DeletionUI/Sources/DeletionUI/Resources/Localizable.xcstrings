@@ -9,6 +9,12 @@
             "state": "translated",
             "value": "Silinecekler"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What will be removed"
+          }
         }
       }
     },
@@ -18,6 +24,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Öğeler Çöp Kutusu'na taşınır. İstediğin zaman geri alabilirsin."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Items are moved to the Trash. You can restore them any time."
           }
         }
       }
@@ -29,6 +41,12 @@
             "state": "translated",
             "value": "Bu öğeler kalıcı olarak silinir. Geri alınamaz."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These items are deleted permanently. This cannot be undone."
+          }
         }
       }
     },
@@ -39,6 +57,12 @@
             "state": "translated",
             "value": "Çöp'e Taşı"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move to Trash"
+          }
         }
       }
     },
@@ -48,6 +72,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kalıcı Olarak Sil"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Permanently"
           }
         }
       }
@@ -60,6 +90,12 @@
             "state": "translated",
             "value": "Geri yükleme kaydı tutulamıyor. Öğeler Çöp'e gider ama buradan geri yüklenemez; Finder'daki Çöp'ten alabilirsin."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The restore log cannot be kept. Items go to the Trash but cannot be restored from here; you can take them back from the Trash in Finder."
+          }
         }
       }
     },
@@ -70,6 +106,12 @@
             "state": "translated",
             "value": "Kazanılan alan"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Space reclaimed"
+          }
         }
       }
     },
@@ -79,6 +121,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld öğe silinemedi"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld items could not be removed"
           }
         }
       }
@@ -91,6 +139,12 @@
             "state": "translated",
             "value": "%1$lld öğe · %2$@"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld items · %2$@"
+          }
         }
       }
     },
@@ -100,6 +154,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "İptal"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
           }
         }
       }
@@ -112,6 +172,12 @@
             "state": "translated",
             "value": "Sistem izni gerekiyor — bu yetenek henüz eklenmedi"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs administrator access, which is not available yet"
+          }
         }
       }
     },
@@ -121,6 +187,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Uygulama açık, atlandı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The app is open, skipped"
           }
         }
       }
@@ -132,6 +204,12 @@
             "state": "translated",
             "value": "Korunan yol — hiçbir koşulda silinmez"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protected path, never removed"
+          }
         }
       }
     },
@@ -142,6 +220,12 @@
             "state": "translated",
             "value": "Üstteki öğenin içinde, ayrıca sayılmadı"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inside an item above, not counted separately"
+          }
         }
       }
     },
@@ -151,6 +235,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bu tarayıcının kapsamı dışında"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Outside this scanner's scope"
           }
         }
       }

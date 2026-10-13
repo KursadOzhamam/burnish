@@ -186,7 +186,7 @@
 <script>
 /* Güncelleme için: yalnızca META, DEC, PH ve LOG değişir. Durum kodları:
    d tamamlandı · t bekliyor · u sende · k karar bekliyor · o opsiyonel */
-const META={updated:"2026-10-12",rev:45,
+const META={updated:"2026-10-12",rev:51,
   focus:"Faz 4 kapanışı: kalan temizlik tarayıcıları (4.13, 4.15–4.23). Ardından Faz 5 (İndirilenler dahil). UI testleri (10.10) erkene çekilmeye değer. Senden bekleyenler: D1–D9 kararları, Faz 0 maddeleri ve CleanMyMac kopyasının kapatılması (0.14)."};
 
 const ST={d:["done","tamamlandı","tdone"],t:["","bekliyor","tmig"],u:["user","sende","tuser"],k:["dec","karar bekliyor","tdec"],o:["opt","opsiyonel","topt"]};
@@ -304,7 +304,7 @@ const PH=[
  ["7.6","d","Yoğun kaynak tüketenler","CPU/RAM en çok kullananlar, kapatma (sistem süreçleri hariç). YAPILDI: libproc ile CPU yüzdesi (1 sn aralık) ve bellek sıralaması, yalnızca sekme açıkken 2 sn'de bir; yalnızca normal uygulamalar nazikçe kapanması istenerek (terminate) kapatılır, sistem süreçleri ve Burnish hariç. Uygulamada görüldü.","Mac"],
  ["7.7","d","Bellek baskısı bildirimi","Ayarlanabilir eşik. YAPILDI: çekirdeğin bellek baskısı sinyali (DispatchSource), izin ilk açılışta istenir, ayar kalıcı. Canlı bildirim tetiklenmedi.","Mac"],
  ["7.8","t","Simülatör runtime (~16–19 GB)","/Library/Developer/CoreSimulator; xcrun simctl runtime delete, yönetici izni.","Mac,Helper"],
- ["7.9","t","Burnish'ı tamamen kaldır","Helper'ı SMAppService.unregister ile söker, giriş öğesini ve veri klasörünü temizler.","Güvenlik"],
+ ["7.9","d","Burnish'ı tamamen kaldır","Helper'ı SMAppService.unregister ile söker, giriş öğesini ve veri klasörünü temizler. YAPILDI: Ayarlar > Kaldır sekmesi: önce neyin gideceği listelenir (veri klasörü, tercihler, önbellek, kayıtlı durum), yardımcı ve oturum öğesi SMAppService ile söküldükten sonra veriler Çöp'e taşınır (§4.1: kalıcı silme yok), ardından uygulamayı Çöp'e taşıyıp çıkma düğmesi. Gerçek kaldırma denenmedi.","Güvenlik"],
  ["7.10","d","Helper kurulum başarısızlığı durumları","Net hata ekranı, helper'sız çalışma, yeniden kurma (R6). YAPILDI: yardımcı durumları ekranda ayrı metinlerle: kurulu değil, onay bekliyor, etkin, bulunamadı, eski sürüm, başarısız; helper'sız çalışan her şey çalışır.","Mac"]
 ]},
 {id:"f8",c:"pa",l:"Faz 8",t:"Koruma ve Gizlilik",n:"On-demand tarayıcı",items:[
@@ -322,17 +322,17 @@ const PH=[
  ["9.1","t","Akıllı Tarama orkestrasyonu","Temizlik tarayıcıları için paralel çalışma hazır (4.24). Koruma ve Hız tarayıcıları geldikçe aynı koşuya eklenir. Ağır tarayıcılar dahil değil, öneri olarak sunulur.","Mac"],
  ["9.2","t","Tek tuşla 'Çalıştır' yolu","Yalnızca Çöp'e giden, geri alınabilir, yüksek güvenli öğeler seçili gelir. Güncelleme kurma ve kopya silme ayrı onay ister. Kullanıcı içeriği asla önceden seçilmez.","Mac,Güvenlik"],
  ["9.3","t","Öneri motoru","Yalnızca kullanıcının Mac'ine dair ('Xcode artıkları 14 GB'). Ürün tanıtımı yok.","Mac"],
- ["9.4","t","Sağlık skoru gerçek girdilerle","Tehdit, bekleyen güncelleme, başlangıç yükü taramalardan beslenir (D8).","Mac"],
- ["9.5","t","Menü çubuğu mini paneli","MenuBarExtra; CPU/RAM/disk/ağ/pil, hızlı eylemler; ayrı MenuBarAgent hedefi.","Mac"],
+ ["9.4","d","Sağlık skoru gerçek girdilerle","Tehdit, bekleyen güncelleme, başlangıç yükü taramalardan beslenir (D8). YAPILDI: sağlık skoru artık ölçülen girdilerle beslenir: Koruma taraması tehdit sayısı, başlangıç öğesi sayısı (açık, Apple dışı), son tarama tarihi; ölçülmeyen girdi tam puan verir, girdiler birbirini silmez. Bekleyen güncelleme ağ gerektirdiğinden ölçülmüyor.","Mac"],
+ ["9.5","d","Menü çubuğu mini paneli","MenuBarExtra; CPU/RAM/disk/ağ/pil, hızlı eylemler; ayrı MenuBarAgent hedefi. YAPILDI: MenuBarExtra (pencere stili): CPU, bellek, boş disk, pil, ağ yalnızca panel açıkken akıtılır; Akıllı Taramayı başlat, aç, çık; Ayarlar'dan açılıp kapatılır. 'RAM boşalt/Çöp boşalt' hızlı eylemleri bilerek yok (yardımcı ve kalıcı silme onayı gerektirir).","Mac"],
  ["9.6","t","Sağlık izleyici (arka plan)","Ayrı hafif süreç; bildirimler.","Mac"],
  ["9.7","t","Araçlar sayfası","Her tarayıcı tek başına çalıştırılabilir kart + arama.","Mac"],
  ["9.8","t","Etkinlik panosu","Gerçek, doğrulanabilir kazanılan alan geçmişi. 'Kazanılan zaman' gibi ölçülemeyen iddia yok (§10.5).","Mac"],
  ["9.9","t","Zamanlanmış tarama","Yalnızca tarar ve bildirir, asla silmez (§10.10).","Mac"]
 ]},
 {id:"f10",c:"pn",l:"Faz 10",t:"Cila",n:"iOS'un başlama eşiği",items:[
- ["10.1","t","Ayarlar","Genel, tarama (aç/kapat, hariç tutulan klasörler), silme tercihleri, zamanlama, geçmiş, izinler, lisans, gizlilik.","Mac"],
- ["10.2","t","İlk açılış karşılaması","Ne yapar, ne yapmaz; izin rehberi; 'antivirüs değil' ifadesi.","Mac"],
- ["10.3","t","Tam yerelleştirme TR/EN","String Catalog denetimi, ham anahtar sızıntısı taraması.","Çekirdek"],
+ ["10.1","d","Ayarlar","Genel, tarama (aç/kapat, hariç tutulan klasörler), silme tercihleri, zamanlama, geçmiş, izinler, lisans, gizlilik. YAPILDI: Ayarlar penceresi: oturumda aç, menü çubuğu, tarayıcı aç/kapat (Temizlik ve Akıllı Tarama bunlara uyar), Tam Disk Erişimi ve yardımcı durumu, çökme raporu (varsayılan kapalı, henüz gönderim yok), Burnish'ı tamamen kaldır. Silme onay seviyesi ayarı yok: hiçbir ayar onaysız silme açmaz.","Mac"],
+ ["10.2","d","İlk açılış karşılaması","Ne yapar, ne yapmaz; izin rehberi; 'antivirüs değil' ifadesi. YAPILDI: ilk açılış karşılaması (üç adım: sözler, tek seferlik Tam Disk Erişimi, başla), her adım atlanabilir, yalnızca bir kez gösterilir.","Mac"],
+ ["10.3","d","Tam yerelleştirme TR/EN","String Catalog denetimi, ham anahtar sızıntısı taraması. YAPILDI: tüm String Catalog'larda her anahtarın Türkçesi ve İngilizcesi var; scripts/check-localization.py bunu denetler ve test.sh'a bağlı. Denetim, eski katalogların 125 anahtarının İngilizcesinin eksik olduğunu buldu (İngilizce kullanıcı ham anahtar görecekti), hepsi dolduruldu.","Çekirdek"],
  ["10.4","t","Erişilebilirlik","VoiceOver, Hareketi Azalt, kontrast, klavye ile tam kullanım.","Tasarım"],
  ["10.5","t","Performans profilleme","Instruments: açılış <1 sn, boşta <150 MB, ağır tarama <1 GB.","Mac"],
  ["10.6","t","Boş ve hata durumları","Her ekran için.","Mac"],

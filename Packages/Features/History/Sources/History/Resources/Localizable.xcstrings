@@ -8,6 +8,12 @@
             "state": "translated",
             "value": "Geçmiş"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History"
+          }
         }
       }
     },
@@ -17,6 +23,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Burnish'in kaldırdığı her şey burada kayıtlıdır. Çöp'e taşınanları geri yükleyebilirsin."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Everything Burnish removed is recorded here. Items moved to the Trash can be restored."
           }
         }
       }
@@ -28,6 +40,12 @@
             "state": "translated",
             "value": "Henüz bir şey kaldırılmadı."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing has been removed yet."
+          }
         }
       }
     },
@@ -37,6 +55,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "İşlem kaydı açılamadı. Bu yüzden bu oturumdaki işlemler burada görünmez ve geri yüklenemez."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The operation log could not be opened, so actions in this session do not appear here and cannot be restored."
           }
         }
       }
@@ -48,6 +72,12 @@
             "state": "translated",
             "value": "Geri Yükle"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore"
+          }
         }
       }
     },
@@ -57,6 +87,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kapat"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
           }
         }
       }
@@ -68,6 +104,12 @@
             "state": "translated",
             "value": "Geri yüklendi"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restored"
+          }
         }
       }
     },
@@ -77,6 +119,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tamam"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
           }
         }
       }
@@ -88,6 +136,12 @@
             "state": "translated",
             "value": "Toplam kazanılan alan: %@"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total space reclaimed: %@"
+          }
         }
       }
     },
@@ -97,6 +151,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ geri yüklendi."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ was restored."
           }
         }
       }
@@ -108,6 +168,12 @@
             "state": "translated",
             "value": "Çöp'e taşındı"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moved to Trash"
+          }
         }
       }
     },
@@ -117,6 +183,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kalıcı silindi"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deleted permanently"
           }
         }
       }
@@ -128,6 +200,12 @@
             "state": "translated",
             "value": "Atlandı"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skipped"
+          }
         }
       }
     },
@@ -137,6 +215,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Silinemedi"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not be removed"
           }
         }
       }
@@ -148,6 +232,12 @@
             "state": "translated",
             "value": "Bu öğe geri yüklenemez."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This item cannot be restored."
+          }
         }
       }
     },
@@ -157,6 +247,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Öğe artık Çöp'te değil; muhtemelen Çöp boşaltıldı."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The item is no longer in the Trash; it was probably emptied."
           }
         }
       }
@@ -168,6 +264,12 @@
             "state": "translated",
             "value": "Eski konumda şu an başka bir dosya var; üzerine yazmamak için geri yüklenmedi."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Another file is now at the original location; it was not restored so nothing is overwritten."
+          }
         }
       }
     },
@@ -177,6 +279,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Taşıma sırasında bir hata oluştu."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An error occurred while moving it."
           }
         }
       }

@@ -2,11 +2,14 @@ import SwiftUI
 import CoreKit
 import DesignSystem
 import Licensing
+import Performance
 
 @main
 struct BurnishApp: App {
     /// Phase 1 unlocks everything; real validation arrives in Phase 10 (CLAUDE.md §11, §14).
     @State private var entitlements: any EntitlementResolving = AlwaysProEntitlements()
+    /// The menu bar item can be switched off in Settings (CLAUDE.md §6.8).
+    @AppStorage("menubar.enabled") private var showsMenuBarItem = true
 
     var body: some Scene {
         WindowGroup {
@@ -21,6 +24,17 @@ struct BurnishApp: App {
         .commands {
             CommandGroup(replacing: .newItem) {}
         }
+
+        Settings {
+            SettingsView(performance: PerformanceModel())
+        }
+
+        MenuBarExtra(isInserted: $showsMenuBarItem) {
+            MenuBarPanel()
+        } label: {
+            Image(systemName: "sparkles")
+        }
+        .menuBarExtraStyle(.window)
     }
 }
 

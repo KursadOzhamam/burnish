@@ -18,6 +18,8 @@ public final class DashboardModel {
     public var isShowingScoreBreakdown = false
 
     private let monitor: any SystemMonitoring
+    /// What the scans have measured so far; the rest stays unmeasured and costs nothing (§10.4).
+    public private(set) var inputs: HealthScore.Inputs = .unmeasured
     private var streamTask: Task<Void, Never>?
 
     /// - Parameters:
@@ -54,8 +56,22 @@ public final class DashboardModel {
         streamTask = nil
     }
 
+    /// Feeds in what the scans found. A nil field keeps its earlier value, so a threat count from
+    /// the Protection scan is not forgotten when the startup count arrives later.
+    public func update(
+        threatCount: Int? = nil, pendingUpdateCount: Int? = nil, startupItemCount: Int? = nil, scannedAt: Date? = nil
+    ) {
+        inputs = HealthScore.Inputs(
+            threatCount: threatCount ?? inputs.threatCount,
+            pendingUpdateCount: pendingUpdateCount ?? inputs.pendingUpdateCount,
+            startupItemCount: startupItemCount ?? inputs.startupItemCount
+        )
+        if let scannedAt { lastScanDate = scannedAt }
+        score = HealthScore.evaluate(snapshot: snapshot, inputs: inputs)
+    }
+
     private func apply(_ reading: SystemSnapshot) {
         snapshot = reading
-        score = HealthScore.evaluate(snapshot: reading, inputs: .unmeasured)
+        score = HealthScore.evaluate(snapshot: reading, inputs: inputs)
     }
 }

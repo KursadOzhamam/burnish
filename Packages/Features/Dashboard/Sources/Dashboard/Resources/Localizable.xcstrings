@@ -8,6 +8,12 @@
             "state": "translated",
             "value": "Genel Bakış"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Overview"
+          }
         }
       }
     },
@@ -18,6 +24,12 @@
             "state": "translated",
             "value": "Mac'inin durumu, tek bakışta."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your Mac's condition, at a glance."
+          }
         }
       }
     },
@@ -27,6 +39,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sağlık skoru"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health score"
           }
         }
       }
@@ -39,6 +57,12 @@
             "state": "translated",
             "value": "Nasıl hesaplandı?"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How is this calculated?"
+          }
         }
       }
     },
@@ -48,6 +72,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Henüz tarama yapılmadı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No scan has been run yet"
           }
         }
       }
@@ -59,12 +89,24 @@
             "state": "translated",
             "value": "Akıllı Tarama"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Scan"
+          }
         }
       }
     },
     "dashboard.metric.disk": {
       "localizations": {
         "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk"
+          }
+        },
+        "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Disk"
@@ -79,6 +121,12 @@
             "state": "translated",
             "value": "Bellek"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memory"
+          }
         }
       }
     },
@@ -88,6 +136,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "İşlemci"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU"
           }
         }
       }
@@ -99,6 +153,12 @@
             "state": "translated",
             "value": "Pil"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Battery"
+          }
         }
       }
     },
@@ -108,6 +168,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ağ"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network"
           }
         }
       }
@@ -119,6 +185,12 @@
             "state": "translated",
             "value": "Boş alan"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free space"
+          }
         }
       }
     },
@@ -128,6 +200,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bellek baskısı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memory pressure"
           }
         }
       }
@@ -139,6 +217,12 @@
             "state": "translated",
             "value": "Tehditler"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Threats"
+          }
         }
       }
     },
@@ -149,6 +233,12 @@
             "state": "translated",
             "value": "Bekleyen güncellemeler"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pending updates"
+          }
         }
       }
     },
@@ -158,6 +248,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Başlangıç öğeleri"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Startup items"
           }
         }
       }
@@ -170,6 +266,12 @@
             "state": "translated",
             "value": "Bunun %@ kadarı macOS'un gerektiğinde kendi boşaltacağı alan; Burnish bunu kazanç saymıyor."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ of this is space macOS frees on its own when needed; Burnish does not count it as a gain."
+          }
         }
       }
     },
@@ -180,6 +282,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$lld/%2$lld puan"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld/%2$lld points"
           }
         }
       }
@@ -192,6 +300,12 @@
             "state": "translated",
             "value": "saniyede indirme"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "download per second"
+          }
         }
       }
     },
@@ -203,6 +317,12 @@
             "state": "translated",
             "value": "toplam %@ içinde"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "of %@ total"
+          }
         }
       }
     },
@@ -213,6 +333,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Boş disk alanı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free disk space"
           }
         }
       }

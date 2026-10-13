@@ -179,3 +179,33 @@ public struct CleanupRoot: Sendable, Hashable {
         }
     }
 }
+
+/// Which cleanup scanners the user has switched on or off (CLAUDE.md §6.3, §6.9).
+///
+/// A rule that is off by default (language files) stays off until the user turns it on; one that
+/// is on stays on until turned off. Stored in `UserDefaults`, one key per scanner. `UserDefaults`
+/// is thread-safe, which is why the wrapper may cross isolation boundaries.
+public struct ScannerPreferences: @unchecked Sendable {
+    private let defaults: UserDefaults
+
+    public init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+    }
+
+    private func key(_ rule: CleanupRule) -> String { "cleanup.scanner.\(rule.id.rawValue)" }
+
+    public func isEnabled(_ rule: CleanupRule) -> Bool {
+        defaults.object(forKey: key(rule)) as? Bool ?? rule.isEnabledByDefault
+    }
+
+    public func setEnabled(_ isOn: Bool, for rule: CleanupRule) {
+        defaults.set(isOn, forKey: key(rule))
+    }
+}
+
+extension CleanupScanner {
+    /// The scanners the user has left on.
+    public static func enabled(preferences: ScannerPreferences = ScannerPreferences()) -> [CleanupScanner] {
+        CleanupCatalogue.all.filter { preferences.isEnabled($0) }.map { CleanupScanner(rule: $0) }
+    }
+}

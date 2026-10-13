@@ -8,6 +8,12 @@
             "state": "translated",
             "value": "Temizlik"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup"
+          }
         }
       }
     },
@@ -17,6 +23,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gereksiz dosyaları bulur. Ne silineceğini görmeden hiçbir şey silinmez."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finds files you do not need. Nothing is removed until you have seen what it is."
           }
         }
       }
@@ -28,6 +40,12 @@
             "state": "translated",
             "value": "Taramayı Başlat"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Scan"
+          }
         }
       }
     },
@@ -37,6 +55,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Seçilenleri İncele"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review Selected"
           }
         }
       }
@@ -48,6 +72,12 @@
             "state": "translated",
             "value": "İptal"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
         }
       }
     },
@@ -57,6 +87,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tümünü seç"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select all"
           }
         }
       }
@@ -68,6 +104,12 @@
             "state": "translated",
             "value": "Seçimi kaldır"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deselect"
+          }
         }
       }
     },
@@ -78,6 +120,12 @@
             "state": "translated",
             "value": "Temizlenecek bir şey yok"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing to clean up"
+          }
         }
       }
     },
@@ -87,6 +135,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bu Mac'te şu an kayda değer önbellek birikmemiş. Birkaç gün kullandıktan sonra tekrar bak."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No notable cache has built up on this Mac. Check again after a few days of use."
           }
         }
       }
@@ -99,6 +153,12 @@
             "state": "translated",
             "value": "Sistem izni gerekiyor — bu yetenek henüz eklenmedi"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs administrator access, which is not available yet"
+          }
         }
       }
     },
@@ -108,6 +168,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Uygulama açık, atlandı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The app is open, skipped"
           }
         }
       }
@@ -119,6 +185,12 @@
             "state": "translated",
             "value": "Korunan yol — hiçbir koşulda silinmez"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protected path, never removed"
+          }
         }
       }
     },
@@ -129,6 +201,12 @@
             "state": "translated",
             "value": "Üstteki öğenin içinde, ayrıca sayılmadı"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inside an item above, not counted separately"
+          }
         }
       }
     },
@@ -138,6 +216,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bu tarayıcının kapsamı dışında"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Outside this scanner's scope"
           }
         }
       }
@@ -150,6 +234,12 @@
             "state": "translated",
             "value": "%1$lld öğe · %2$@"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld items · %2$@"
+          }
         }
       }
     },
@@ -159,6 +249,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$lld öğe seçildi · %2$@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld items selected · %2$@"
           }
         }
       }
@@ -170,6 +266,12 @@
             "state": "translated",
             "value": "%lld öğe atlandı"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld items skipped"
+          }
         }
       }
     },
@@ -179,6 +281,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Uygulama önbellekleri"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App caches"
           }
         }
       }
@@ -190,6 +298,12 @@
             "state": "translated",
             "value": "Uygulamaların hızlanmak için sakladığı geçici dosyalar. Silinince uygulamalar bunları gerektiğinde yeniden oluşturur."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temporary files apps keep to run faster. Apps recreate them when needed."
+          }
         }
       }
     },
@@ -199,6 +313,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Günlük dosyaları"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log files"
           }
         }
       }
@@ -210,6 +330,12 @@
             "state": "translated",
             "value": "Uygulamaların tuttuğu tanı kayıtları. Bir sorunu bildirmeyi planlamıyorsan gerekmez."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnostic records apps keep. You do not need them unless you plan to report a problem."
+          }
         }
       }
     },
@@ -219,6 +345,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geliştirici artıkları"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Developer leftovers"
           }
         }
       }
@@ -230,6 +362,12 @@
             "state": "translated",
             "value": "Xcode derleme çıktıları ve paket yöneticisi önbellekleri. Bir sonraki derlemede yeniden üretilir — ama o derleme daha uzun sürer."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode build output and package manager caches. They are regenerated on the next build, which then takes longer."
+          }
         }
       }
     },
@@ -239,6 +377,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tarayıcı önbellekleri"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Browser caches"
           }
         }
       }
@@ -250,6 +394,12 @@
             "state": "translated",
             "value": "Safari, Chrome, Firefox, Edge, Brave ve Arc'ın sakladığı sayfa verileri. Açık olan tarayıcılar atlanır. Geçmişine ve parolalarına dokunulmaz."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Page data saved by Safari, Chrome, Firefox, Edge, Brave and Arc. Open browsers are skipped. Your history and passwords are not touched."
+          }
         }
       }
     },
@@ -259,6 +409,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mail ek indirmeleri"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mail attachment downloads"
           }
         }
       }
@@ -270,6 +426,12 @@
             "state": "translated",
             "value": "Açtığın eklerin yerel kopyaları. Postaların ve posta veritabanın korunur; gerekirse ek yeniden indirilir."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Local copies of attachments you opened. Your mail and the mail database are kept; an attachment is downloaded again if needed."
+          }
         }
       }
     },
@@ -279,6 +441,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "iPhone ve iPad yedekleri"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone and iPad backups"
           }
         }
       }
@@ -290,6 +458,12 @@
             "state": "translated",
             "value": "Cihaz yedekleri ve indirilmiş yazılım güncellemeleri. Bir yedek cihazının tek kopyası olabilir — bu yüzden hiçbiri önceden seçilmez."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Device backups and downloaded software updates. A backup can be the only copy of a device, so nothing is preselected."
+          }
         }
       }
     },
@@ -299,6 +473,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Çöp Kutusu"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trash"
           }
         }
       }
@@ -310,6 +490,12 @@
             "state": "translated",
             "value": "Çöp'ü boşaltmak tanımı gereği kalıcıdır; bu öğeler Çöp'e taşınmaz, silinir."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emptying the Trash is permanent by definition; these items are deleted, not moved to the Trash."
+          }
         }
       }
     },
@@ -319,6 +505,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sistem önbellekleri ve günlükleri"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System caches and logs"
           }
         }
       }
@@ -330,6 +522,12 @@
             "state": "translated",
             "value": "Yönetici izni gerektiren sistem klasörleri. Ne olduğunu görebilirsin; silme yeteneği henüz eklenmedi."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System folders that need administrator access. You can see what is there; removal is not available yet."
+          }
         }
       }
     },
@@ -339,6 +537,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "İzin gerekli"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permission needed"
           }
         }
       }
@@ -350,6 +554,12 @@
             "state": "translated",
             "value": "Bazı klasörler okunamadı, çünkü Burnish'in Tam Disk Erişimi yok. İzin vermeden de çalışır, ama bu klasörler taranamaz ve sonuçlara dahil değildir."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some folders could not be read because Burnish does not have Full Disk Access. It works without it, but those folders are not scanned and are not in the results."
+          }
         }
       }
     },
@@ -359,6 +569,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sistem Ayarları'nı Aç"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open System Settings"
           }
         }
       }
@@ -370,6 +586,12 @@
             "state": "translated",
             "value": "Okunamadı (Tam Disk Erişimi gerekli)"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not be read (Full Disk Access needed)"
+          }
         }
       }
     },
@@ -379,6 +601,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Xcode cihaz desteği"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode device support"
           }
         }
       }
@@ -390,6 +618,12 @@
             "state": "translated",
             "value": "Xcode'un bağladığın iPhone, iPad ve diğer cihazlar için sakladığı hata ayıklama sembolleri. Cihaz tekrar bağlanınca yeniden oluşturulur, ama ilk bağlanışta birkaç dakika sürer. Bu yüzden hiçbiri önceden seçilmez."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Debug symbols Xcode keeps for the iPhones, iPads and other devices you connected. They are rebuilt when the device is connected again, but the first sync takes a few minutes, so nothing is preselected."
+          }
         }
       }
     },
@@ -400,6 +634,12 @@
             "state": "translated",
             "value": "Xcode arşivleri"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode archives"
+          }
         }
       }
     },
@@ -409,6 +649,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yayınladığın sürümlerin arşivleri. Eski bir sürümün çökme raporunu çözmek için gereken semboller yalnızca burada olabilir, bu yüzden hiçbiri önceden seçilmez."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archives of the builds you shipped. The symbols needed to read a crash report from an old version may exist only here, so nothing is preselected."
           }
         }
       }

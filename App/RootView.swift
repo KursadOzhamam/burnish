@@ -22,6 +22,8 @@ struct RootView: View {
     @State private var filesModels = FilesModels(history: Self.history)
     @State private var applicationsModel = ApplicationsModel(history: Self.history)
     @State private var performanceModel = PerformanceModel()
+    @AppStorage("onboarding.done") private var onboardingDone = false
+    @State private var dashboardModel = DashboardModel()
     @State private var privacyModel = CleanupModel.privacy(history: Self.history)
     @State private var protectionModel = ProtectionModel(supportDirectory: Self.supportDirectory)
 
@@ -42,8 +44,31 @@ struct RootView: View {
                 }
             }
         }
+        .sheet(isPresented: Binding(get: { !onboardingDone }, set: { if !$0 { onboardingDone = true } })) {
+            OnboardingView { onboardingDone = true }
+        }
         .sheet(isPresented: $showHistory) {
             HistoryView(model: historyModel)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .burnishStartSmartScan)) { _ in
+            selection = .smartScan
+            scanCoordinator.start()
+        }
+        .task { await performanceModel.loadLaunchItems() }
+        // The health score is built only from what scans actually measured (CLAUDE.md §6.1, §10.4).
+        .onChange(of: protectionModel.lastScan) { _, date in
+            guard let date else { return }
+            let threats = protectionModel.findings.filter { $0.severity == .threat }.count
+            dashboardModel.update(threatCount: threats, scannedAt: date)
+        }
+        .onChange(of: performanceModel.launchItems.count) { _, _ in
+            let active = performanceModel.launchItems.filter { !$0.isApple && performanceModel.isEnabled($0) }.count
+            dashboardModel.update(startupItemCount: active)
+        }
+        .onChange(of: scanCoordinator.cleanup.phase.isBusy) { wasBusy, isBusy in
+            if wasBusy, !isBusy, !scanCoordinator.cleanup.categories.isEmpty {
+                dashboardModel.update(scannedAt: Date())
+            }
         }
     }
 
@@ -68,7 +93,7 @@ struct RootView: View {
         switch selection {
         case .dashboard:
             DashboardView(
-                model: DashboardModel(),
+                model: dashboardModel,
                 onStartScan: {
                     selection = .smartScan
                     scanCoordinator.start()

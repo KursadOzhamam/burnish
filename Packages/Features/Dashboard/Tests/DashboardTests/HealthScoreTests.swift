@@ -131,3 +131,26 @@ struct HealthScoreTests {
         #expect(under.earned == 0)
     }
 }
+
+@Suite("Dashboard inputs from scans")
+@MainActor
+struct DashboardInputsTests {
+    @Test("A found threat costs the threat points, and later inputs do not erase it")
+    func inputsAccumulate() {
+        let model = DashboardModel(monitor: MockSystemMonitor(), initial: .sample)
+        let before = model.score.value
+        model.update(threatCount: 1)
+        #expect(model.score.value < before)
+        model.update(startupItemCount: 3)
+        #expect(model.inputs.threatCount == 1, "the threat count survives a later update")
+    }
+
+    @Test("A scan date is remembered, and a clean result keeps full points")
+    func scanDate() {
+        let model = DashboardModel(monitor: MockSystemMonitor(), initial: .sample)
+        let date = Date(timeIntervalSince1970: 1_800_000_000)
+        model.update(threatCount: 0, scannedAt: date)
+        #expect(model.lastScanDate == date)
+        #expect(model.score.components.first { $0.factor == .threats }?.earned == HealthScore.Factor.threats.weight)
+    }
+}

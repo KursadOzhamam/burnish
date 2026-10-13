@@ -69,3 +69,32 @@ struct MaintenanceTaskTests {
         #expect(MaintenanceTask.verifyDisk.command.arguments == ["verifyVolume", "/"])
     }
 }
+
+@Suite("Burnish footprint")
+struct BurnishFootprintTests {
+    @Test("Only what exists is listed, and nothing outside Burnish's own names")
+    func listsExisting() throws {
+        let home = URL(fileURLWithPath: "/private/tmp").appendingPathComponent("BurnishFoot-\(UUID().uuidString)")
+        let library = home.appendingPathComponent("Library")
+        try FileManager.default.createDirectory(at: library.appendingPathComponent("Application Support/Burnish"), withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: library.appendingPathComponent("Application Support/Other"), withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: library.appendingPathComponent("Preferences"), withIntermediateDirectories: true)
+        try Data(repeating: 1, count: 100).write(to: library.appendingPathComponent("Application Support/Burnish/history.sqlite"))
+        try Data(repeating: 1, count: 100).write(to: library.appendingPathComponent("Preferences/com.burnish.app.plist"))
+        try Data(repeating: 1, count: 100).write(to: library.appendingPathComponent("Preferences/com.other.plist"))
+        defer {
+            // Fixture teardown, not product code.
+            // swiftlint:disable:next no_direct_remove_item
+            try? FileManager.default.removeItem(at: home)
+        }
+        let items = BurnishFootprint(home: home, bundleIdentifier: "com.burnish.app", supportFolderName: "Burnish").items()
+        #expect(items.map { $0.url.lastPathComponent }.sorted() == ["Burnish", "com.burnish.app.plist"])
+        #expect(items.allSatisfy { $0.confidence == .medium })
+    }
+
+    @Test("A Mac with no Burnish data lists nothing")
+    func empty() {
+        let home = URL(fileURLWithPath: "/private/tmp/BurnishNoFoot-\(UUID().uuidString)")
+        #expect(BurnishFootprint(home: home).items().isEmpty)
+    }
+}

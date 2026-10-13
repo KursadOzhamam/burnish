@@ -154,7 +154,9 @@ struct PrivacyCatalogueTests {
             // swiftlint:disable:next no_direct_remove_item
             try? FileManager.default.removeItem(at: home)
         }
-        let closed = try await CleanupScanner(rule: CleanupCatalogue.Privacy.chromium, home: home, inspector: StaticRunningApplicationInspector([])).scan { _ in }
+        let closed = try await CleanupScanner(
+            rule: CleanupCatalogue.Privacy.chromium, home: home, inspector: StaticRunningApplicationInspector([])
+        ).scan { _ in }
         #expect(closed.map(\.displayName) == ["History"])
         #expect(closed.allSatisfy { $0.isActionable })
         let running = try await CleanupScanner(

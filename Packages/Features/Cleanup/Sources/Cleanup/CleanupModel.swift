@@ -85,7 +85,7 @@ public final class CleanupModel {
     private var task: Task<Void, Never>?
 
     public init(
-        scanners: [CleanupScanner] = CleanupScanner.all(),
+        scanners: [CleanupScanner] = CleanupScanner.enabled(),
         history: HistoryStore? = nil
     ) {
         self.scanners = scanners

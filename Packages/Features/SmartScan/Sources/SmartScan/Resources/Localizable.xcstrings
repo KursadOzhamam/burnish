@@ -8,6 +8,12 @@
             "state": "translated",
             "value": "Akıllı Tarama"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Scan"
+          }
         }
       }
     },
@@ -17,6 +23,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hafif tarayıcıları birlikte çalıştırır. Hiçbir şey silinmez — sadece ne bulunduğunu gösterir."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Runs the light scanners together. Nothing is deleted; it only shows what was found."
           }
         }
       }
@@ -28,6 +40,12 @@
             "state": "translated",
             "value": "Taramayı Başlat"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start Scan"
+          }
         }
       }
     },
@@ -37,6 +55,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "İptal"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
           }
         }
       }
@@ -49,6 +73,12 @@
             "state": "translated",
             "value": "Bulunan"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Found"
+          }
         }
       }
     },
@@ -58,6 +88,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tarama tamamlandı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan complete"
           }
         }
       }
@@ -70,6 +106,12 @@
             "state": "translated",
             "value": "Hiçbir şey silinmedi. Ne yapılacağını sen seçeceksin."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing was deleted. You choose what happens next."
+          }
         }
       }
     },
@@ -79,6 +121,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tarama iptal edildi"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan cancelled"
           }
         }
       }
@@ -91,6 +139,12 @@
             "state": "translated",
             "value": "Kopya bulucu, benzer fotoğraflar ve Space Lens bu taramaya dahil değil — çok daha uzun sürerler, onları ayrıca başlatabilirsin."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The duplicate finder, similar pictures and Space Lens are not part of this scan: they take much longer, and you can start them separately."
+          }
         }
       }
     },
@@ -100,6 +154,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld öğe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld items"
           }
         }
       }
@@ -111,6 +171,12 @@
             "state": "translated",
             "value": "Temizlenmeye hazır"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ready to clean"
+          }
         }
       }
     },
@@ -120,6 +186,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sonuçları İncele"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review Results"
           }
         }
       }
@@ -131,6 +203,12 @@
             "state": "translated",
             "value": "Yeniden Tara"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan Again"
+          }
         }
       }
     },
@@ -141,6 +219,12 @@
             "state": "translated",
             "value": "Bazı klasörler okunamadı (Tam Disk Erişimi gerekli); onlar dahil değil."
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some folders could not be read (Full Disk Access needed); they are not included."
+          }
         }
       }
     },
@@ -150,6 +234,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ayrıca elle seçebileceğin %@ daha var."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There is %@ more you can select by hand."
           }
         }
       }
