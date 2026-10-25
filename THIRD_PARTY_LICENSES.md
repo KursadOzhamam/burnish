@@ -37,12 +37,12 @@ Her kural kaynağı **tek tek** lisans doğrulamasından geçer. Doğrulanana ka
 | Kaynak | Kullanım koşulu | Durum |
 |---|---|---|
 | Burnish kendi listesi | Tescilli (bizim) | ✅ kullanımda |
-| **macos-sha1.txt** — 232 macOS SHA-1 (`Tools/BlocklistBuilder/Lists`) | Proje sahibince sağlandı (2026-10-26); **kaynağı ve kullanım koşulu henüz yazılmadı** | ⚠️ kullanımda; satıştan önce kaynak ve koşul bu satıra işlenecek |
+| **macos-sha1.txt** — 232 macOS SHA-1 (`Tools/BlocklistBuilder/Lists`) | Kaynak: **Objective-See** açık kaynak macOS zararlı yazılım koleksiyonu (proje sahibinin beyanı, 2026-10-26). Proje sahibi kullanımın serbest ve yasal olduğunu beyan etti. Not: github.com/objective-see/malware deposu GPL-3.0; Burnish'e GPL kod veya örnek girmez, yalnızca olgusal veri olan hash değerleri girer (karar 2026-10-26) | ✅ kullanımda — proje sahibinin onayıyla |
 | **MalwareBazaar** (abuse.ch) — macOS örneklerinin SHA-256 ve aile adları, `Tools/BlocklistBuilder` ile | Ücretsiz API "adil kullanım" ilkeleriyle; abuse.ch SSS: ticari/kâr amaçlı kullanım **ücretli kurumsal API aboneliği gerektirebilir** (2026-10-26 okundu) | ⚠️ geliştirmede kullanımda; **satıştan önce** abuse.ch ile ticari koşul netleştirilecek (R16) |
 
 | Değerlendirilip kullanılmayan | Neden |
 |---|---|
-| objective-see/malware | GPL-3.0 ve hazır hash listesi yok: 230 şifreli zip içinde ~2,4 GB canlı örnek. Hash çıkarmak örnekleri indirip açmayı gerektiriyordu; MalwareBazaar seçildi (2026-10-26). |
+| objective-see/malware (örnek arşivi) | Örneklerin kendisi indirilip hash'lenmedi: 230 şifreli zip içinde ~2,4 GB canlı örnek. Objective-See kaynaklı hash'ler yukarıdaki `macos-sha1.txt` ile hazır liste olarak geldi. |
 
 ## Apple framework'leri
 

@@ -1,7 +1,8 @@
 # macOS malware, SHA-1 (40 hex digits), one per line.
-# Source: list supplied by the project owner on 2026-10-26; origin and terms to be recorded in
-# THIRD_PARTY_LICENSES.md before release. A name may follow the hash after a space; without one,
-# entries are reported as "macOS malware".
+# Source: Objective-See's open-source macOS malware collection, supplied by the project owner on
+# 2026-10-26, who confirmed it is free to use. Only the hash values are used (see
+# THIRD_PARTY_LICENSES.md). A name may follow the hash after a space; without one, entries are
+# reported as "macOS malware".
 0168dba214e6ea29db24ef5a1dded935ca01cc4f
 01ba5ae651180acecd808ac198ddb5c8009636e7
 02800c0d249f42322a2e25c19e2cf70591db99e5
