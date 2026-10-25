@@ -13,6 +13,7 @@ public enum MaintenanceTask: String, Sendable, CaseIterable, Identifiable {
     case runPeriodicScripts
     case resetQuickLook
     case resetFontCache
+    case thinLocalSnapshots
 
     public var id: String { rawValue }
 
@@ -25,6 +26,7 @@ public enum MaintenanceTask: String, Sendable, CaseIterable, Identifiable {
         case .verifyDisk: .verifyDisk
         case .purgeMemory: .purgeMemory
         case .runPeriodicScripts: .runPeriodicScripts
+        case .thinLocalSnapshots: .thinLocalSnapshots
         }
     }
 

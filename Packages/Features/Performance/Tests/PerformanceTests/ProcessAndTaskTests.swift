@@ -78,6 +78,7 @@ struct MaintenanceTaskTests {
         #expect(MaintenanceTask.flushDNS.command.arguments == ["-flushcache"])
         #expect(MaintenanceTask.purgeMemory.command.executable == "/usr/sbin/purge")
         #expect(MaintenanceTask.verifyDisk.command.arguments == ["verifyVolume", "/"])
+        #expect(MaintenanceTask.thinLocalSnapshots.helperCommand == .thinLocalSnapshots)
     }
 }
 

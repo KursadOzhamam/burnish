@@ -4,12 +4,29 @@ import Foundation
 
 @Suite("Helper commands")
 struct HelperCommandTests {
-    @Test("Every command is an absolute executable with plain arguments")
+    @Test("Every step of every command is an absolute executable with plain arguments")
     func fixed() {
         for command in HelperCommand.allCases {
-            #expect(command.command.executable.hasPrefix("/"))
-            #expect(!command.command.arguments.contains { $0.contains(";") || $0.contains("$") || $0.contains("`") || $0.contains("|") })
+            #expect(!command.steps.isEmpty)
+            for step in command.steps {
+                #expect(step.executable.hasPrefix("/"))
+                #expect(!step.arguments.contains { $0.contains(";") || $0.contains("$") || $0.contains("`") || $0.contains("|") })
+            }
         }
+    }
+
+    @Test("Flushing DNS also makes mDNSResponder drop its own cache")
+    func dnsSteps() {
+        let steps = HelperCommand.flushDNS.steps
+        #expect(steps.map(\.executable) == ["/usr/bin/dscacheutil", "/usr/bin/killall"])
+        #expect(steps[1].arguments == ["-HUP", "mDNSResponder"])
+    }
+
+    @Test("Thinning local snapshots names no snapshot: macOS chooses what to reclaim")
+    func snapshotThinning() {
+        let step = HelperCommand.thinLocalSnapshots.command
+        #expect(step.executable == "/usr/bin/tmutil")
+        #expect(step.arguments == ["thinlocalsnapshots", "/", "999999999999", "4"])
     }
 
     @Test("An unknown name is not a command")
@@ -22,7 +39,9 @@ struct HelperCommandTests {
     @Test("There is no command that takes a free-form argument")
     func noFreeText() {
         // The set is closed: the raw values are exactly the documented names.
-        #expect(Set(HelperCommand.allCases.map(\.rawValue)) == ["flushDNS", "reindexSpotlight", "verifyDisk", "purgeMemory", "runPeriodicScripts"])
+        #expect(Set(HelperCommand.allCases.map(\.rawValue)) == [
+            "flushDNS", "reindexSpotlight", "verifyDisk", "purgeMemory", "runPeriodicScripts", "thinLocalSnapshots"
+        ])
     }
 }
 

@@ -392,13 +392,13 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Safari, Chrome, Firefox, Edge, Brave ve Arc'ın sakladığı sayfa verileri. Açık olan tarayıcılar atlanır. Geçmişine ve parolalarına dokunulmaz."
+            "value": "Safari, Chrome, Firefox, Edge, Brave, Arc ve Opera'nın sakladığı sayfa verileri. Açık olan tarayıcılar atlanır. Geçmişine ve parolalarına dokunulmaz."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Page data saved by Safari, Chrome, Firefox, Edge, Brave and Arc. Open browsers are skipped. Your history and passwords are not touched."
+            "value": "Page data saved by Safari, Chrome, Firefox, Edge, Brave, Arc and Opera. Open browsers are skipped. Your history and passwords are not touched."
           }
         }
       }
@@ -856,13 +856,13 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chrome, Brave, Edge, Arc ve Vivaldi izleri"
+            "value": "Chrome, Brave, Edge, Arc, Vivaldi ve Opera izleri"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chrome, Brave, Edge, Arc and Vivaldi traces"
+            "value": "Chrome, Brave, Edge, Arc, Vivaldi and Opera traces"
           }
         }
       }
@@ -1464,13 +1464,13 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chrome, Brave, Edge, Arc ve Vivaldi'nin ek profillerindeki ve misafir profilindeki geçmiş, çerezler ve form verileri. Kayıtlı parolalara dokunulmaz; tarayıcı açıkken atlanır."
+            "value": "Chrome, Brave, Edge, Arc, Vivaldi ve Opera'nın ek profillerindeki ve misafir profilindeki geçmiş, çerezler ve form verileri. Kayıtlı parolalara dokunulmaz; tarayıcı açıkken atlanır."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "History, cookies and form data in the extra and guest profiles of Chrome, Brave, Edge, Arc and Vivaldi. Saved passwords are never touched; skipped while the browser is open."
+            "value": "History, cookies and form data in the extra and guest profiles of Chrome, Brave, Edge, Arc, Vivaldi and Opera. Saved passwords are never touched; skipped while the browser is open."
           }
         }
       }

@@ -165,3 +165,54 @@ struct HomeCacheTests {
         #expect(!guardrail.isAllowed(home.appendingPathComponent(".npm/settings")))
     }
 }
+
+/// Opera keeps its main profile in its top folder and extra ones under `_side_profiles`.
+@Suite("Opera", .serialized)
+struct OperaTests {
+    private let opera = "Library/Application Support/com.operasoftware.Opera"
+
+    @Test("Opera's main and side profiles are found; its saved passwords are not reachable")
+    func mainAndSideProfiles() async throws {
+        let home = URL(fileURLWithPath: "/private/tmp").appendingPathComponent("BurnishOpera-\(UUID().uuidString)")
+        defer {
+            // Fixture teardown, not product code.
+            // swiftlint:disable:next no_direct_remove_item
+            try? FileManager.default.removeItem(at: home)
+        }
+        for relative in ["\(opera)/History", "\(opera)/Login Data", "\(opera)/_side_profiles/ab12/Cookies"] {
+            let url = home.appendingPathComponent(relative)
+            try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try Data(repeating: 1, count: 4_096).write(to: url)
+        }
+        let idle = StaticRunningApplicationInspector([])
+        let main = CleanupScanner(rule: CleanupCatalogue.Privacy.chromium, home: home, inspector: idle)
+        let side = CleanupScanner(rule: CleanupCatalogue.Privacy.chromiumProfiles, home: home, inspector: idle)
+
+        #expect(try await main.scan { _ in }.map(\.url.lastPathComponent) == ["History"])
+        #expect(try await side.scan { _ in }.map(\.displayName) == ["Cookies · ab12"])
+
+        for scanner in [main, side] {
+            let guardrail = PathGuard(allowedRoots: scanner.allowedRoots, allowedTargets: scanner.allowedTargets, home: home)
+            #expect(!guardrail.isAllowed(home.appendingPathComponent("\(opera)/Login Data")))
+        }
+    }
+
+    @Test("Opera GX running blocks its files, because its bundle id shares Opera's prefix")
+    func gxBlocks() async throws {
+        let home = URL(fileURLWithPath: "/private/tmp").appendingPathComponent("BurnishOperaGX-\(UUID().uuidString)")
+        defer {
+            // Fixture teardown, not product code.
+            // swiftlint:disable:next no_direct_remove_item
+            try? FileManager.default.removeItem(at: home)
+        }
+        let url = home.appendingPathComponent("Library/Application Support/com.operasoftware.OperaGX/History")
+        try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try Data(repeating: 1, count: 4_096).write(to: url)
+        let items = try await CleanupScanner(
+            rule: CleanupCatalogue.Privacy.chromium, home: home,
+            inspector: StaticRunningApplicationInspector(["com.operasoftware.OperaGX"])
+        ).scan { _ in }
+        #expect(items.count == 1)
+        #expect(items.allSatisfy { $0.blockedReason == .ownerRunning })
+    }
+}

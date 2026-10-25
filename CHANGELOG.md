@@ -56,6 +56,14 @@ Bu dosya [Keep a Changelog](https://keepachangelog.com/) biçimini ve
   - Hız: `resetQuickLook` ve `resetFontCache` bakım görevleri (yalnızca kullanıcının önbelleği,
     yardımcı gerekmez)
   - `Tools/DryRun` gizlilik tarayıcılarını da gösterir
+  - Opera ve Opera GX: tarayıcı önbellekleri, ana profil (Default klasörü yok) ve
+    `_side_profiles` altındaki ek profiller
+  - Hız: `thinLocalSnapshots` (yerel Time Machine anlık görüntülerini inceltme, yardımcı ile);
+    DNS temizliği artık `mDNSResponder`'a HUP da gönderiyor
+  - Açılış öğeleri: kullanıcının kendi (Apple dışı) ajanı kaldırılabilir — onay sayfası,
+    plist Çöp'e, işlem geçmişine yazılır, ardından `launchctl bootout`
+  - Yardımcı protokolü **2**: bir komut birden çok sabit adım çalıştırabilir; eski yardımcı
+    sürüm uyuşmazlığı olarak görünür ve yeniden kurulması istenir
 
 ### Düzeltildi
 - `SpaceLensView` derlenmiyordu (`scheme` tanımsızdı; son tasarım commit'inde kalmıştı).

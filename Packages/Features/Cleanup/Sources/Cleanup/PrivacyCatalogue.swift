@@ -44,8 +44,14 @@ extension CleanupCatalogue {
                     "Library/Application Support/\(profile.path)/Default/\(file.path)",
                     listsChildren: false, owner: profile.owner, label: nil, labelKey: nil
                 )
+            } } + operaProfiles.flatMap { profile in files.map { file in
+                // Opera keeps its main profile in the top folder itself, with no "Default".
+                CleanupRoot.home(
+                    "Library/Application Support/\(profile.path)/\(file.path)",
+                    listsChildren: false, owner: profile.owner, label: nil, labelKey: nil
+                )
             } },
-            ownerBundlePrefixes: profiles.map(\.owner),
+            ownerBundlePrefixes: profiles.map(\.owner) + operaProfiles.map(\.owner),
             confidence: .low
         )
 
@@ -63,8 +69,15 @@ extension CleanupCatalogue {
                     prefixes: ["Profile ", "Guest Profile"],
                     owner: profile.owner
                 )
+            } + operaProfiles.map { profile in
+                // Opera's extra profiles live under "_side_profiles", one folder each.
+                CleanupRoot.profiles(
+                    "Library/Application Support/\(profile.path)/_side_profiles",
+                    files: files.map(\.path),
+                    owner: profile.owner
+                )
             },
-            ownerBundlePrefixes: profiles.map(\.owner),
+            ownerBundlePrefixes: profiles.map(\.owner) + operaProfiles.map(\.owner),
             confidence: .low
         )
 
@@ -116,6 +129,12 @@ extension CleanupCatalogue {
             ("Microsoft Edge", "com.microsoft.edgemac"),
             ("Arc/User Data", "company.thebrowser.Browser"),
             ("Vivaldi", "com.vivaldi.Vivaldi")
+        ]
+
+        /// Opera and Opera GX: Chromium files, but their own folder layout.
+        private static let operaProfiles: [(path: String, owner: String)] = [
+            ("com.operasoftware.Opera", "com.operasoftware.Opera"),
+            ("com.operasoftware.OperaGX", "com.operasoftware.OperaGX")
         ]
 
         /// Saved passwords ("Login Data") are never on this list.

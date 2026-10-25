@@ -39,6 +39,7 @@ enum PerfStrings {
     static let taskNeedsHelper = key("performance.task.needsHelper")
     static let startupNote = key("performance.startup.note")
     static let startupMissing = key("performance.startup.missing")
+    static let startupRemove = key("performance.startup.remove")
     static let startupApple = key("performance.startup.apple")
     static let startupDaemon = key("performance.startup.daemon")
     static let startupUserAgent = key("performance.startup.userAgent")

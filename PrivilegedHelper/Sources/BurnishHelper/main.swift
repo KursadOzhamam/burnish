@@ -44,25 +44,37 @@ final class HelperService: NSObject, NSXPCListenerDelegate, HelperXPC {
             reply(-1, "unknown command")
             return
         }
-        let fixed = command.command
-        // The executable and arguments come from the closed `HelperCommand` enum, never from the
-        // caller's text (decision 2026-10-13).
+        // Steps run in order and stop at the first failure, whose status is the reply's.
+        var output = ""
+        for step in command.steps {
+            let (status, text) = Self.run(step)
+            output += text
+            guard status == 0 else {
+                reply(status, output)
+                return
+            }
+        }
+        reply(0, output)
+    }
+
+    /// Runs one fixed step. The executable and arguments come from the closed `HelperCommand`
+    /// enum, never from the caller's text (decision 2026-10-13).
+    private static func run(_ step: (executable: String, arguments: [String])) -> (Int32, String) {
         // swiftlint:disable:next no_shell_in_helper
         let process = Process()
-        process.executableURL = URL(fileURLWithPath: fixed.executable)
-        process.arguments = fixed.arguments
+        process.executableURL = URL(fileURLWithPath: step.executable)
+        process.arguments = step.arguments
         let pipe = Pipe()
         process.standardOutput = pipe
         process.standardError = pipe
         do {
             try process.run()
         } catch {
-            reply(-1, "could not start: \(error.localizedDescription)")
-            return
+            return (-1, "could not start: \(error.localizedDescription)")
         }
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         process.waitUntilExit()
-        reply(process.terminationStatus, String(decoding: data, as: UTF8.self))
+        return (process.terminationStatus, String(decoding: data, as: UTF8.self))
     }
 
     func removeSystemItems(_ paths: [String], reply: @escaping ([String]) -> Void) {

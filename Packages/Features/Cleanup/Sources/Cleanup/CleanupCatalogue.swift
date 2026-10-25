@@ -26,7 +26,9 @@ public enum CleanupCatalogue {
         "Mozilla",
         "com.microsoft.edgemac",
         "BraveSoftware",
-        "company.thebrowser.Browser"
+        "company.thebrowser.Browser",
+        "com.operasoftware.Opera",
+        "com.operasoftware.OperaGX"
     ]
 
     /// Cache folders owned by the developer-junk scanner rather than the general one.
@@ -197,7 +199,9 @@ public enum CleanupCatalogue {
             .home("Library/Caches/Firefox", owner: "org.mozilla.firefox"),
             .home("Library/Caches/com.microsoft.edgemac", owner: "com.microsoft.edgemac"),
             .home("Library/Caches/BraveSoftware", owner: "com.brave.Browser"),
-            .home("Library/Caches/company.thebrowser.Browser", owner: "company.thebrowser.Browser")
+            .home("Library/Caches/company.thebrowser.Browser", owner: "company.thebrowser.Browser"),
+            .home("Library/Caches/com.operasoftware.Opera", owner: "com.operasoftware.Opera"),
+            .home("Library/Caches/com.operasoftware.OperaGX", owner: "com.operasoftware.OperaGX")
         ],
         ownerBundlePrefixes: [
             "com.apple.Safari",
@@ -205,7 +209,8 @@ public enum CleanupCatalogue {
             "org.mozilla.firefox",
             "com.microsoft.edgemac",
             "com.brave.Browser",
-            "company.thebrowser.Browser"
+            "company.thebrowser.Browser",
+            "com.operasoftware.Opera"
         ],
         confidence: .high,
         requiresFullDiskAccess: true

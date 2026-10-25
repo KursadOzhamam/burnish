@@ -4,6 +4,11 @@ import AppKit
 import Observation
 import UserNotifications
 import HelperProtocol
+import CoreKit
+import ScanEngine
+import SafetyKit
+import SafetyKitMac
+import DeletionUI
 
 /// State behind the Performance section (CLAUDE.md §6.5).
 @Observable
@@ -34,6 +39,19 @@ public final class PerformanceModel {
     private let catalogue: LaunchItemCatalogue
     private let control: LaunchControl
 
+    // MARK: Startup item removal
+
+    /// Removal goes through the same approve-then-act flow and `DeletionService` as every other
+    /// deletion (CLAUDE.md §4): the plist is moved to the Trash and recorded in history.
+    private let approval = ApprovalFlow()
+    private let history: HistoryStore?
+    public let canRecordHistory: Bool
+    private var pendingRemoval: LaunchItem?
+    public var pendingPlan: DeletionPlan? { approval.pendingPlan }
+    public var removalReport: DeletionReport? { approval.report }
+    public var isRemoving: Bool { approval.isDeleting }
+    public static let launchItemScannerID = ScannerID("performance.launchItems")
+
     // MARK: Processes
 
     public private(set) var topCPU: [ProcessLoad] = []
@@ -54,9 +72,12 @@ public final class PerformanceModel {
         catalogue: LaunchItemCatalogue = LaunchItemCatalogue(),
         control: LaunchControl = LaunchControl(),
         defaults: UserDefaults? = .standard,
+        history: HistoryStore? = nil,
         notify: @escaping @Sendable (MemoryPressureWatcher.Level) -> Void = PerformanceModel.postNotification,
         requestPermission: @escaping @Sendable () -> Void = PerformanceModel.askForNotificationPermission
     ) {
+        self.history = history
+        self.canRecordHistory = history != nil
         self.requestPermission = requestPermission
         self.helper = helper
         self.runner = runner
@@ -122,6 +143,47 @@ public final class PerformanceModel {
             launchError = "\(error)"
         }
     }
+
+    /// Opens the confirmation sheet for removing a user agent. Touches nothing yet.
+    ///
+    /// The plist is the only target: the guard allows that exact file and nothing beside it.
+    public func prepareRemoval(_ item: LaunchItem) {
+        guard item.canBeRemovedByUser else { return }
+        let size = (try? item.plistURL.resourceValues(forKeys: [.totalFileAllocatedSizeKey]))?.totalFileAllocatedSize ?? 0
+        let target = ScanItem(
+            scanner: Self.launchItemScannerID, url: item.plistURL, displayName: item.label,
+            size: ByteCount(Int64(size)), confidence: .low
+        )
+        approval.use(
+            DeletionService(
+                guards: [Self.launchItemScannerID: PathGuard(allowedRoots: [], allowedTargets: [item.plistURL])],
+                history: history
+            )
+        )
+        pendingRemoval = item
+        approval.prepare([target])
+    }
+
+    public func dismissRemoval() {
+        approval.dismiss()
+        pendingRemoval = nil
+    }
+
+    /// Runs the approved plan, then stops the job so launchd does not keep running a program
+    /// whose plist is gone.
+    public func confirmRemoval(_ plan: DeletionPlan) {
+        guard let item = pendingRemoval else { return }
+        pendingRemoval = nil
+        let control = control
+        approval.confirm(plan) { [weak self] in
+            Task {
+                try? await control.unload(item)
+                await self?.loadLaunchItems()
+            }
+        }
+    }
+
+    public func finishRemoval() { approval.reset() }
 
     // MARK: Processes
 
