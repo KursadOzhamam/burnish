@@ -31,7 +31,7 @@ public struct ShredderView: View {
         }
         .padding(Spacing.large)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(.background)
+        .pageBackground()
         .fileImporter(isPresented: $isPickingFiles, allowedContentTypes: [.item, .folder], allowsMultipleSelection: true) { result in
             if case .success(let urls) = result { Task { await model.add(urls) } }
         }

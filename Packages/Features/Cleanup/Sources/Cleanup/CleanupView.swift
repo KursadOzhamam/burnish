@@ -93,7 +93,7 @@ public struct CleanupView: View {
         }
         .padding(Spacing.large)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(.background)
+        .pageBackground()
         .motion(Motion.smooth, value: model.openCategory)
     }
 

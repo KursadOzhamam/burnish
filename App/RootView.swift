@@ -224,7 +224,7 @@ struct PlaceholderView: View {
         }
         .padding(Spacing.large)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(.background)
+        .pageBackground()
     }
 }
 

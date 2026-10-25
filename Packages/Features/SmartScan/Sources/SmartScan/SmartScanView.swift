@@ -60,7 +60,7 @@ public struct SmartScanView: View {
         }
         .padding(Spacing.large)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.background)
+        .pageBackground()
         .motion(Motion.smooth, value: phase)
     }
 

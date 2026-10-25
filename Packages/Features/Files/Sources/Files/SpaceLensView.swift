@@ -31,7 +31,7 @@ public struct SpaceLensView: View {
         }
         .padding(Spacing.large)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(.background)
+        .pageBackground()
         .sheet(item: Binding(
             get: { model.pendingPlan.map(IdentifiedPlan.init) },
             set: { if $0 == nil { model.dismissConfirmation() } }
@@ -51,7 +51,12 @@ public struct SpaceLensView: View {
     private var idleState: some View {
         VStack(spacing: Spacing.large) {
             Spacer()
-            EmptyState(symbol: "chart.pie", title: FilesStrings.mapTitle, message: FilesStrings.mapHint)
+            StatusRing(symbol: "chart.pie", title: "", diameter: 150)
+            Text(FilesStrings.mapHint)
+                .font(.system(size: 14))
+                .foregroundStyle(scheme.theme.inkSecondary)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: 420)
             Picker(selection: Binding(get: { model.root }, set: { model.root = $0 })) {
                 ForEach(model.rootOptions, id: \.path) { url in
                     Text(url.path == FileManager.default.homeDirectoryForCurrentUser.path

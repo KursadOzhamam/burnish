@@ -31,7 +31,7 @@ public struct LargeFilesView: View {
         }
         .padding(Spacing.large)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(.background)
+        .pageBackground()
         .sheet(item: Binding(
             get: { model.pendingPlan.map(IdentifiedPlan.init) },
             set: { if $0 == nil { model.dismissConfirmation() } }
@@ -47,13 +47,7 @@ public struct LargeFilesView: View {
     }
 
     private var idleState: some View {
-        VStack(spacing: Spacing.large) {
-            Spacer()
-            EmptyState(symbol: "doc.zipper", title: FilesStrings.title, message: FilesStrings.subtitle)
-            ScanButton(title: FilesStrings.scan, palette: section.textSafePalette, action: model.scan)
-            Spacer()
-        }
-        .frame(maxWidth: .infinity)
+        ToolIdleState(symbol: "doc.zipper", message: FilesStrings.subtitle, actionTitle: FilesStrings.scan, action: model.scan)
     }
 
     private func scanningState(_ progress: ScanProgress, remaining: TimeInterval?) -> some View {
