@@ -64,6 +64,12 @@ Bu dosya [Keep a Changelog](https://keepachangelog.com/) biçimini ve
     plist Çöp'e, işlem geçmişine yazılır, ardından `launchctl bootout`
   - Yardımcı protokolü **2**: bir komut birden çok sabit adım çalıştırabilir; eski yardımcı
     sürüm uyuşmazlığı olarak görünür ve yeniden kurulması istenir
+- **Bilinen zararlı hash listesi** (§6.4): `Tools/BlocklistBuilder` MalwareBazaar'dan macOS
+  örneklerinin SHA-256'larını ve aile adlarını çeker (Mach-O, DMG ve AMOS, Poseidon, Banshee gibi
+  etiketler), Ed25519 ile imzalayıp `Protection/Resources/blocklist.{json,sig}` olarak yazar.
+  Uygulama paketteki listeyi açılışta doğrular; imza tutmazsa listeyi hiç kullanmaz. Uygulama
+  internete çıkmaz, hiçbir örnek indirilmez. İmza anahtarı depo dışında,
+  `~/.config/burnish/blocklist-signing.key` — 5 yeni test.
 - **Uygulama ikonu**: disk plakasını parlatan fırça ve sabun baloncukları, uygulamanın kendi
   çivit → mor (#7044E8) → lila paletinde. Tamamen kodla çizilir: `swift scripts/make-icon.swift
   App/Assets.xcassets/AppIcon.appiconset` ile yeniden üretilir.

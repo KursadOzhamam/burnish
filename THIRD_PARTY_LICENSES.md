@@ -37,7 +37,11 @@ Her kural kaynağı **tek tek** lisans doğrulamasından geçer. Doğrulanana ka
 | Kaynak | Kullanım koşulu | Durum |
 |---|---|---|
 | Burnish kendi listesi | Tescilli (bizim) | ✅ kullanımda |
-| _(eklenecek)_ | | beklemede |
+| **MalwareBazaar** (abuse.ch) — macOS örneklerinin SHA-256 ve aile adları, `Tools/BlocklistBuilder` ile | Ücretsiz API "adil kullanım" ilkeleriyle; abuse.ch SSS: ticari/kâr amaçlı kullanım **ücretli kurumsal API aboneliği gerektirebilir** (2026-10-26 okundu) | ⚠️ geliştirmede kullanımda; **satıştan önce** abuse.ch ile ticari koşul netleştirilecek (R16) |
+
+| Değerlendirilip kullanılmayan | Neden |
+|---|---|
+| objective-see/malware | GPL-3.0 ve hazır hash listesi yok: 230 şifreli zip içinde ~2,4 GB canlı örnek. Hash çıkarmak örnekleri indirip açmayı gerektiriyordu; MalwareBazaar seçildi (2026-10-26). |
 
 ## Apple framework'leri
 

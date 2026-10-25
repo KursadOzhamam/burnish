@@ -31,6 +31,6 @@ final class AppModels {
         performanceModel = PerformanceModel(history: history)
         dashboardModel = DashboardModel()
         privacyModel = CleanupModel.privacy(history: history)
-        protectionModel = ProtectionModel(supportDirectory: RootView.supportDirectory)
+        protectionModel = ProtectionModel(blocklist: .bundled(), supportDirectory: RootView.supportDirectory)
     }
 }
