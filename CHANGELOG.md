@@ -64,6 +64,15 @@ Bu dosya [Keep a Changelog](https://keepachangelog.com/) biçimini ve
     plist Çöp'e, işlem geçmişine yazılır, ardından `launchctl bootout`
   - Yardımcı protokolü **2**: bir komut birden çok sabit adım çalıştırabilir; eski yardımcı
     sürüm uyuşmazlığı olarak görünür ve yeniden kurulması istenir
+- **Ayarlar** (§6.9):
+  - Kenar çubuğunun altında "Ayarlar" satırı (standart ⌘, penceresini açar)
+  - Genel: dil seçimi (Sistem / Türkçe / English; uygulamanın kendi `AppleLanguages` ayarı,
+    yeniden başlatma düğmesiyle) ve görünüm (Sistem / Açık / Koyu)
+  - Lisans: durum, Ücretsiz/Pro tablosu (`Feature` listesinden), lisans anahtarı girme,
+    etkinleştirme ve kaldırma; anahtar Keychain'de, doğrulama çevrimdışı
+  - Hakkında: sürüm, sistem, işlem geçmişini açma, tanılama bilgisini kopyalama
+  - `LicenseActivation` (Licensing): yalnızca doğrulanan lisans saklanır; açık anahtar yoksa
+    (`LicenseConfiguration.publicKey == nil`, Faz 10'a kadar) "yapılandırılmadı" der — 6 yeni test
 
 ### Düzeltildi
 - `SpaceLensView` derlenmiyordu (`scheme` tanımsızdı; son tasarım commit'inde kalmıştı).

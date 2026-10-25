@@ -66,6 +66,9 @@ struct RootView: View {
         .sheet(isPresented: $showHistory) {
             HistoryView(model: historyModel)
         }
+        .onReceive(NotificationCenter.default.publisher(for: .burnishShowHistory)) { _ in
+            showHistory = true
+        }
         .onReceive(NotificationCenter.default.publisher(for: .burnishStartSmartScan)) { _ in
             selection = .smartScan
             scanCoordinator.start()
@@ -128,6 +131,24 @@ struct RootView: View {
                 .accessibilityAddTraits(isSelected ? .isSelected : [])
             }
             Spacer()
+            // Settings is the standard macOS Settings window (⌘,); this row is a second way in.
+            SettingsLink {
+                HStack(spacing: 12) {
+                    Image(systemName: "gearshape")
+                        .font(.system(size: 15))
+                        .foregroundStyle(theme.inkSecondary)
+                        .frame(width: 22)
+                    Text("sidebar.settings")
+                        .font(.system(size: 13))
+                        .foregroundStyle(theme.ink)
+                    Spacer()
+                }
+                .padding(.horizontal, 14)
+                .padding(.vertical, 10)
+                .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            }
+            .buttonStyle(.plain)
+            .padding(.bottom, 8)
         }
         .padding(.top, 8)
         .padding(.horizontal, 12)

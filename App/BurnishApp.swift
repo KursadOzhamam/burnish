@@ -10,12 +10,16 @@ struct BurnishApp: App {
     @State private var entitlements: any EntitlementResolving = AlwaysProEntitlements()
     /// The menu bar item can be switched off in Settings (CLAUDE.md §6.8).
     @AppStorage("menubar.enabled") private var showsMenuBarItem = false
+    /// §5.1: dark-first, with light fully supported — the system decides unless the user picks one.
+    @AppStorage(AppAppearance.storageKey) private var appearance = AppAppearance.system.rawValue
+
+    private var colorScheme: ColorScheme? { AppAppearance(rawValue: appearance)?.colorScheme }
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environment(\.entitlements, entitlements)
-                // §5.1: dark-first, with light fully supported — so no scheme is forced here.
+                .preferredColorScheme(colorScheme)
                 .frame(minWidth: 940, minHeight: 640)
         }
         // §5.1: transparent title bar with full-size content.
@@ -27,6 +31,8 @@ struct BurnishApp: App {
 
         Settings {
             SettingsView(performance: PerformanceModel())
+                .environment(\.entitlements, entitlements)
+                .preferredColorScheme(colorScheme)
         }
 
         // The binding is read-only on purpose. SwiftUI writes `isInserted` back whenever macOS hides
