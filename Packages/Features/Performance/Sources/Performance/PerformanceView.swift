@@ -5,6 +5,8 @@ import DesignSystem
 import HelperProtocol
 import CoreKitMac
 import SystemMonitor
+import DeletionUI
+import SafetyKit
 
 /// The Performance screen — CLAUDE.md §6.5.
 public struct PerformanceView: View {
@@ -186,13 +188,28 @@ public struct PerformanceView: View {
             if let error = model.launchError {
                 Text(error).font(Typography.caption).foregroundStyle(Semantic.warning.color)
             }
-            ScrollView {
-                LazyVStack(spacing: Spacing.xs) {
-                    ForEach(model.launchItems) { item in launchRow(item) }
+            if let report = model.removalReport {
+                DeletionResultView(report: report, section: section) { model.finishRemoval() }
+            } else if model.isRemoving {
+                ProgressView().frame(maxWidth: .infinity)
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: Spacing.xs) {
+                        ForEach(model.launchItems) { item in launchRow(item) }
+                    }
                 }
             }
         }
         .task { await model.loadLaunchItems() }
+        .sheet(item: Binding(
+            get: { model.pendingPlan.map(IdentifiedPlan.init) },
+            set: { if $0 == nil { model.dismissRemoval() } }
+        )) { wrapper in
+            ConfirmationSheet(
+                plan: wrapper.plan, section: section, canRecordHistory: model.canRecordHistory,
+                onCancel: model.dismissRemoval, onConfirm: { model.confirmRemoval(wrapper.plan) }
+            )
+        }
     }
 
     private func launchRow(_ item: LaunchItem) -> some View {
@@ -214,6 +231,14 @@ public struct PerformanceView: View {
             .labelsHidden()
             .toggleStyle(.switch)
             .disabled(!item.canBeDisabledByUser)
+            if item.canBeRemovedByUser {
+                Button { model.prepareRemoval(item) } label: {
+                    Image(systemName: "trash")
+                }
+                .buttonStyle(.borderless)
+                .help(Text(PerfStrings.startupRemove))
+                .accessibilityLabel(Text(PerfStrings.startupRemove))
+            }
         }
     }
 
@@ -278,4 +303,11 @@ public struct PerformanceView: View {
             }
         }
     }
+}
+
+private struct IdentifiedPlan: Identifiable {
+    let plan: DeletionPlan
+    var id: Int { plan.hashValue }
+
+    init(_ plan: DeletionPlan) { self.plan = plan }
 }

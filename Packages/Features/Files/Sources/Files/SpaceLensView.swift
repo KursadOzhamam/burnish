@@ -8,6 +8,7 @@ import SafetyKit
 /// The Space Lens screen — CLAUDE.md §6.7.
 public struct SpaceLensView: View {
     @State private var model: SpaceLensModel
+    @Environment(\.colorScheme) private var scheme
 
     private var section: AppSection { .files }
 

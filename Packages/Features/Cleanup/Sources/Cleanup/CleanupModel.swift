@@ -127,6 +127,13 @@ public final class CleanupModel {
 
         task = Task { [weak self, scanners] in
             let board = ProgressBoard(count: scanners.count)
+            // Hops back to the main actor on its own, so the child tasks below capture only this
+            // Sendable closure and never the main-actor model itself (Swift 6.2 rejects that).
+            let report: @Sendable (ScanProgress) -> Void = { [weak self] combined in
+                Task { @MainActor in
+                    self?.phase = .scanning(combined)
+                }
+            }
 
             // The scanners read different folders and do not depend on each other, so they run
             // side by side: CLAUDE.md §6.2 asks for a parallel TaskGroup, which bounds the total
@@ -141,9 +148,7 @@ public final class CleanupModel {
                         do {
                             outcome = try await scanner.scanDetailed { progress in
                                 if let combined = board.update(index: index, progress: progress) {
-                                    Task { @MainActor in
-                                        self?.phase = .scanning(combined)
-                                    }
+                                    report(combined)
                                 }
                             }
                         } catch {

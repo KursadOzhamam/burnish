@@ -28,7 +28,7 @@ final class AppModels {
         historyModel = HistoryModel(store: history)
         filesModels = FilesModels(history: history)
         applicationsModel = ApplicationsModel(history: history)
-        performanceModel = PerformanceModel()
+        performanceModel = PerformanceModel(history: history)
         dashboardModel = DashboardModel()
         privacyModel = CleanupModel.privacy(history: history)
         protectionModel = ProtectionModel(supportDirectory: RootView.supportDirectory)

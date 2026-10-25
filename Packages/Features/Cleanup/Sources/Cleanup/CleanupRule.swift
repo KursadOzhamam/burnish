@@ -127,20 +127,52 @@ public struct CleanupRoot: Sendable, Hashable {
     /// "History" is meaningless without saying whose).
     public let labelKey: String?
 
+    /// For a folder of browser profiles: the files to offer inside each profile.
+    ///
+    /// Profile folder names are not known in advance (Firefox's are random, Chromium adds
+    /// "Profile 1", "Profile 2"…), so the root is the folder that holds them. It is *not* an
+    /// allowlist root: that would allow everything beside these files, saved passwords included.
+    /// Instead each matching file that exists becomes an exact target (§4.2).
+    public let profileFiles: [String]
+
+    /// Which profile folders count, by name prefix. Empty means every folder.
+    public let profilePrefixes: [String]
+
+    /// Whether this root is a folder of profiles rather than a cleanup target itself.
+    public var isProfileFolder: Bool { !profileFiles.isEmpty }
+
     public init(
         base: Base,
         path: String,
         listsChildren: Bool = true,
         owners: [String] = [],
         label: String? = nil,
-        labelKey: String? = nil
+        labelKey: String? = nil,
+        profileFiles: [String] = [],
+        profilePrefixes: [String] = []
     ) {
         self.base = base
         self.path = path
-        self.listsChildren = listsChildren
+        // A profile folder is never listed child by child; its named files are the findings.
+        self.listsChildren = profileFiles.isEmpty ? listsChildren : false
         self.owners = owners
         self.label = label
         self.labelKey = labelKey
+        self.profileFiles = profileFiles
+        self.profilePrefixes = profilePrefixes
+    }
+
+    /// A home-relative folder of browser profiles; see `profileFiles`.
+    public static func profiles(
+        _ path: String,
+        files: [String],
+        prefixes: [String] = [],
+        owner: String
+    ) -> CleanupRoot {
+        CleanupRoot(
+            base: .home, path: path, listsChildren: false, owners: [owner],
+            profileFiles: files, profilePrefixes: prefixes
+        )
     }
 
     public static func home(

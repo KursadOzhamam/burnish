@@ -35,6 +35,11 @@ public struct LaunchItem: Identifiable, Sendable, Hashable {
     /// that is not Apple's. A daemon needs the helper (CLAUDE.md §7).
     public var canBeDisabledByUser: Bool { !isApple && scope != .daemon }
 
+    /// Whether Burnish can remove this job outright: the user's own agent, not Apple's. A job
+    /// installed for every user, or as a daemon, belongs to root and to the software that
+    /// installed it; removing it would need the helper to delete launchd files, which it may not.
+    public var canBeRemovedByUser: Bool { !isApple && scope == .userAgent }
+
     public init(
         label: String, plistURL: URL, scope: Scope, program: String?, runsAtLoad: Bool, keepsAlive: Bool
     ) {

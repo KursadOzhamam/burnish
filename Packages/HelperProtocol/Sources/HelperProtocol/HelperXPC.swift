@@ -5,7 +5,8 @@ public enum HelperIdentity {
     public static let machServiceName = "com.burnish.app.helper"
     public static let launchDaemonPlist = "com.burnish.app.helper.plist"
     public static let appIdentifier = "com.burnish.app"
-    public static let protocolVersion = 1
+    /// 2: commands may run several fixed steps (DNS flush), and `thinLocalSnapshots` exists.
+    public static let protocolVersion = 2
 }
 
 /// The XPC interface. Plain Foundation types only, so it crosses the process boundary safely.

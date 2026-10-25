@@ -43,6 +43,32 @@ Bu dosya [Keep a Changelog](https://keepachangelog.com/) biçimini ve
 - `scripts/test.sh` — tüm paketlerin testleri + lint; `--clean` bayat SwiftPM önbelleği için
 - `scripts/run.sh` — derleyip çalıştırır; uygulama `/Applications`'a kurulmaz, derleme
   çıktısından çalışır ki açılan sürüm daima depodaki kod olsun
+- **CleanerSon'dan aktarılanlar** — 10 yeni test:
+  - Temizlik: `packageManagerCaches` (npm, Gradle, CocoaPods spec depoları, pnpm, Yarn, Go
+    indirme önbellekleri; aracın kendi klasörü değil yalnızca önbellek klasörü) ve `toolCaches`
+    (`~/.cache`, hiçbir öğe önceden seçilmez); cihaz desteğine visionOS eklendi
+  - Gizlilik: `firefox` (çerezler, form geçmişi, oturum; yer imleriyle aynı dosyada olduğu için
+    geçmiş yok), `chromiumProfiles` (ek ve misafir profilleri), Vivaldi, `downloadLog`
+    (karantina olay kaydı), Chromium'da journal/Visited Links/Shortcuts dosyaları, Safari'nin
+    kapsayıcı içindeki çerez dosyası ve geçmiş WAL dosyası
+  - `CleanupRoot.profiles` — klasör adları önceden bilinmeyen tarayıcı profilleri için; izin
+    listesine kök değil yalnızca var olan adlandırılmış dosyalar girer (kayıtlı parolalar erişilemez)
+  - Hız: `resetQuickLook` ve `resetFontCache` bakım görevleri (yalnızca kullanıcının önbelleği,
+    yardımcı gerekmez)
+  - `Tools/DryRun` gizlilik tarayıcılarını da gösterir
+  - Opera ve Opera GX: tarayıcı önbellekleri, ana profil (Default klasörü yok) ve
+    `_side_profiles` altındaki ek profiller
+  - Hız: `thinLocalSnapshots` (yerel Time Machine anlık görüntülerini inceltme, yardımcı ile);
+    DNS temizliği artık `mDNSResponder`'a HUP da gönderiyor
+  - Açılış öğeleri: kullanıcının kendi (Apple dışı) ajanı kaldırılabilir — onay sayfası,
+    plist Çöp'e, işlem geçmişine yazılır, ardından `launchctl bootout`
+  - Yardımcı protokolü **2**: bir komut birden çok sabit adım çalıştırabilir; eski yardımcı
+    sürüm uyuşmazlığı olarak görünür ve yeniden kurulması istenir
+
+### Düzeltildi
+- `SpaceLensView` derlenmiyordu (`scheme` tanımsızdı; son tasarım commit'inde kalmıştı).
+- `CleanupModel` tarama ilerlemesi Swift 6.2 derleyicisinde "sending closure" hatası veriyordu;
+  ilerleme artık ana aktöre kendi geçen `@Sendable` bir kapanışla bildiriliyor.
 
 ### Performans
 - Genel Bakış boşta: CPU tek çekirdeğin %74'ünden **%18'ine**, RSS 203 MB'tan **110 MB**'a indi

@@ -61,6 +61,14 @@ public struct LaunchControl: Sendable {
         guard result.succeeded else { throw ControlError.failed(result.output) }
     }
 
+    /// Stops a user agent whose property list has been removed. Best effort: it may not be loaded.
+    /// The plist itself is removed by `DeletionService`, never here.
+    public func unload(_ item: LaunchItem) async throws {
+        guard Self.isValid(label: item.label) else { throw ControlError.invalidLabel }
+        guard item.canBeRemovedByUser else { throw ControlError.notAllowed }
+        _ = try? await runner.run("/bin/launchctl", arguments: ["bootout", "\(domain)/\(item.label)"])
+    }
+
     private func check(_ item: LaunchItem) throws {
         guard Self.isValid(label: item.label) else { throw ControlError.invalidLabel }
         guard item.canBeDisabledByUser else { throw ControlError.notAllowed }

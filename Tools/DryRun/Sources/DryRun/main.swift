@@ -28,7 +28,8 @@ func reasonLabel(_ reason: ScanItem.BlockedReason) -> String {
     }
 }
 
-let scanners = CleanupScanner.all()
+// Privacy scanners too: they share the rule format and the same deletion gate.
+let scanners = CleanupScanner.all() + CleanupCatalogue.Privacy.all.map { CleanupScanner(rule: $0) }
 var grandTotal = ByteCount.zero
 var grandBlocked = ByteCount.zero
 var guards: [ScannerID: PathGuard] = [:]

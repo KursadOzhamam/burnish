@@ -295,13 +295,13 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ad çözümleme kayıtlarını siler; site adresleri yeniden çözülür. Yönetici yetkisi ister."
+            "value": "Ad çözümleme kayıtlarını siler ve mDNSResponder'ın kendi önbelleğini bırakmasını sağlar; site adresleri yeniden çözülür. Yönetici yetkisi ister."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Clears name-lookup records; site addresses are resolved again. Needs administrator rights."
+            "value": "Clears name-lookup records and makes mDNSResponder drop its own cache; site addresses are resolved again. Needs administrator rights."
           }
         }
       }
@@ -519,13 +519,13 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Anahtar bir öğeyi kapatır, silmez: dosya yerinde kalır ve istediğin an geri açabilirsin. Apple'ın öğelerine ve yönetici (daemon) öğelerine dokunulmaz."
+            "value": "Anahtar bir öğeyi kapatır, silmez: dosya yerinde kalır ve istediğin an geri açabilirsin. Çöp kutusu düğmesi kendi öğelerini tamamen kaldırır; dosyası Çöp Sepeti'ne gider. Apple'ın öğelerine ve yönetici (daemon) öğelerine dokunulmaz."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The switch turns an item off, it does not delete it: the file stays and you can turn it back on any time. Apple's items and administrator (daemon) items are not touched."
+            "value": "The switch turns an item off, it does not delete it: the file stays and you can turn it back on any time. The trash button removes your own items for good; the file goes to the Trash. Apple's items and administrator (daemon) items are not touched."
           }
         }
       }
@@ -1086,6 +1086,118 @@
           "stringUnit": {
             "state": "translated",
             "value": "CPU"
+          }
+        }
+      }
+    },
+    "performance.task.resetQuickLook": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick Look önbelleğini sıfırla"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset the Quick Look cache"
+          }
+        }
+      }
+    },
+    "performance.task.resetQuickLook.detail": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önizlemeler ve küçük resimler eski ya da bozuk görünüyorsa yeniden oluşturulmalarını sağlar."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Makes previews and thumbnails be generated again when they look stale or broken."
+          }
+        }
+      }
+    },
+    "performance.task.resetFontCache": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yazı tipi önbelleğini temizle"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear the font cache"
+          }
+        }
+      }
+    },
+    "performance.task.resetFontCache.detail": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yazı tipleri bozuk ya da eksik görünüyorsa kullanıcı yazı tipi önbelleğini siler. Oturumu kapatıp açınca ya da yeniden başlatınca etkili olur."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Removes your font cache when fonts look garbled or missing. Takes effect after logging out or restarting."
+          }
+        }
+      }
+    },
+    "performance.task.thinLocalSnapshots": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yerel Time Machine anlık görüntülerini incelt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thin local Time Machine snapshots"
+          }
+        }
+      }
+    },
+    "performance.task.thinLocalSnapshots.detail": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS'tan yerel anlık görüntülerin kapladığı alanı geri almasını ister. Hangi görüntülerin gideceğine macOS karar verir; Time Machine yedek diskine dokunulmaz. Yönetici yetkisi ister."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Asks macOS to reclaim the space local snapshots take. macOS decides which snapshots go; the Time Machine backup disk is not touched. Needs administrator rights."
+          }
+        }
+      }
+    },
+    "performance.startup.remove": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaldır: öğeyi durdurur ve dosyasını Çöp Sepeti'ne taşır"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove: stops the item and moves its file to the Trash"
           }
         }
       }
