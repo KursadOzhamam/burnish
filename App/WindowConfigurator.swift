@@ -114,7 +114,11 @@ struct FloatingActionHost: NSViewRepresentable {
             if visible {
                 reposition()
                 if panel.parent == nil { parent.addChildWindow(panel, ordered: .above) }
-                panel.orderFront(nil)
+                // `show` runs on every view update (live metrics refresh each second). Ordering a
+                // child window front also brings its parent forward, so doing it every time pulled the
+                // main window over the Settings window a moment after Settings opened. Only when the
+                // panel is not already on screen.
+                if !panel.isVisible { panel.orderFront(nil) }
             } else {
                 if panel.parent != nil { parent.removeChildWindow(panel) }
                 panel.orderOut(nil)
