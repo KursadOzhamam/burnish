@@ -1089,6 +1089,70 @@
           }
         }
       }
+    },
+    "performance.task.resetQuickLook": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick Look önbelleğini sıfırla"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset the Quick Look cache"
+          }
+        }
+      }
+    },
+    "performance.task.resetQuickLook.detail": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önizlemeler ve küçük resimler eski ya da bozuk görünüyorsa yeniden oluşturulmalarını sağlar."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Makes previews and thumbnails be generated again when they look stale or broken."
+          }
+        }
+      }
+    },
+    "performance.task.resetFontCache": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yazı tipi önbelleğini temizle"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear the font cache"
+          }
+        }
+      }
+    },
+    "performance.task.resetFontCache.detail": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yazı tipleri bozuk ya da eksik görünüyorsa kullanıcı yazı tipi önbelleğini siler. Oturumu kapatıp açınca ya da yeniden başlatınca etkili olur."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Removes your font cache when fonts look garbled or missing. Takes effect after logging out or restarting."
+          }
+        }
+      }
     }
   }
 }

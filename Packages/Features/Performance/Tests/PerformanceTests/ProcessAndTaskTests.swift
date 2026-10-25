@@ -56,9 +56,20 @@ struct MaintenanceTaskTests {
         }
     }
 
-    @Test("Only the Launch Services rebuild runs without the helper")
+    @Test("Only the per-user tasks run without the helper")
     func helperRequirement() {
-        #expect(MaintenanceTask.allCases.filter { !$0.requiresHelper } == [.rebuildLaunchServices])
+        #expect(
+            MaintenanceTask.allCases.filter { !$0.requiresHelper }
+                == [.rebuildLaunchServices, .resetQuickLook, .resetFontCache]
+        )
+    }
+
+    @Test("The per-user cache resets touch only the current user's caches")
+    func userCacheResets() {
+        #expect(MaintenanceTask.resetQuickLook.command.executable == "/usr/bin/qlmanage")
+        #expect(MaintenanceTask.resetQuickLook.command.arguments == ["-r", "cache"])
+        #expect(MaintenanceTask.resetFontCache.command.executable == "/usr/bin/atsutil")
+        #expect(MaintenanceTask.resetFontCache.command.arguments == ["databases", "-removeUser"])
     }
 
     @Test("The exact commands are the ones the spec describes")

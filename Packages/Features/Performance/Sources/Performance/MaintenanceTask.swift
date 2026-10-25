@@ -11,13 +11,15 @@ public enum MaintenanceTask: String, Sendable, CaseIterable, Identifiable {
     case verifyDisk
     case purgeMemory
     case runPeriodicScripts
+    case resetQuickLook
+    case resetFontCache
 
     public var id: String { rawValue }
 
     /// The helper command that carries this task out, if it needs administrator rights.
     public var helperCommand: HelperCommand? {
         switch self {
-        case .rebuildLaunchServices: nil
+        case .rebuildLaunchServices, .resetQuickLook, .resetFontCache: nil
         case .flushDNS: .flushDNS
         case .reindexSpotlight: .reindexSpotlight
         case .verifyDisk: .verifyDisk
@@ -33,9 +35,17 @@ public enum MaintenanceTask: String, Sendable, CaseIterable, Identifiable {
     /// commands are the helper's own table, so the two cannot drift apart.
     public var command: (executable: String, arguments: [String]) {
         if let helperCommand { return helperCommand.command }
-        return (
-            "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister",
-            ["-kill", "-r", "-domain", "local", "-domain", "system", "-domain", "user"]
-        )
+        switch self {
+        // Both reset only the current user's caches, which is why they need no helper.
+        case .resetQuickLook:
+            return ("/usr/bin/qlmanage", ["-r", "cache"])
+        case .resetFontCache:
+            return ("/usr/bin/atsutil", ["databases", "-removeUser"])
+        default:
+            return (
+                "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister",
+                ["-kill", "-r", "-domain", "local", "-domain", "system", "-domain", "user"]
+            )
+        }
     }
 }

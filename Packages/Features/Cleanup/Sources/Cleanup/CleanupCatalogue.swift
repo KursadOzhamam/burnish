@@ -61,6 +61,8 @@ public enum CleanupCatalogue {
         userCaches,
         userLogs,
         developerJunk,
+        packageManagerCaches,
+        toolCaches,
         xcodeDeviceSupport,
         xcodeArchives,
         browserCaches,
@@ -117,6 +119,43 @@ public enum CleanupCatalogue {
         confidence: .high
     )
 
+    /// Download caches that package managers keep in dot-folders of the home directory, outside
+    /// `~/Library` and so outside `developerJunk`.
+    ///
+    /// Each entry is the cache folder alone, never the tool's whole folder: `~/.gradle` also holds
+    /// settings and credentials, and `~/go/pkg/mod` holds the modules a build actually uses (only
+    /// its `cache` subfolder is the download cache). Nothing is lost, only re-downloaded on the
+    /// next install or build, so the items are preselected — but at medium confidence, because
+    /// that download can be large.
+    public static let packageManagerCaches = CleanupRule(
+        id: ScannerID("cleanup.packageManagerCaches"),
+        titleKey: "cleanup.packageManagerCaches.title",
+        explanationKey: "cleanup.packageManagerCaches.explanation",
+        roots: [
+            .home(".npm/_cacache", listsChildren: false, label: "npm"),
+            .home(".gradle/caches", listsChildren: false, label: "Gradle"),
+            .home(".cocoapods/repos", listsChildren: false, label: "CocoaPods"),
+            .home("Library/pnpm/store", listsChildren: false, label: "pnpm"),
+            .home(".pnpm-store", listsChildren: false, label: "pnpm"),
+            .home(".yarn/berry/cache", listsChildren: false, label: "Yarn"),
+            .home("go/pkg/mod/cache", listsChildren: false, label: "Go")
+        ],
+        confidence: .medium
+    )
+
+    /// `~/.cache`: the shared cache folder of command-line tools (pip, uv, Hugging Face,
+    /// Puppeteer and others).
+    ///
+    /// Listed per tool and never preselected. Some entries are downloaded machine-learning models
+    /// of many gigabytes; they come back on next use, but that download can take a long time.
+    public static let toolCaches = CleanupRule(
+        id: ScannerID("cleanup.toolCaches"),
+        titleKey: "cleanup.toolCaches.title",
+        explanationKey: "cleanup.toolCaches.explanation",
+        roots: [.home(".cache")],
+        confidence: .low
+    )
+
     /// Debug symbols Xcode keeps for every device and OS version it has connected to.
     ///
     /// Often the largest single item on a developer's Mac (12 GB here). Xcode rebuilds a folder
@@ -129,7 +168,8 @@ public enum CleanupCatalogue {
         roots: [
             .home("Library/Developer/Xcode/iOS DeviceSupport", owner: "com.apple.dt.Xcode"),
             .home("Library/Developer/Xcode/watchOS DeviceSupport", owner: "com.apple.dt.Xcode"),
-            .home("Library/Developer/Xcode/tvOS DeviceSupport", owner: "com.apple.dt.Xcode")
+            .home("Library/Developer/Xcode/tvOS DeviceSupport", owner: "com.apple.dt.Xcode"),
+            .home("Library/Developer/Xcode/visionOS DeviceSupport", owner: "com.apple.dt.Xcode")
         ],
         confidence: .low
     )

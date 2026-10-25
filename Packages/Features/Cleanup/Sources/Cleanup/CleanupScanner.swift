@@ -45,8 +45,41 @@ public struct CleanupScanner: Scanning {
     }
 
     /// Whole-folder roots: the folder itself is the finding, so it may be removed as a unit.
+    ///
+    /// A profile folder contributes only the exact named files that exist in its profiles, so
+    /// nothing else in a browser profile is ever reachable.
     public var allowedTargets: [URL] {
-        rule.roots.filter { !$0.listsChildren }.map { $0.url(home: home) }
+        rule.roots.filter { !$0.listsChildren }.flatMap { root in
+            root.isProfileFolder ? profileFiles(in: root).map(\.url) : [root.url(home: home)]
+        }
+    }
+
+    /// The named files present in each matching profile under a profile-folder root.
+    ///
+    /// Only real directories count as profiles and only regular files are returned: a symlink in
+    /// either place could point anywhere, and following it is what §4.4 forbids.
+    func profileFiles(in root: CleanupRoot) -> [(url: URL, profile: String, file: String)] {
+        let folder = root.url(home: home)
+        let fileManager = FileManager()
+        guard let profiles = try? fileManager.contentsOfDirectory(
+            at: folder, includingPropertiesForKeys: [.isDirectoryKey, .isSymbolicLinkKey]
+        ) else { return [] }
+
+        var result: [(url: URL, profile: String, file: String)] = []
+        for profile in profiles.sorted(by: { $0.lastPathComponent < $1.lastPathComponent }) {
+            let name = profile.lastPathComponent
+            let values = try? profile.resourceValues(forKeys: [.isDirectoryKey, .isSymbolicLinkKey])
+            guard values?.isDirectory == true, values?.isSymbolicLink != true else { continue }
+            if !root.profilePrefixes.isEmpty,
+               !root.profilePrefixes.contains(where: { name == $0 || name.hasPrefix($0) }) { continue }
+            for file in root.profileFiles {
+                let url = profile.appendingPathComponent(file)
+                let fileValues = try? url.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey])
+                guard fileValues?.isRegularFile == true, fileValues?.isSymbolicLink != true else { continue }
+                result.append((url, name, file))
+            }
+        }
+        return result
     }
 
     /// What a scan found, and what it could not look at.
@@ -115,6 +148,20 @@ public struct CleanupScanner: Scanning {
                     )
                 } catch FileTreeWalker.Failure.unreadable(let failed) {
                     unreadable.append(failed)
+                }
+            } else if root.isProfileFolder {
+                for found in profileFiles(in: root) {
+                    try Task.checkCancellation()
+                    if let item = try scanWhole(
+                        found.url,
+                        label: "\(found.file) · \(found.profile)",
+                        blocked: blocked,
+                        discovered: &discovered,
+                        fraction: fraction,
+                        progress: progress
+                    ) {
+                        items.append(item)
+                    }
                 }
             } else if let item = try scanWhole(
                 url,

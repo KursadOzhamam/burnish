@@ -81,7 +81,9 @@ struct CleanupLanding: View {
         "cleanup.userTrash": "trash", "cleanup.systemCaches": "gearshape", "cleanup.xcodeDeviceSupport": "shippingbox",
         "cleanup.xcodeArchives": "shippingbox", "cleanup.appCaches": "app.badge", "cleanup.adobeMediaCaches": "app.badge",
         "cleanup.brokenPreferences": "exclamationmark.triangle", "cleanup.downloads": "arrow.down.circle",
-        "privacy.safari": "safari", "privacy.chromium": "globe", "privacy.recentItems": "clock.arrow.circlepath"
+        "cleanup.packageManagerCaches": "shippingbox.circle", "cleanup.toolCaches": "terminal",
+        "privacy.safari": "safari", "privacy.chromium": "globe", "privacy.recentItems": "clock.arrow.circlepath",
+        "privacy.chromiumProfiles": "person.2", "privacy.firefox": "flame", "privacy.downloadLog": "arrow.down.doc"
     ]
 
     private static func symbol(for rule: CleanupRule) -> String { symbols[rule.id.rawValue] ?? "square.dashed" }

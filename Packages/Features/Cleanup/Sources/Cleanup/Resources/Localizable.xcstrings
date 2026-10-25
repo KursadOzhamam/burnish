@@ -856,13 +856,13 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chrome, Brave, Edge ve Arc izleri"
+            "value": "Chrome, Brave, Edge, Arc ve Vivaldi izleri"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chrome, Brave, Edge and Arc traces"
+            "value": "Chrome, Brave, Edge, Arc and Vivaldi traces"
           }
         }
       }
@@ -1375,6 +1375,182 @@
           "stringUnit": {
             "state": "translated",
             "value": "Privacy Analysis"
+          }
+        }
+      }
+    },
+    "cleanup.packageManagerCaches.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paket yöneticisi önbellekleri"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Package manager caches"
+          }
+        }
+      }
+    },
+    "cleanup.packageManagerCaches.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "npm, Gradle, CocoaPods, pnpm, Yarn ve Go'nun indirme önbellekleri. Bir şey kaybolmaz, ama bir sonraki kurulum veya derleme her şeyi yeniden indirir."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download caches of npm, Gradle, CocoaPods, pnpm, Yarn and Go. Nothing is lost, but the next install or build downloads everything again."
+          }
+        }
+      }
+    },
+    "cleanup.toolCaches.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Komut satırı araçlarının önbellekleri"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Command-line tool caches"
+          }
+        }
+      }
+    },
+    "cleanup.toolCaches.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "~/.cache klasörü: pip, uv, Hugging Face, Puppeteer ve benzerleri. İndirilmiş yapay zekâ modelleri burada olabilir; ilk kullanımda yeniden indirilir, bu uzun sürebilir."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The ~/.cache folder: pip, uv, Hugging Face, Puppeteer and similar tools. Downloaded machine-learning models may be here; they are fetched again on next use, which can take long."
+          }
+        }
+      }
+    },
+    "privacy.chromiumProfiles.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diğer tarayıcı profilleri"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Other browser profiles"
+          }
+        }
+      }
+    },
+    "privacy.chromiumProfiles.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chrome, Brave, Edge, Arc ve Vivaldi'nin ek profillerindeki ve misafir profilindeki geçmiş, çerezler ve form verileri. Kayıtlı parolalara dokunulmaz; tarayıcı açıkken atlanır."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History, cookies and form data in the extra and guest profiles of Chrome, Brave, Edge, Arc and Vivaldi. Saved passwords are never touched; skipped while the browser is open."
+          }
+        }
+      }
+    },
+    "privacy.firefox.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firefox izleri"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firefox traces"
+          }
+        }
+      }
+    },
+    "privacy.firefox.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çerezler, form geçmişi ve kayıtlı oturum. Geçmiş, yer imleriyle aynı dosyada tutulduğu için listelenmez; tarayıcı açıkken atlanır."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cookies, form history and the saved session. History is not listed because Firefox keeps it in the same file as bookmarks; skipped while the browser is open."
+          }
+        }
+      }
+    },
+    "privacy.downloadLog.title": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İndirme kaydı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download log"
+          }
+        }
+      }
+    },
+    "privacy.downloadLog.explanation": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS'un internetten indirilen her dosya için tuttuğu kayıt: kaynak adres, tarih ve indiren uygulama. Gerektiğinde yeniden oluşturulur."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The record macOS keeps of every file downloaded from the internet: source address, date and the app that fetched it. Recreated when needed."
+          }
+        }
+      }
+    },
+    "privacy.label.downloadLog": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İndirme kaydı"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download log"
           }
         }
       }
