@@ -121,6 +121,8 @@ targets:
         INFOPLIST_KEY_NSHumanReadableCopyright: ""
         COMBINE_HIDPI_IMAGES: YES
         ENABLE_PREVIEWS: YES
+        # Rendered by scripts/make-icon.swift into App/Assets.xcassets.
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     info:
       path: App/Info.plist
       properties:

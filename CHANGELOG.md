@@ -64,6 +64,9 @@ Bu dosya [Keep a Changelog](https://keepachangelog.com/) biçimini ve
     plist Çöp'e, işlem geçmişine yazılır, ardından `launchctl bootout`
   - Yardımcı protokolü **2**: bir komut birden çok sabit adım çalıştırabilir; eski yardımcı
     sürüm uyuşmazlığı olarak görünür ve yeniden kurulması istenir
+- **Uygulama ikonu**: disk plakasını parlatan fırça ve sabun baloncukları, uygulamanın kendi
+  çivit → mor (#7044E8) → lila paletinde. Tamamen kodla çizilir: `swift scripts/make-icon.swift
+  App/Assets.xcassets/AppIcon.appiconset` ile yeniden üretilir.
 - **Ayarlar** (§6.9):
   - Kenar çubuğunun altında "Ayarlar" satırı (standart ⌘, penceresini açar)
   - Genel: dil seçimi (Sistem / Türkçe / English; uygulamanın kendi `AppleLanguages` ayarı,
