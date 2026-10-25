@@ -40,6 +40,7 @@ struct RootView: View {
             .backgroundPreferenceValue(FloatingActionKey.self) { action in
                 FloatingActionHost(action: action)
             }
+            .background(CenterWindowOnLaunch())
     }
 
     private var container: some View {

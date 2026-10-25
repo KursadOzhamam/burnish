@@ -164,3 +164,33 @@ struct FloatingActionHost: NSViewRepresentable {
         }
     }
 }
+
+/// Puts the main window in the middle of its screen when it first appears, every launch.
+///
+/// macOS otherwise reopens it wherever its saved frame or the default cascade put it, which on a
+/// laptop is often the bottom-left corner with part of the window off screen. A window larger than
+/// the visible area is shrunk to fit, so the sidebar and the round action are always reachable.
+struct CenterWindowOnLaunch: NSViewRepresentable {
+    func makeNSView(context: Context) -> NSView { CenteringView() }
+    func updateNSView(_ view: NSView, context: Context) {}
+
+    final class CenteringView: NSView {
+        private var didCenter = false
+
+        override func viewDidMoveToWindow() {
+            super.viewDidMoveToWindow()
+            guard !didCenter, let window else { return }
+            didCenter = true
+            // After the current pass, so a restored frame applied during this one does not win.
+            DispatchQueue.main.async { Self.center(window) }
+        }
+
+        static func center(_ window: NSWindow) {
+            guard let visible = (window.screen ?? NSScreen.main)?.visibleFrame else { return }
+            let width = min(window.frame.width, visible.width)
+            let height = min(window.frame.height, visible.height)
+            let frame = NSRect(x: visible.midX - width / 2, y: visible.midY - height / 2, width: width, height: height)
+            window.setFrame(frame.integral, display: true)
+        }
+    }
+}
