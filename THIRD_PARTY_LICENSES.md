@@ -37,6 +37,7 @@ Her kural kaynağı **tek tek** lisans doğrulamasından geçer. Doğrulanana ka
 | Kaynak | Kullanım koşulu | Durum |
 |---|---|---|
 | Burnish kendi listesi | Tescilli (bizim) | ✅ kullanımda |
+| **macos-sha1.txt** — 232 macOS SHA-1 (`Tools/BlocklistBuilder/Lists`) | Proje sahibince sağlandı (2026-10-26); **kaynağı ve kullanım koşulu henüz yazılmadı** | ⚠️ kullanımda; satıştan önce kaynak ve koşul bu satıra işlenecek |
 | **MalwareBazaar** (abuse.ch) — macOS örneklerinin SHA-256 ve aile adları, `Tools/BlocklistBuilder` ile | Ücretsiz API "adil kullanım" ilkeleriyle; abuse.ch SSS: ticari/kâr amaçlı kullanım **ücretli kurumsal API aboneliği gerektirebilir** (2026-10-26 okundu) | ⚠️ geliştirmede kullanımda; **satıştan önce** abuse.ch ile ticari koşul netleştirilecek (R16) |
 
 | Değerlendirilip kullanılmayan | Neden |

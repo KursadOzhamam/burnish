@@ -70,6 +70,12 @@ Bu dosya [Keep a Changelog](https://keepachangelog.com/) biçimini ve
   Uygulama paketteki listeyi açılışta doğrular; imza tutmazsa listeyi hiç kullanmaz. Uygulama
   internete çıkmaz, hiçbir örnek indirilmez. İmza anahtarı depo dışında,
   `~/.config/burnish/blocklist-signing.key` — 5 yeni test.
+- **SHA-1 desteği**: kara liste SHA-1 (40 hane) ve SHA-256 (64 hane) girdileri birlikte tutar,
+  tek sözlükte O(1) arama. Tarayıcı her dosyayı tek okumada iki özetle hesaplar
+  (`FileHasher.digests`) ve ikisinden biriyle eşleşen dosyayı tehdit sayar. İlk liste:
+  `Tools/BlocklistBuilder/Lists/macos-sha1.txt` (232 SHA-1), `BlocklistBuilder build` ile
+  imzalanıp uygulamaya gömüldü (sürüm 20261026). Eski "sha256" alanlı listeler okunmaya devam
+  eder — 5 yeni test.
 - **Uygulama ikonu**: disk plakasını parlatan fırça ve sabun baloncukları, uygulamanın kendi
   çivit → mor (#7044E8) → lila paletinde. Tamamen kodla çizilir: `swift scripts/make-icon.swift
   App/Assets.xcassets/AppIcon.appiconset` ile yeniden üretilir.

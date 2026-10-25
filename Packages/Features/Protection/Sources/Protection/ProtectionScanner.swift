@@ -74,7 +74,7 @@ public struct ProtectionScanner: Sendable {
 
     private func inspectFile(_ url: URL, size: Int) -> [Finding] {
         var result: [Finding] = []
-        if size <= maxHashSize, let hash = try? FileHasher.sha256(of: url), let name = blocklist.name(forHash: hash) {
+        if size <= maxHashSize, let digests = try? FileHasher.digests(of: url), let name = blocklist.name(for: digests) {
             result.append(Finding(url: url, severity: .threat, reason: .knownBadHash(name: name)))
         }
         for rule in rules.matches(for: url, size: size) {
