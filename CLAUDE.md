@@ -627,7 +627,6 @@ Karara bağlananlar: A1 (Paddle), A2 (tek seferlik + 1 yıl), A4 (GitHub Actions
 | R13 | Paddle hesap onayının gecikmesi/reddi | Satış başlamaz | Phase 0'da erken başvuru; yedek plan Stripe + vergi danışmanı |
 | R14 | ~~"Purgify" ile ad benzerliği~~ | — | **Kapandı:** ad Burnish olarak değişti (§17). Ad yine hard-code edilmez; §1.1 tek değişiklik noktası |
 | R15 | Burnish için hukuki marka araştırması henüz yapılmadı | Geç aşamada rebrand | Lansmandan (Phase 11) önce TÜRKPATENT/USPTO/EUIPO Sınıf 9 ve 42; bulgu çıkarsa §1.1 tek noktadan değişir |
-| R16 | MalwareBazaar verisinin ticari kullanım koşulu (abuse.ch ücretli API isteyebilir) | Satışta hash listesi kullanılamaz hale gelir | Satıştan önce abuse.ch ile yazılı teyit veya kurumsal API; olmazsa kendi listemiz ve lisansı uygun başka kaynak (THIRD_PARTY_LICENSES.md) |
 
 ---
 

@@ -64,12 +64,11 @@ Bu dosya [Keep a Changelog](https://keepachangelog.com/) biçimini ve
     plist Çöp'e, işlem geçmişine yazılır, ardından `launchctl bootout`
   - Yardımcı protokolü **2**: bir komut birden çok sabit adım çalıştırabilir; eski yardımcı
     sürüm uyuşmazlığı olarak görünür ve yeniden kurulması istenir
-- **Bilinen zararlı hash listesi** (§6.4): `Tools/BlocklistBuilder` MalwareBazaar'dan macOS
-  örneklerinin SHA-256'larını ve aile adlarını çeker (Mach-O, DMG ve AMOS, Poseidon, Banshee gibi
-  etiketler), Ed25519 ile imzalayıp `Protection/Resources/blocklist.{json,sig}` olarak yazar.
-  Uygulama paketteki listeyi açılışta doğrular; imza tutmazsa listeyi hiç kullanmaz. Uygulama
-  internete çıkmaz, hiçbir örnek indirilmez. İmza anahtarı depo dışında,
-  `~/.config/burnish/blocklist-signing.key` — 5 yeni test.
+- **Bilinen zararlı hash listesi** (§6.4): `Tools/BlocklistBuilder build`,
+  `Tools/BlocklistBuilder/Lists/*.txt` içindeki yerel listeleri Ed25519 ile imzalayıp
+  `Protection/Resources/blocklist.{json,sig}` olarak yazar. Uygulama paketteki listeyi açılışta
+  doğrular; imza tutmazsa listeyi hiç kullanmaz. Uygulama da araç da internete çıkmaz. İmza
+  anahtarı depo dışında, `~/.config/burnish/blocklist-signing.key` — 5 yeni test.
 - **SHA-1 desteği**: kara liste SHA-1 (40 hane) ve SHA-256 (64 hane) girdileri birlikte tutar,
   tek sözlükte O(1) arama. Tarayıcı her dosyayı tek okumada iki özetle hesaplar
   (`FileHasher.digests`) ve ikisinden biriyle eşleşen dosyayı tehdit sayar. İlk liste:

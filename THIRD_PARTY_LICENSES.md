@@ -38,7 +38,6 @@ Her kural kaynağı **tek tek** lisans doğrulamasından geçer. Doğrulanana ka
 |---|---|---|
 | Burnish kendi listesi | Tescilli (bizim) | ✅ kullanımda |
 | **macos-sha1.txt** — 232 macOS SHA-1 (`Tools/BlocklistBuilder/Lists`) | Kaynak: **Objective-See** açık kaynak macOS zararlı yazılım koleksiyonu (proje sahibinin beyanı, 2026-10-26). Proje sahibi kullanımın serbest ve yasal olduğunu beyan etti. Not: github.com/objective-see/malware deposu GPL-3.0; Burnish'e GPL kod veya örnek girmez, yalnızca olgusal veri olan hash değerleri girer (karar 2026-10-26) | ✅ kullanımda — proje sahibinin onayıyla |
-| **MalwareBazaar** (abuse.ch) — macOS örneklerinin SHA-256 ve aile adları, `Tools/BlocklistBuilder` ile | Ücretsiz API "adil kullanım" ilkeleriyle; abuse.ch SSS: ticari/kâr amaçlı kullanım **ücretli kurumsal API aboneliği gerektirebilir** (2026-10-26 okundu) | ⚠️ geliştirmede kullanımda; **satıştan önce** abuse.ch ile ticari koşul netleştirilecek (R16) |
 
 | Değerlendirilip kullanılmayan | Neden |
 |---|---|
